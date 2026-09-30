@@ -34,7 +34,8 @@ Update: $\Delta w_{ij}=-\eta\,\delta_i\,a_j$. \
 Matrix form: $\bm\delta^{[l-1]\top}=\bm\delta^{[l]\top}W^{[l]}\,\mathrm{diag}(f'(\mathbf{s}^{[l-1]}))$,\
 $\partial L/\partial W^{[l]}=\mathbf{a}^{[l-1]}\bm\delta^{[l]\top}$.}
 
-\begin{qabox}[Klambauer, Hochreiter]{Derive the gradient for one weight. Define the delta.}
+\begin{qabox}[Klambauer, Hochreiter]{\asked Derive the gradient for one weight. Define the delta.}
+\from{DL Basic Techniques (DLNN I) · Ch.~4.6 Backpropagation · asked in past defenses}
 \ans By the chain rule the loss depends on $w_{ij}$ only through $s_i$. The derivative of $s_i$
 with respect to $w_{ij}$ is just $a_j$. What remains, $\partial L/\partial s_i$, we call the delta.
 \formula
@@ -45,7 +46,8 @@ linear regression: error $\times$ input.
 \src{DLNN script WS24, Eqs.~(4.63)--(4.68), PDF p.~45.}
 \end{qabox}
 
-\begin{qabox}[Klambauer, Hochreiter]{Derive the recursive formula for the delta of a hidden unit.}
+\begin{qabox}[Klambauer, Hochreiter]{\asked Derive the recursive formula for the delta of a hidden unit.}
+\from{DL Basic Techniques (DLNN I) · Ch.~4.6--4.7 Delta recursion · asked in past defenses}
 \ans A hidden unit $j$ influences the loss through all units $i$ it feeds. So I sum over them with
 the chain rule.
 \formula
@@ -56,7 +58,8 @@ $j$ = layer below, $w_{ij}$ = from $j$ to $i$.
 \src{DLNN script WS24, Eq.~(4.71), PDF p.~46.}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Delta at the output for softmax + cross-entropy?}
+\begin{qabox}[Hochreiter]{\asked Delta at the output for softmax + cross-entropy?}
+\from{DL Basic Techniques (DLNN I) · Table~4.1 Output deltas · asked in past defenses}
 \ans Simply prediction minus label, $\bm\delta=\hat{\mathbf{y}}-\mathbf{y}$. The derivative of the
 log inside the cross-entropy cancels the derivative of the softmax.
 \formula
@@ -69,7 +72,8 @@ together.
 \src{DLNN script WS24, Table 4.1, Eq.~(4.78).}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Vanishing and exploding gradients: where do they come from?}
+\begin{qabox}[Hochreiter]{\asked Vanishing and exploding gradients: where do they come from?}
+\from{DL Basic Techniques (DLNN I) · Ch.~4.7 Vanishing gradients · asked in past defenses}
 \ans Each layer multiplies the delta by $W^{[l]}\mathrm{diag}(f'(\mathbf{s}))$. After many layers
 this is a product of many matrices, so the norm shrinks or grows exponentially. For the sigmoid
 $|f'|\le0.25$, so it shrinks. Sepp Hochreiter showed this in 1991 in Linz.
@@ -80,7 +84,8 @@ normalization, residual connections, LSTM for time.
 \src{DLNN script WS24, box after Eq.~(4.84), PDF p.~52--53.}
 \end{qabox}
 
-\begin{qabox}[Klambauer]{How is a neural network built? What is one neuron?}
+\begin{qabox}[Klambauer]{\asked How is a neural network built? What is one neuron?}
+\from{DL Basic Techniques (DLNN I) · Ch.~3--4 Neuron, MLP · asked in past defenses}
 \ans A neuron takes a weighted sum of its inputs plus a bias, the pre-activation, and applies a
 non-linear activation. Neurons form layers; layers are stacked; the last layer gives the output.
 \formula $s=\mathbf{w}^\top\mathbf{a}+b$, $a=f(s)$; \ layer: $\mathbf{a}^{[l]}=f(W^{[l]}\mathbf{a}^{[l-1]}+\mathbf{b}^{[l]})$.

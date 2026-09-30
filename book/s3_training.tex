@@ -27,7 +27,8 @@ weight decay $\Remp+\frac\lambda2\lVert\mathbf{w}\rVert^2$ \textbullet{}
 dropout: keep unit with prob.\ $1-p$ \textbullet{}
 batch norm $\hat s=(s-\mu_B)/\sqrt{\sigma_B^2+\epsilon}$, then $\gamma\hat s+\beta$.}
 
-\begin{qabox}[Hochreiter]{Which activation function comes from Linz? What does it do?}
+\begin{qabox}[Hochreiter]{\asked Which activation function comes from Linz? What does it do?}
+\from{DL Basic Techniques (DLNN I) · Ch.~10.4 Self-normalization, Ch.~11 Activations · asked in past defenses}
 \ans SELU, the scaled exponential linear unit, from Klambauer, Unterthiner, Mayr and Hochreiter
 (2017); and before it ELU. SELU makes networks \emph{self-normalizing}: mean and variance of the
 activations are pulled to $(0,1)$ layer by layer, without batch normalization.
@@ -37,14 +38,16 @@ Jacobian there has spectral norm $0.7877<1$, so the fixed point is stable (a con
 \src{DLNN script WS24, Sec.~10.4, PDF p.~137--141.}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Which optimizers do you know? Are there methods other than gradient descent?}
+\begin{qabox}[Hochreiter]{\asked Which optimizers do you know? Are there methods other than gradient descent?}
+\from{DL Basic Techniques (DLNN I) · Ch.~7 Optimizers · asked in past defenses}
 \ans GD, SGD, momentum, AdaGrad, RMSprop, Adam. Other methods: closed form (linear models),
 IRLS, RProp and Quickprop, second-order methods (Newton, Gauss--Newton, Levenberg--Marquardt,
 conjugate gradients, natural gradient), and gradient-free search (evolutionary algorithms).
 \src{DLNN script WS24, Ch.~7, PDF p.~85--101; SS25 script ``Higher Order Optimization''.}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Which regularization techniques do you know?}
+\begin{qabox}[Hochreiter]{\asked Which regularization techniques do you know?}
+\from{DL Basic Techniques (DLNN I) · Ch.~8 Regularization · asked in past defenses}
 \ans Weight decay, dropout, early stopping, data augmentation, input and weight noise, weight
 sharing, multi-task learning, pruning (Optimal Brain Damage and Surgeon), and Flat Minimum Search,
 which looks for wide minima that generalize better.
@@ -54,13 +57,15 @@ co-adapting.
 \src{DLNN script WS24, Ch.~8, PDF p.~103--119.}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{How can you do feature selection?}
+\begin{qabox}[Hochreiter]{\asked How can you do feature selection?}
+\from{ML: Supervised Techniques · feature selection · asked in past defenses}
 \ans Three families. Filter: rank features by a score like correlation or mutual information.
 Wrapper: search subsets with the model, e.g.\ forward or backward selection. Embedded: the model
 selects while it trains, e.g.\ L1 regularization (Lasso) pushes weights to exactly zero.
 \end{qabox}
 
-\begin{qabox}[Klambauer]{Why initialize randomly? What does good initialization do?}
+\begin{qabox}[Klambauer]{\pred Why initialize randomly? What does good initialization do?}
+\from{DL Basic Techniques (DLNN I) · Ch.~9 Initialization · predicted}
 \ans Equal weights make all units in a layer learn the same thing, so we break the symmetry with
 random weights. The scale should keep the variance of activations forward and of deltas backward
 constant, so nothing vanishes or explodes.
@@ -69,14 +74,16 @@ $2/(n_{\mathrm{in}}+n_{\mathrm{out}})$ (Glorot).
 \src{DLNN script WS24, Ch.~9, PDF p.~123--129.}
 \end{qabox}
 
-\begin{qabox}[Lehner]{Universal approximation theorem.}
+\begin{qabox}[Lehner]{\asked Universal approximation theorem.}
+\from{ML: Supervised Techniques (Lehner) unit~6; DLNN~II theory chapter · asked in past defenses}
 \ans One hidden layer with finitely many units and a non-polynomial activation can approximate
 any continuous function on a compact set arbitrarily well. It says such a network exists; it does
 not say how many units, nor that gradient descent finds it.
 \src{DLNN I+II script SS25, ``Deep Learning theory'', PDF p.~321.}
 \end{qabox}
 
-\begin{qabox}[Klambauer]{CNNs: why do they work for images? What is ResNet?}
+\begin{qabox}[Klambauer]{\pred CNNs: why do they work for images? What is ResNet?}
+\from{DL Basic Techniques (DLNN I) · Ch.~6 CNNs; DL Architectures (DLNN II) · ResNet · predicted}
 \ans Local filters with shared weights slide over the image: few parameters, translation
 equivariance. Pooling reduces size and adds invariance. Depth grows the receptive field. ResNet
 adds identity skips, $\mathbf{a}^{[l+1]}=\mathbf{a}^{[l]}+F(\mathbf{a}^{[l]})$, so the Jacobian is

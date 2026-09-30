@@ -1,0 +1,177 @@
+\section{New 2025 courses: Geometric DL, Unsupervised, DL Architectures}
+
+The 2025 curriculum added \emph{Deep Learning: Geometric Techniques} and renamed the deep learning
+courses (\emph{Basic Techniques} = old DLNN~I, \emph{Architectures and Generative Techniques} =
+old DLNN~II). An examiner who teaches them may use their vocabulary, so this chapter covers what is
+new. Most of DL Basic is already in Chapters~1--3.
+
+\subsection{Deep Learning: Geometric Techniques}
+
+\begin{summary}{Geometric deep learning in two minutes}
+\textsf{Problem:} the curse of dimensionality; local methods need exponentially many samples in
+high dimension. \textsf{Remedy:} priors about the \emph{structure} of the data. \
+\textsf{Two priors.} (1) \emph{Symmetry}: the task does not change under a group $G$ of
+transformations (translations for images, permutations for sets and graphs, rotations for
+molecules). (2) \emph{Scale separation}: coarse-grain the signal step by step. \
+\textsf{Invariance} $f(\rho(g)x)=f(x)$, \textsf{equivariance} $f(\rho(g)x)=\rho'(g)f(x)$. \
+\textsf{Blueprint:} equivariant layers $\to$ non-linearity $\to$ local pooling (coarsening) $\to$
+repeat $\to$ global invariant pooling $\to$ MLP. CNNs (grids, translations), DeepSets (sets,
+permutations), GNNs (graphs, permutations), Transformers (complete graphs) are all instances. \
+\textsf{Message passing:} $\mathbf{h}_i'=\phi\bigl(\mathbf{h}_i,\bigoplus_{j\in\mathcal{N}(i)}\psi(\mathbf{h}_i,\mathbf{h}_j,\mathbf{e}_{ij})\bigr)$,
+$\bigoplus$ permutation-invariant (sum, mean, max).
+\end{summary}
+
+\pic{A face is still a face if you move the photo (translation) and a molecule is still the same
+molecule if you number its atoms differently (permutation). Building these facts into the network
+means it never has to learn them from data, which is the cure for the curse of dimensionality.}
+
+\board{Group axioms: closure, associativity, identity, inverse \textbullet{} equivariance
+$f(\rho(g)x)=\rho'(g)f(x)$ \textbullet{} DeepSets $f(X)=\rho\bigl(\sum_i\phi(\mathbf{x}_i)\bigr)$ \textbullet{}
+set permutation $X\mapsto PX$ \textbullet{} GCN $H'=\sigma(\hat D^{-1/2}\hat A\hat D^{-1/2}HW)$ \textbullet{}
+group averaging $\bar f(x)=\frac{1}{|G|}\sum_{g\in G}f(\rho(g)x)$.}
+
+\begin{qabox}[GDL lecturer, Klambauer]{\cexam What is the curse of dimensionality, and what is the manifold hypothesis?}
+\from{DL: Geometric Techniques · curse of dimensionality · course exam question map}
+\ans In high dimension the volume grows so fast that data become sparse; local methods (nearest
+neighbours, kernels with small bandwidth) need a number of samples exponential in the dimension.
+For Lipschitz functions the estimation error decays only like $N^{-1/d}$. The manifold hypothesis
+says real data lie near a low-dimensional manifold inside the high-dimensional space, so the
+\emph{intrinsic} dimension is small; together with symmetry priors this makes learning possible.
+\end{qabox}
+
+\begin{qabox}[GDL lecturer]{\cexam Define a group, invariance and equivariance.}
+\from{DL: Geometric Techniques · geometric priors · course exam question map}
+\ans A group is a set with an operation that is closed and associative, has an identity, and has an
+inverse for every element. It acts on the domain, and the action lifts to signals via a
+representation $\rho(g)$ (a linear map). $f$ is invariant if $f(\rho(g)x)=f(x)$, equivariant if
+$f(\rho(g)x)=\rho'(g)f(x)$: transform then map equals map then transform (a commutative diagram).
+Inverses are needed so that the lifted action $(\rho(g)x)(u)=x(g^{-1}u)$ is well defined.
+\follow ``How do you make any function invariant?'' Average over the group:
+$\bar f(x)=\frac1{|G|}\sum_gf(\rho(g)x)$. The approximation error does not grow if the target is
+invariant; the estimation error shrinks, roughly by the size of the group.
+\end{qabox}
+
+\begin{qabox}[GDL lecturer, Klambauer]{\cexam DeepSets and linear equivariant maps on sets.}
+\from{DL: Geometric Techniques · sets · course exam question map}
+\ans The symmetry group of a set of $n$ elements is the permutation group $S_n$; a permutation acts
+on the feature matrix as $X\mapsto PX$. Every linear permutation-equivariant layer has the form
+$F(X)=XA+\frac1n\mathbf{1}\mathbf{1}^\top XB$ (the same map for every element plus a shared term).
+DeepSets: an equivariant per-element encoder $\phi$ (learned), a sum (fixed, invariant), then a
+learned decoder $\rho$: $f(X)=\rho(\sum_i\phi(\mathbf{x}_i))$.
+\end{qabox}
+
+\begin{qabox}[GDL lecturer, Klambauer]{\cexam Message passing, and the Weisfeiler--Leman test.}
+\from{DL: Geometric Techniques · graphs; also asked (GNNs) in past defenses}
+\ans A graph adds edges to a set. Each layer: every node computes messages from its neighbours,
+aggregates them with a permutation-invariant function, and updates its state. Node outputs are
+equivariant, a final readout makes graph outputs invariant. The WL test refines node colours by
+hashing each node's colour with the multiset of its neighbours' colours; if the histograms differ,
+the graphs are not isomorphic; if they agree, we cannot tell. MPNNs are at most as powerful as WL,
+and exactly as powerful if the aggregation is injective on multisets (sum, as in GIN, not mean or max).
+\follow ``Limits?'' Over-squashing: information from many distant nodes is squeezed through few
+edges; it depends mostly on graph topology (bottlenecks). Remedies: positional encodings,
+subgraph GNNs, graph rewiring.
+\end{qabox}
+
+\begin{qabox}[GDL lecturer]{\cexam Transformers as graph networks; CNNs as the grid case.}
+\from{DL: Geometric Techniques · graphs, grids · course exam question map}
+\ans Self-attention is message passing on the complete graph with attention weights as edge
+weights. Without positional encodings it is permutation-equivariant; with them it is not, by
+design. A CNN is the blueprint on a grid with the translation group: convolution is the (only)
+linear translation-equivariant map, pooling does the coarse-graining.
+\end{qabox}
+
+\subsection{ML: Unsupervised Techniques}
+
+\begin{summary}{Unsupervised learning in two minutes}
+\textsf{PCA:} directions of maximal variance = eigenvectors of the covariance; unique up to sign if
+eigenvalues differ. \textsf{Kernel PCA:} PCA on the centred Gram matrix
+$\tilde K=K-\mathbf{1}_NK-K\mathbf{1}_N+\mathbf{1}_NK\mathbf{1}_N$. \
+\textsf{ICA:} find \emph{statistically independent} non-Gaussian sources; unique up to order and
+scale; whitening then rotation; contrast functions (kurtosis, negentropy); Infomax. \
+\textsf{Factor analysis:} $\mathbf{x}=W\mathbf{z}+\bm\mu+\bm\epsilon$ with diagonal (not isotropic)
+noise, so $\mathbf{x}\sim\mathcal{N}(\bm\mu,WW^\top+\Psi)$; fitted with EM. \
+\textsf{MDS:} embed points so distances are kept. \textsf{NMF:} $X\approx WH$, $W,H\ge0$, parts-based. \
+\textsf{Mixtures + EM}, \textsf{clustering} (k-means = hard EM), \textsf{max entropy}.
+\end{summary}
+
+\pic{PCA finds the longest axis of the cloud of points. ICA is the cocktail party: two people talk
+at once into two microphones, and ICA separates the two voices because each voice on its own is
+not Gaussian.}
+
+\board{PCA: $C=\frac1N\sum_n(\mathbf{x}_n-\bar{\mathbf{x}})(\mathbf{x}_n-\bar{\mathbf{x}})^\top$, $C\mathbf{u}=\lambda\mathbf{u}$ \textbullet{}
+FA: $\mathbf{x}\sim\mathcal{N}(\bm\mu,WW^\top+\Psi)$ \textbullet{}
+ICA: $\mathbf{x}=A\mathbf{s}$, $\mathbf{y}=W\mathbf{x}$, maximize non-Gaussianity \textbullet{}
+k-means: $\min\sum_n\lVert\mathbf{x}_n-\bm\mu_{c(n)}\rVert^2$.}
+
+\begin{qabox}[Klambauer, Hochreiter]{\cexam What is PCA, how is it computed, is it unique?}
+\from{ML: Unsupervised Techniques · PCA · Fragenkatalog Q8--10}
+\ans Centre the data, compute the covariance matrix, and take its eigenvectors with the largest
+eigenvalues (or the SVD of the data matrix). They are the orthogonal directions of maximal
+variance, and projecting on them gives the best linear reconstruction in squared error. Unique up
+to the sign of each vector when the eigenvalues are distinct; with equal eigenvalues any rotation
+inside that eigenspace is also a solution. Properties: linear, orthogonal, uncorrelated components.
+\end{qabox}
+
+\begin{qabox}[Klambauer, Hochreiter]{\cexam ICA versus PCA versus factor analysis.}
+\from{ML: Unsupervised Techniques · ICA, FA · Fragenkatalog Q13--23}
+\ans PCA: uncorrelated, orthogonal directions of maximal variance. ICA: statistically
+\emph{independent} components, which needs non-Gaussian sources; unique up to permutation and
+scaling. It whitens the data (then only a rotation is left) and finds the rotation that maximizes
+non-Gaussianity with a contrast function such as kurtosis or negentropy; Infomax maximizes the
+information flow through a non-linearity. Factor analysis: a latent Gaussian model like pPCA but
+with a diagonal noise covariance, so every feature has its own noise; fitted with EM, whose E-step
+estimates the posterior mean and covariance of the factors.
+\end{qabox}
+
+\begin{qabox}[Klambauer]{\pred Clustering: k-means and its relation to EM.}
+\from{ML: Unsupervised Techniques · clustering, mixtures · predicted}
+\ans k-means alternates two steps: assign each point to the nearest centre, then move each centre
+to the mean of its points; the objective $\sum_n\lVert\mathbf{x}_n-\bm\mu_{c(n)}\rVert^2$ never
+increases. It is the hard-assignment limit of EM for a Gaussian mixture with equal isotropic
+variances: responsibilities become 0 or 1.
+\end{qabox}
+
+\subsection{Deep Learning: Architectures and Generative Techniques}
+
+\begin{summary}{DL Architectures in two minutes}
+\textsf{CNN families:} LeNet $\to$ AlexNet $\to$ VGG (small $3\times3$ filters) $\to$ Inception
+(parallel filters) $\to$ ResNet (skips) $\to$ DenseNet. \
+\textsf{Vision tasks:} classification; semantic segmentation (class per pixel, U-Net, FCN);
+object detection (boxes: R-CNN family two-stage, YOLO/SSD one-stage, IoU, non-maximum suppression);
+instance segmentation (Mask R-CNN). \
+\textsf{Generative:} autoencoder, VAE (ELBO), GAN (minimax), normalizing flows (exact likelihood by
+change of variables), diffusion, autoregressive models (PixelCNN). \
+$\min_G\max_D\ \mathbb{E}[\log D(\mathbf{x})]+\mathbb{E}[\log(1-D(G(\mathbf{z})))]$;\quad
+flow: $\log p(\mathbf{x})=\log p(\mathbf{z})+\log\lvert\det\partial\mathbf{z}/\partial\mathbf{x}\rvert$.
+\end{summary}
+
+\pic{GAN: a forger (generator) and a detective (discriminator) train against each other until the
+detective can no longer tell the fakes from the real paintings.}
+
+\begin{qabox}[Klambauer]{\pred Semantic segmentation versus object detection. Name architectures.}
+\from{DL: Architectures (DLNN II) · segmentation and detection, SS25 script PDF p.~197--239; U-Net asked in a past defense}
+\ans Semantic segmentation gives every pixel a class; U-Net (encoder--decoder with skip
+connections) or FCN. Object detection gives boxes plus classes; two-stage detectors (Faster R-CNN:
+region proposals, then classification) or one-stage (YOLO, SSD: predict boxes on a grid directly).
+Quality by intersection over union (IoU); duplicate boxes removed by non-maximum suppression.
+Instance segmentation (Mask R-CNN) separates individual objects of the same class.
+\end{qabox}
+
+\begin{qabox}[Klambauer]{\pred GANs: objective, problems, fixes.}
+\from{DL: Architectures (DLNN II) · GANs, SS25 script PDF p.~265--279 · predicted}
+\ans The generator maps noise to samples, the discriminator tells real from fake; they play
+$\min_G\max_D\mathbb{E}[\log D(\mathbf{x})]+\mathbb{E}[\log(1-D(G(\mathbf{z})))]$. At the optimum the
+generator minimizes the Jensen--Shannon divergence. Problems: mode collapse, unstable training,
+vanishing generator gradients. Fixes: non-saturating loss, Wasserstein GAN, spectral normalization,
+and the two time-scale update rule (TTUR, from Linz), with the FID to measure quality.
+\end{qabox}
+
+\begin{qabox}[Klambauer]{\pred Autoencoder, VAE, normalizing flow: what is the difference?}
+\from{DL: Architectures (DLNN II) · generative models, SS25 script PDF p.~242--297 · predicted}
+\ans An autoencoder compresses and reconstructs; its latent space is not organised, so it is poor
+for sampling. A VAE makes the latent space a distribution with a KL term, so we can sample, but the
+likelihood is only bounded (ELBO). A normalizing flow uses invertible layers and the change of
+variables formula, so the likelihood is exact, at the price of equal dimensions and constrained
+layers. Diffusion trades speed for quality with many denoising steps.
+\end{qabox}

@@ -1,0 +1,203 @@
+\section{ML: Advanced Techniques (Brandstetter, Holzleitner)}
+
+This chapter follows the three written exams of the course (July 2024, July 2026, September retry).
+The course has two halves: generative models and AI for physics (Prof.\ Brandstetter) and
+statistical theory (Dr.\ Holzleitner: estimators, learning theory, kernels, EM, causality). If one
+of them sits on your committee, expect the conversation to start here.
+
+\subsection{Generative models and AI for physics (Brandstetter)}
+
+\begin{summary}{Generative models in two minutes}
+\textsf{VAE:} encoder $q_\phi(\mathbf{z}|\mathbf{x})$, decoder $p_\theta(\mathbf{x}|\mathbf{z})$,
+maximize the ELBO $=\mathbb{E}_q[\log p_\theta(\mathbf{x}|\mathbf{z})]-D_{\mathrm{KL}}(q_\phi(\mathbf{z}|\mathbf{x})\Vert p(\mathbf{z}))\le\log p(\mathbf{x})$;
+reparametrization $\mathbf{z}=\bm\mu+\bm\sigma\odot\bm\epsilon$ makes sampling differentiable. \
+\textsf{Diffusion:} forward $q(\mathbf{x}_t|\mathbf{x}_{t-1})=\mathcal{N}(\sqrt{\alpha_t}\mathbf{x}_{t-1},(1-\alpha_t)I)$,
+closed form $q(\mathbf{x}_t|\mathbf{x}_0)=\mathcal{N}(\sqrt{\bar\alpha_t}\mathbf{x}_0,(1-\bar\alpha_t)I)$,
+$\bar\alpha_t=\prod_{s\le t}\alpha_s$; learn to denoise. \
+\textsf{Flow matching:} regress a velocity field, $\lVert\mathbf{v}_\theta(\mathbf{x}_t,t)-(\mathbf{x}_1-\mathbf{x}_0)\rVert^2$. \
+\textsf{Neural ODE:} $\mathrm{d}\mathbf{h}/\mathrm{d}t=f_\theta(\mathbf{h},t)$; a ResNet block is one Euler step. \
+\textsf{pPCA:} $\mathbf{x}=W\mathbf{z}+\bm\mu+\bm\epsilon$, all Gaussian, a linear generative model.
+\end{summary}
+
+\pic{Diffusion: drop ink into water and film it (forward process, easy). Then learn to play the
+film backwards (reverse process, hard): from a cloudy glass back to the clean drop. The VAE is a
+zip file: compress to a short code, unzip again, and keep the codes tidy (KL term) so random codes
+also unzip into something sensible.}
+
+\board{ELBO $=\mathbb{E}_q[\log p(\mathbf{x}|\mathbf{z})]-D_{\mathrm{KL}}(q(\mathbf{z}|\mathbf{x})\Vert p(\mathbf{z}))$ \textbullet{}
+$q(\mathbf{x}_t|\mathbf{x}_0)=\mathcal{N}(\sqrt{\bar\alpha_t}\mathbf{x}_0,(1-\bar\alpha_t)I)$ \textbullet{}
+$\mathbf{x}_t=\sqrt{\bar\alpha_t}\mathbf{x}_0+\sqrt{1-\bar\alpha_t}\bm\epsilon$ \textbullet{}
+loss $\lVert\bm\epsilon-\bm\epsilon_\theta(\mathbf{x}_t,t)\rVert^2$ \textbullet{}
+ResNet $\mathbf{h}_{l+1}=\mathbf{h}_l+f(\mathbf{h}_l)$ $\leftrightarrow$ Euler $\mathbf{h}(t+\Delta t)=\mathbf{h}(t)+\Delta t\,f(\mathbf{h},t)$.}
+
+\begin{qabox}[Brandstetter]{\cexam Diffusion: what is $q(\mathbf{x}_t|\mathbf{x}_0)$, and what are the ELBO terms?}
+\from{ML: Advanced Techniques (Brandstetter) · diffusion · exam July 2024, Q1}
+\ans Each forward step adds Gaussian noise; Gaussians compose, so we can jump to any step directly:
+$q(\mathbf{x}_t|\mathbf{x}_0)=\mathcal{N}(\sqrt{\bar\alpha_t}\mathbf{x}_0,(1-\bar\alpha_t)I)$. The ELBO has
+three parts. $L_1=\mathbb{E}_q[\log p_\theta(\mathbf{x}_0|\mathbf{x}_1)]$: reconstruction of the data
+from the first latent step. $L_2=D_{\mathrm{KL}}(q(\mathbf{x}_T|\mathbf{x}_0)\Vert p(\mathbf{x}_T))$:
+how well the forward process reaches the prior, a standard Gaussian; it has no parameters and goes
+to 0 for large $T$. $L_3=\sum_{t\ge2}\mathbb{E}_q\bigl[D_{\mathrm{KL}}(q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)\Vert p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t))\bigr]$:
+the denoising terms; minimized when the learned denoising step matches the true one, and computed in
+closed form because both are Gaussian.
+\follow ``Why predict the noise?'' The KL between Gaussians reduces to a squared error between the
+true and predicted noise: $\lVert\bm\epsilon-\bm\epsilon_\theta\rVert^2$.
+\src{ML: Advanced Techniques, exam 2024 Q1; \texttt{VDM.pdf}.}
+\end{qabox}
+
+\begin{qabox}[Brandstetter]{\cexam Hierarchical VAE with two latents: posterior and ELBO?}
+\from{ML: Advanced Techniques (Brandstetter) · hierarchical VAE · exam July 2024}
+\ans Generative chain $\mathbf{z}_2\to\mathbf{z}_1\to\mathbf{x}$, so the inference goes the other
+way: $Q(\mathbf{z}_1,\mathbf{z}_2|\mathbf{x})=q(\mathbf{z}_1|\mathbf{x})\,q(\mathbf{z}_2|\mathbf{z}_1)$.
+\formula
+ELBO $=\mathbb{E}\bigl[\log p(\mathbf{x}|\mathbf{z}_1)\bigr]-D_{\mathrm{KL}}\bigl(q(\mathbf{z}_1|\mathbf{x})\Vert p(\mathbf{z}_1|\mathbf{z}_2)\bigr)-D_{\mathrm{KL}}\bigl(q(\mathbf{z}_2|\mathbf{z}_1)\Vert p(\mathbf{z}_2)\bigr)$.
+\follow ``Why is training hard?'' Sampling in the forward pass blocks gradients (fixed by the
+reparametrization trick), and posterior collapse: the KL term can switch latents off.
+\end{qabox}
+
+\begin{qabox}[Brandstetter]{\cexam VAE facts from the exam.}
+\from{ML: Advanced Techniques (Brandstetter) · VAE · exam July 2024}
+\ans Maximizing the ELBO maximizes a lower bound on $\log p(\mathbf{x})$; it is tight, i.e.\ equal
+to the log-likelihood, only when $q(\mathbf{z}|\mathbf{x})$ equals the true posterior. We do not know
+the true posterior, so we approximate it with the encoder. With the reparametrization trick
+$\mathbf{z}=\bm\mu+\bm\sigma\odot\bm\epsilon$ the randomness moves into $\bm\epsilon$ and gradients
+flow through $\bm\mu,\bm\sigma$. The encoder is not used for generation: sample $\mathbf{z}\sim p(\mathbf{z})$
+and decode.
+\end{qabox}
+
+\begin{qabox}[Brandstetter]{\cexam Neural ODEs: which statements are true?}
+\from{ML: Advanced Techniques (Brandstetter) · Neural ODEs · exam July 2024}
+\ans A residual update $\mathbf{h}_{t+1}=\mathbf{h}_t+f(\mathbf{h}_t)$ is an Euler step; in the limit
+the forward pass is $\mathrm{d}\mathbf{h}/\mathrm{d}t=f_\theta(\mathbf{h}(t),t)$, solved by any ODE
+solver, and time plays the role of the layer index. Gradients come from the adjoint method: a second
+ODE solved backwards in time, whose initial condition is the gradient of the loss at the final state,
+$\mathbf{a}(T)=\partial L/\partial\mathbf{h}(T)$. Memory is constant in depth because intermediate
+states are not stored. The backward solve need not use the same time steps as the forward one.
+\formula $\dfrac{\mathrm{d}\mathbf{a}}{\mathrm{d}t}=-\mathbf{a}^\top\dfrac{\partial f}{\partial\mathbf{h}}$,\quad
+$\dfrac{\mathrm{d}L}{\mathrm{d}\theta}=-\displaystyle\int_T^0\mathbf{a}^\top\dfrac{\partial f}{\partial\theta}\,\mathrm{d}t$.
+\hook{My thesis is also an ODE in time, solved with a very cheap stored operator instead of a learned $f$.}
+\end{qabox}
+
+\begin{qabox}[Brandstetter]{\cexam Describe the Kuramoto--Sivashinsky equation. Why is it used?}
+\from{ML: Advanced Techniques (Brandstetter) · neural PDE surrogates · exam July 2024}
+\ans A time-dependent, fourth-order, non-linear PDE that produces spatio-temporal chaos:
+$u_t+uu_x+u_{xx}+u_{xxxx}=0$. The $u_{xx}$ term pumps energy in at large scales, the fourth-order
+term damps small scales, the non-linear term moves energy between them. It is a standard benchmark
+for neural PDE surrogates, because long rollouts must stay stable although errors grow.
+\pic{A pot of soup on the stove that never settles into a pattern but never blows up either.}
+\end{qabox}
+
+\begin{qabox}[Brandstetter]{\cexam Probabilistic PCA.}
+\from{ML: Advanced Techniques (Brandstetter) · probabilistic PCA · exam July 2024}
+\ans A linear Gaussian latent model: $\mathbf{z}\sim\mathcal{N}(0,I)$, $\mathbf{x}=W\mathbf{z}+\bm\mu+\bm\epsilon$,
+$\bm\epsilon\sim\mathcal{N}(0,\sigma^2I)$; $W$ maps the low-dimensional latent space to data space.
+Generation: sample $\mathbf{z}$, then sample $\mathbf{x}$ from an isotropic Gaussian around $W\mathbf{z}+\bm\mu$.
+The maximum-likelihood $W$ is spanned by the eigenvectors with the \emph{largest} eigenvalues of the
+data covariance, and the likelihood is tractable in closed form. It is the simplest \emph{linear}
+generative model, and a VAE is its non-linear version.
+\end{qabox}
+
+\subsection{Statistical theory (Holzleitner)}
+
+\begin{summary}{Statistics and learning theory in two minutes}
+\textsf{Estimator quality:} bias $=\mathbb{E}[\hat w]-w$, $\mathrm{MSE}=\mathrm{bias}^2+\mathrm{Var}$. \
+\textsf{Fisher information} $I(\theta)=\mathbb{E}[(\partial_\theta\log p(X;\theta))^2]$; \textsf{Cram\'er--Rao:}
+any unbiased estimator has $\mathrm{Var}(\hat\theta)\ge1/(nI(\theta))$; the MLE is consistent and
+asymptotically normal with exactly that variance (efficient). \
+\textsf{Learning theory (0--1 loss):} Bayes classifier (best possible), best model in the class,
+learned model. Excess risk $=$ approximation error (class too small, deterministic) $+$ estimation
+error (too little data, random). Hoeffding bounds the gap for \emph{one} fixed model; for the learned
+model we need \emph{uniform} convergence over the class, via symmetrization and the shattering
+coefficient, which is polynomial in $n$ when the VC dimension is finite. \
+\textsf{Kernels:} $k$ is a kernel iff every Gram matrix is symmetric positive semi-definite; the RKHS
+has the reproducing property $f(\mathbf{x})=\langle f,k(\cdot,\mathbf{x})\rangle$. \
+\textsf{EM:} $\log p(X|\theta)=\mathcal{L}(q,\theta)+D_{\mathrm{KL}}(q\Vert p(Z|X,\theta))$; E-step sets
+$q$ to the posterior, M-step maximizes $\mathcal{L}$ over $\theta$. \
+\textsf{Causality:} association $\to$ intervention (do) $\to$ counterfactual.
+\end{summary}
+
+\pic{Bias is a scale that always shows 1 kg too much; variance is a scale that jumps around. A good
+scale needs both small, which is exactly the MSE. Learning theory asks: if the scale was right on
+the 50 items in the shop, will it be right on every item? Hoeffding answers for one scale, uniform
+convergence for a whole shelf of scales at once.}
+
+\board{$\mathrm{MSE}=\mathrm{bias}^2+\mathrm{Var}$ \textbullet{} $\mathrm{Var}(\hat\theta)\ge\dfrac{1}{nI(\theta)}$ \textbullet{}
+Hoeffding $P(|R_{\mathrm{emp}}(f)-R(f)|>\epsilon)\le2e^{-2n\epsilon^2}$ \textbullet{}
+$R(f)\le R_{\mathrm{emp}}(f)+\sqrt{\dfrac{h(\log(2n/h)+1)+\log(4/\delta)}{n}}$ \textbullet{}
+$\gamma_{nk}=\dfrac{\pi_k\mathcal{N}(\mathbf{x}_n|\bm\mu_k,\Sigma_k)}{\sum_j\pi_j\mathcal{N}(\mathbf{x}_n|\bm\mu_j,\Sigma_j)}$, $\pi_k=N_k/N$.}
+
+\begin{qabox}[Holzleitner]{\cexam Two estimators of a mean: bias, variance, which to choose?}
+\from{ML: Advanced Techniques (Holzleitner) · estimators · exams 2024 and 2026}
+\ans The exam example: $X_1,X_2,X_3$ i.i.d.\ with $\mu=3$, $\sigma^2=2$;
+$\hat w_1=\frac13(X_1+X_2+X_3)+1$ and $\hat w_2=\frac13(X_1+2X_2+X_3)$. Both are biased:
+$\mathbb{E}\hat w_1=\mu+1$, $\mathbb{E}\hat w_2=\frac43\mu=4$, so both have bias 1.
+$\mathrm{Var}(\hat w_1)=\frac{3\sigma^2}{9}=0.67$, $\mathrm{Var}(\hat w_2)=\frac{6\sigma^2}{9}=1.33$.
+MSE $=1+0.67=1.67$ against $1+1.33=2.33$: choose $\hat w_1$.
+\follow Rule: $\mathrm{Var}(\sum a_iX_i)=\sigma^2\sum a_i^2$ for independent $X_i$; the constant $+1$
+changes the bias, not the variance.
+\end{qabox}
+
+\begin{qabox}[Holzleitner]{\cexam Fisher information, Cram\'er--Rao and the MLE.}
+\from{ML: Advanced Techniques (Holzleitner) · Fisher information · exams 2024, 2026, retry}
+\ans The score $\partial_\theta\log p(X;\theta)$ is the slope of the log-likelihood; its mean is 0
+and its variance is the Fisher information $I(\theta)$: how sharply the data pin down $\theta$.
+Cram\'er--Rao: every \emph{unbiased} estimator has variance at least $1/(nI(\theta))$. The MLE is
+consistent and asymptotically normal, $\sqrt n(\hat\theta_{\mathrm{MLE}}-\theta)\to\mathcal{N}(0,1/I(\theta))$,
+so it reaches the bound asymptotically. The bound says nothing about biased estimators, which can have
+smaller variance.
+\formula $I(\theta)=\mathbb{E}\bigl[(\partial_\theta\log p)^2\bigr]=-\mathbb{E}\bigl[\partial_\theta^2\log p\bigr]$.
+\end{qabox}
+
+\begin{qabox}[Holzleitner]{\cexam Consistency, uniform convergence, Hoeffding, symmetrization.}
+\from{ML: Advanced Techniques (Holzleitner) · statistical learning theory · exams 2024 and 2026}
+\ans For a \emph{fixed} model the law of large numbers gives $R_{\mathrm{emp}}\to R$, and Hoeffding
+gives the rate. But the learned model is chosen \emph{with} the data, so we need the gap to be small
+for all models of the class at once: uniform convergence, which implies consistency (not the other
+way round in general). Symmetrization replaces the true risk by the empirical risk on a second
+``ghost'' sample, so only the finitely many labellings of $2n$ points matter; their number is the
+shattering coefficient, polynomial in $n$ if the VC dimension is finite. The bound has the form
+$R\le R_{\mathrm{emp}}+$ capacity term. SLT assumes no knowledge of the data distribution.
+\end{qabox}
+
+\begin{qabox}[Holzleitner]{\cexam VC dimension of origin-centred circles (inside $=+1$).}
+\from{ML: Advanced Techniques (Holzleitner) · VC dimension · exams 2024 and 2026}
+\ans One point: both labels are possible by choosing the radius, so it is shattered, $h\ge1$. Two
+points at distances $d_1<d_2$: the labelling ``inner point $-1$, outer point $+1$'' is impossible,
+because any circle containing the outer point also contains the inner one. So $h=1$. A class with
+infinitely many models can still have a small VC dimension.
+\end{qabox}
+
+\begin{qabox}[Holzleitner]{\cexam Kernels and RKHS.}
+\from{ML: Advanced Techniques (Holzleitner) · kernels, RKHS · exam July 2026}
+\ans $k$ is a kernel iff all its Gram matrices are symmetric positive semi-definite (non-negative
+eigenvalues). Moore--Aronszajn: every such kernel defines a unique RKHS, with the reproducing
+property $f(\mathbf{x})=\langle f,k(\cdot,\mathbf{x})\rangle_{\mathcal{H}}$. We never need the feature
+map explicitly; we only run linear methods in the RKHS through kernel evaluations. Gauss kernel
+$\exp(-\lVert\mathbf{x}-\mathbf{x}'\rVert^2/2\sigma^2)$: similarity decays smoothly with distance;
+$\sigma$ is a hyperparameter.
+\end{qabox}
+
+\begin{qabox}[Holzleitner]{\cexam EM for mixture models, and maximum entropy.}
+\from{ML: Advanced Techniques (Holzleitner) · EM, maximum entropy · exam 2026, retry}
+\ans The log of a sum makes the mixture likelihood hard. Introduce one-hot latents $\mathbf{z}_n$.
+E-step: with the parameters fixed, compute the responsibilities $\gamma_{nk}$, the posterior
+probability that point $n$ belongs to component $k$ (the expectation of the latent). M-step: with the
+responsibilities fixed, update the parameters; the weights $\pi_k=N_k/N$ come from a Lagrange
+multiplier for $\sum_k\pi_k=1$. The likelihood never decreases, but EM finds a local maximum.
+In general $\log p=\mathcal{L}(q,\theta)+\mathrm{KL}$, and since $\mathrm{KL}\ge0$, $\mathcal{L}$ is a lower bound.
+Maximum entropy: among all distributions that match measured moments (e.g.\ mean and variance),
+pick the one with the largest entropy, the least extra assumption; mean and variance give the
+Gaussian. It does not assume a parametric family in advance.
+\end{qabox}
+
+\begin{qabox}[Holzleitner]{\cexam Causality: SCM, intervention, backdoor, ladder.}
+\from{ML: Advanced Techniques (Holzleitner) · causality · exam July 2026}
+\ans A structural causal model writes each variable as a function of its parents and a noise term.
+An intervention $do(X=x)$ cuts all arrows \emph{into} $X$, so after intervening on $B$ it is
+independent of its parent $A$. The backdoor criterion: a set $Z$ that blocks every path from $T$ to
+$Y$ entering $T$ from behind, and contains no descendant of $T$, allows
+$P(y|do(t))=\sum_zP(y|t,z)P(z)$. Pearl's ladder: association, intervention, counterfactual.
+Counterfactuals (``what if Forrest had slept 8 hours?''): keep the individual's noise terms, change
+the variable, recompute. Randomized controlled trials remove confounding by design.
+\formula Adjustment: $P(y\mid do(t))=\sum_zP(y\mid t,z)\,P(z)$.
+\end{qabox}

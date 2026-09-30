@@ -29,7 +29,8 @@ own work, and then the general hot topics of 2025--2026.
 information alive: the error in time (LSTM), the signal in depth (SELU), patterns in memory
 (Hopfield), and now long sequences at linear cost (xLSTM).}
 
-\begin{qabox}[Hochreiter, Klambauer]{What do you know about the research of our institute?}
+\begin{qabox}[Hochreiter, Klambauer]{\pred What do you know about the research of our institute?}
+\from{IML research overview · predicted}
 \ans The institute is known for LSTM and the analysis of vanishing gradients, for self-normalizing
 networks with SELU, and for modern Hopfield networks, which showed that attention is an associative
 memory. Recently xLSTM brought LSTM back at scale, with exponential gating and a matrix memory, and
@@ -38,7 +39,8 @@ There is also strong work on AI for science: drug discovery since DeepTox, and p
 \hook{For me the physics side is the closest: NeuralDEM was done together with my supervisor's group.}
 \end{qabox}
 
-\begin{qabox}[Pirker, Klambauer]{What is NeuralDEM, and how does it relate to your thesis?}
+\begin{qabox}[Pirker, Klambauer]{\pred What is NeuralDEM, and how does it relate to your thesis?}
+\from{NeuralDEM (Alkin, Brandstetter, Pirker et al.~2024) · predicted}
 \ans NeuralDEM (Alkin, Brandstetter, Pirker, Lichtenegger and others, 2024) replaces the discrete
 element method for industrial particulate flows with a deep-learning surrogate that runs in real
 time. It treats the particles as a continuous field and learns their evolution with a
@@ -49,7 +51,8 @@ a learned model can generalize to new states if it has seen enough of them. My t
 limit they share: a new flow regime is out of the data.
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Why would anyone use an LSTM today, when Transformers exist?}
+\begin{qabox}[Hochreiter]{\pred Why would anyone use an LSTM today, when Transformers exist?}
+\from{xLSTM (Beck et al.~2024); LSTM \& Transformers (Hochreiter) · predicted}
 \ans Transformers cost $O(N^2)$ in the context length and their memory grows with it at
 inference. xLSTM keeps a fixed-size state, so inference is linear in length and constant in memory,
 which matters for long contexts, robotics and edge devices. With exponential gating and the mLSTM
@@ -59,7 +62,8 @@ $\mathbf{h}_t=\mathbf{o}_t\odot\dfrac{C_t\mathbf{q}_t}{\max(|\mathbf{n}_t^\top\m
 \hook{The same idea works for images (Vision-LSTM) and for time series (TiRex).}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{What is RUDDER?}
+\begin{qabox}[Hochreiter]{\pred What is RUDDER?}
+\from{RUDDER (Arjona-Medina et al.~2019); Deep RL · predicted}
 \ans In reinforcement learning with delayed rewards, credit assignment is slow. RUDDER trains an
 LSTM to predict the return of an episode and then redistributes the reward to the steps where the
 prediction jumps, i.e.\ to the actions that actually mattered. The expected future reward becomes
@@ -67,7 +71,8 @@ close to zero, so learning is much faster.
 \pic{A football goal is credited not only to the scorer, but to the pass that made the difference.}
 \end{qabox}
 
-\begin{qabox}[Klambauer]{What is the FID?}
+\begin{qabox}[Klambauer]{\pred What is the FID?}
+\from{FID (Heusel et al.~2017) · predicted}
 \ans The Fr\'echet Inception Distance measures how close generated images are to real ones: fit
 a Gaussian to Inception-network features of both sets and compute the Fr\'echet distance.
 \formula $\mathrm{FID}=\lVert\bm\mu_r-\bm\mu_g\rVert^2+\mathrm{Tr}\bigl(\Sigma_r+\Sigma_g-2(\Sigma_r\Sigma_g)^{1/2}\bigr)$.
@@ -95,7 +100,8 @@ Plus regulation: the EU AI Act (risk-based rules), which links to your AI and La
 (reasoning), use only the needed part (mixture of experts), remember cheaply (xLSTM, Mamba), and
 ask tools instead of guessing (agents).}
 
-\begin{qabox}[general]{What is flow matching? (You had it in ML: Advanced Techniques.)}
+\begin{qabox}[general]{\pred What is flow matching? (You had it in ML: Advanced Techniques.)}
+\from{ML: Advanced Techniques · flow matching unit · predicted}
 \ans A generative model that learns a velocity field which moves noise to data along a path. With
 the straight path $\mathbf{x}_t=(1-t)\mathbf{x}_0+t\mathbf{x}_1$ the target velocity is simply
 $\mathbf{x}_1-\mathbf{x}_0$, so training is a plain regression. Sampling solves the ODE
@@ -104,13 +110,15 @@ $\mathrm{d}\mathbf{x}/\mathrm{d}t=\mathbf{v}_\theta(\mathbf{x},t)$.
 \hook{Diffusion models are the same family with a noisy, curved path.}
 \end{qabox}
 
-\begin{qabox}[general]{Diffusion models in two sentences?}
+\begin{qabox}[general]{\pred Diffusion models in two sentences?}
+\from{ML: Advanced Techniques · diffusion (VDM) · predicted}
 \ans Add Gaussian noise step by step until the data is pure noise, and train a network to predict
 the added noise; sampling runs the process backwards. Loss:
 $\mathbb{E}\lVert\bm\epsilon-\bm\epsilon_\theta(\sqrt{\bar\alpha_t}\mathbf{x}_0+\sqrt{1-\bar\alpha_t}\bm\epsilon,t)\rVert^2$.
 \end{qabox}
 
-\begin{qabox}[general]{How are LLMs aligned? RLHF versus DPO.}
+\begin{qabox}[general]{\pred How are LLMs aligned? RLHF versus DPO.}
+\from{Current literature: RLHF, DPO · predicted}
 \ans RLHF: train a reward model on human preference pairs, then optimize the LLM against it with
 RL (PPO), with a KL penalty to stay close to the original model. DPO skips the reward model and
 optimizes the preferences directly with a classification-like loss.
@@ -118,14 +126,16 @@ optimizes the preferences directly with a classification-like loss.
 \hook{Reasoning models go one step further: they learn from rewards that can be checked automatically.}
 \end{qabox}
 
-\begin{qabox}[general]{What are reasoning models and test-time compute?}
+\begin{qabox}[general]{\pred What are reasoning models and test-time compute?}
+\from{Current literature: reasoning models · predicted}
 \ans Models that write out intermediate steps (chain of thought) before the answer, trained with
 reinforcement learning on tasks whose answers can be verified, like maths or code. Spending more
 computation at inference, by thinking longer or sampling several solutions, improves accuracy:
 test-time compute becomes a new scaling axis next to model size and data.
 \end{qabox}
 
-\begin{qabox}[general]{Mixture of experts and state space models?}
+\begin{qabox}[general]{\pred Mixture of experts and state space models?}
+\from{Current literature: MoE, Mamba · predicted}
 \ans Mixture of experts: many feed-forward ``experts'', a router sends each token to the top-$k$,
 so the model has many parameters but uses few per token:
 $\mathbf{y}=\sum_{i\in\text{top-}k}g_i(\mathbf{x})E_i(\mathbf{x})$. State space models like Mamba:
@@ -133,7 +143,8 @@ a linear recurrence $\mathbf{h}_t=\bar A\mathbf{h}_{t-1}+\bar B\mathbf{x}_t$ wit
 (selective) parameters; linear in sequence length, like xLSTM.
 \end{qabox}
 
-\begin{qabox}[Pirker, general]{Where is AI for simulation going?}
+\begin{qabox}[Pirker, general]{\pred Where is AI for simulation going?}
+\from{AI for science literature; NeuralDEM · predicted}
 \ans From single surrogates to foundation models for physics: neural operators and transformer
 surrogates trained on many simulations, weather models that beat numerical forecasts in speed,
 and industrial real-time twins like NeuralDEM. The open problems are the ones my thesis met:

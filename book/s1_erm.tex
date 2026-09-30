@@ -26,7 +26,8 @@ $\Remp=\frac1N\sum_n L(y_n,g(\mathbf{x}_n;\mathbf{w}))$ \quad
 $\hat{\mathbf{w}}=\arg\min_{\mathbf{w}}\Remp$ \quad
 $\mathbf{w}\leftarrow\mathbf{w}-\eta\nabla_{\mathbf{w}}\Remp$.}
 
-\begin{qabox}[Klambauer]{Write down a supervised data set, a model and the empirical risk.}
+\begin{qabox}[Klambauer]{\asked Write down a supervised data set, a model and the empirical risk.}
+\from{DL Basic Techniques (DLNN I) · Ch.~3 Notation, Ch.~5.1 ERM · asked in past defenses}
 \ans A data set is $N$ pairs of input and label, drawn i.i.d.\ from an unknown distribution. The
 model maps an input to a prediction. The loss compares prediction and label. The empirical risk is
 the mean loss over the training set, and training minimizes it.
@@ -39,7 +40,8 @@ kernel machine. Only the inside of $g$ changes.
 \src{DLNN script WS24, Ch.~3 and 5.1, PDF p.~23--26, 60.}
 \end{qabox}
 
-\begin{qabox}[Klambauer]{Difference between empirical risk and generalization error?}
+\begin{qabox}[Klambauer]{\asked Difference between empirical risk and generalization error?}
+\from{DL Basic Techniques (DLNN I) · Ch.~5.2--5.3 Generalization error · asked in past defenses}
 \ans The generalization error is the expected loss over the true distribution: the real quality on
 new data. We cannot compute it because $p$ is unknown. The empirical risk is its estimate on the
 training data, and it is biased low because we chose $\mathbf{w}$ on those data.
@@ -51,7 +53,8 @@ which is almost unbiased and uses every point once for testing.
 \src{DLNN script WS24, Sec.~5.2--5.3, PDF p.~60--64.}
 \end{qabox}
 
-\begin{qabox}[Klambauer]{Which loss functions do you know? Which properties do they need?}
+\begin{qabox}[Klambauer]{\asked Which loss functions do you know? Which properties do they need?}
+\from{DL Basic Techniques (DLNN I) · Ch.~4.1 Loss functions · asked in past defenses}
 \ans A loss is non-negative and zero for a perfect prediction. For gradient training it must be
 differentiable. The 0--1 loss is not, so we train on a surrogate such as cross-entropy or the hinge
 loss.
@@ -64,7 +67,8 @@ the likelihood.
 \src{DLNN script WS24, Sec.~4.1.2, Table 4.1, Eqs.~(4.8)--(4.11).}
 \end{qabox}
 
-\begin{qabox}[Klambauer]{Show it on linear regression.}
+\begin{qabox}[Klambauer]{\asked Show it on linear regression.}
+\from{DL Basic Techniques (DLNN I) · Ch.~4.1 Linear model · asked in past defenses}
 \ans Linear model, squared loss. The risk is convex, so there is one minimum: closed form or
 gradient descent.
 \formula
@@ -76,7 +80,8 @@ times input}. Remember this shape; backprop has exactly the same shape, $\delta_
 \src{DLNN script WS24, Eqs.~(4.12)--(4.15), PDF p.~31.}
 \end{qabox}
 
-\begin{qabox}[Klambauer]{Overfitting, underfitting, bias--variance, double descent.}
+\begin{qabox}[Klambauer]{\cexam Overfitting, underfitting, bias--variance, double descent.}
+\from{DL Basic Techniques (DLNN I) · Ch.~5.4 Model complexity; Geometric DL exam map}
 \ans Too simple: underfitting, high bias. Too complex: overfitting, high variance, low training
 error but high test error. Classical picture: U-shaped test error. Large networks: double descent,
 the test error falls again after the interpolation point.

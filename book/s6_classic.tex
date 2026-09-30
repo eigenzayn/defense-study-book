@@ -23,7 +23,8 @@ RBF $k=\exp(-\lVert\mathbf{x}-\mathbf{x}'\rVert^2/2\sigma^2)$ \textbullet{}
 $\mathcal{L}(\theta)=\prod_np(\mathbf{x}_n;\theta)$, $\hat\theta=\arg\max\sum_n\log p(\mathbf{x}_n;\theta)$ \textbullet{}
 REINFORCE loss $-\sum_t\log\pi_\theta(a_t|s_t)(G_t-b)$.}
 
-\begin{qabox}[Kofler, Hochreiter]{Explain the SVM and write the optimization problem with its constraints.}
+\begin{qabox}[Kofler, Hochreiter]{\asked Explain the SVM and write the optimization problem with its constraints.}
+\from{ML: Supervised Techniques · SVM · asked in past defenses}
 \ans The SVM separates two classes with the hyperplane of maximal margin $2/\lVert\mathbf{w}\rVert$.
 Maximizing the margin is minimizing $\frac12\lVert\mathbf{w}\rVert^2$. The soft margin allows
 violations with slack variables, paid for with $C$. Only points on or inside the margin get
@@ -33,7 +34,8 @@ $\alpha_n>0$: the support vectors.
 margin, more violations.
 \end{qabox}
 
-\begin{qabox}[Kofler]{What are kernels, why important, what is the kernel trick?}
+\begin{qabox}[Kofler]{\asked What are kernels, why important, what is the kernel trick?}
+\from{ML: Supervised Techniques · kernels · asked in past defenses}
 \ans A kernel is a dot product in a feature space, $k(\mathbf{x},\mathbf{x}')=\langle\phi(\mathbf{x}),\phi(\mathbf{x}')\rangle$.
 Many algorithms (SVM dual, kernel ridge regression, kernel PCA) use data only through dot
 products, so we plug in the kernel and get a non-linear method at linear cost, without computing
@@ -41,7 +43,8 @@ $\phi$, which may even be infinite-dimensional (RBF). A valid kernel gives a pos
 semi-definite Gram matrix (Mercer).
 \end{qabox}
 
-\begin{qabox}[Kofler]{VC dimension: what is it, what is it used for?}
+\begin{qabox}[Kofler]{\asked VC dimension: what is it, what is it used for?}
+\from{ML: Supervised Techniques; statistical learning theory · asked in past defenses}
 \ans The largest number of points that the model class can shatter, i.e.\ classify correctly under
 every possible labelling. Lines in 2D: 3. It measures capacity and appears in generalization
 bounds: with probability $1-\eta$,
@@ -49,7 +52,8 @@ $\Rgen\le\Remp+\sqrt{\frac{h(\log(2N/h)+1)-\log(\eta/4)}{N}}$, with $h$ the VC d
 Small $h$ or large $N$ $\to$ small gap.
 \end{qabox}
 
-\begin{qabox}[Widmer, Kofler]{Likelihood, maximum likelihood, expectation maximization.}
+\begin{qabox}[Widmer, Kofler]{\asked Likelihood, maximum likelihood, expectation maximization.}
+\from{Probabilistic Models (Widmer); ML: Unsupervised Techniques · asked in past defenses}
 \ans The likelihood is the probability of the observed data as a function of the parameters. MLE
 maximizes it (in practice the log). Problem: with little data it overfits, e.g.\ the sunrise
 problem, where an unseen event gets probability zero; a prior (MAP, Laplace smoothing) fixes it.
@@ -60,7 +64,8 @@ complete-data log-likelihood; the likelihood never decreases.
 link to ERM: squared loss $\Leftrightarrow$ Gaussian MLE, cross-entropy $\Leftrightarrow$ categorical MLE.
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Derive the REINFORCE loss.}
+\begin{qabox}[Hochreiter]{\asked Derive the REINFORCE loss.}
+\from{Deep Reinforcement Learning · policy gradient · asked in past defenses}
 \ans We maximize the expected return over trajectories. The gradient of an expectation is turned
 into an expectation of a gradient with the log-derivative trick, $\nabla p=p\nabla\log p$. The
 environment dynamics do not depend on $\theta$, so only the policy terms remain.
@@ -75,7 +80,8 @@ lowers its variance.
 likely; after a bad one, a bit less.}
 \end{qabox}
 
-\begin{qabox}[general]{Confusion matrix, precision, recall, AUC.}
+\begin{qabox}[general]{\asked Confusion matrix, precision, recall, AUC.}
+\from{ML: Supervised Techniques; AI and Visualization · evaluation · asked in past defenses}
 \ans Precision $=TP/(TP+FP)$: of what I called positive, how much is right. Recall
 $=TP/(TP+FN)$: of all positives, how many I found. The ROC curve plots true-positive rate against
 false-positive rate over all thresholds; AUC is the probability that a random positive scores

@@ -1,0 +1,1356 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Defense Study Book</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --bg:#ffffff; --ink:#1d232b; --muted:#5d6773; --line:#dfe4ea;
+  --q:#1f4e79; --q-bg:#f3f7fb; --sum:#0f6e5a; --sum-bg:#eef7f4;
+  --pic:#8a4b00; --pic-bg:#fff6ea; --brd:#5b2c83; --brd-bg:#f6f1fa; --nav:#f7f9fb;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12161b; --ink:#e3e8ee; --muted:#9aa5b1; --line:#2a323b;
+    --q:#8fbce6; --q-bg:#18212b; --sum:#6fd0b6; --sum-bg:#14231f;
+    --pic:#f0b36a; --pic-bg:#261d12; --brd:#c8a6ea; --brd-bg:#1f1829; --nav:#161b21;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --ink:#e3e8ee; --muted:#9aa5b1; --line:#2a323b;
+  --q:#8fbce6; --q-bg:#18212b; --sum:#6fd0b6; --sum-bg:#14231f;
+  --pic:#f0b36a; --pic-bg:#261d12; --brd:#c8a6ea; --brd-bg:#1f1829; --nav:#161b21;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.62 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+.wrap{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}
+nav{position:sticky;top:0;height:100vh;overflow:auto;background:var(--nav);
+  border-right:1px solid var(--line);padding:22px 18px}
+nav .brand{font-weight:700;font-size:18px;color:var(--q);margin-bottom:4px}
+nav .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+nav input{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--ink);font-size:14px;margin-bottom:12px}
+nav a{display:block;color:var(--ink);text-decoration:none;padding:4px 6px;border-radius:6px;font-size:14px}
+nav a.l2{padding-left:18px;color:var(--muted);font-size:13px}
+nav a:hover{background:var(--q-bg)}
+nav .tools{display:flex;gap:8px;margin:10px 0 16px}
+nav .tools a,nav .tools button{flex:1;text-align:center;border:1px solid var(--line);border-radius:8px;
+  padding:6px;font-size:13px;background:var(--bg);color:var(--ink);cursor:pointer}
+main{padding:36px 48px 80px;max-width:900px}
+h1{font-size:32px;margin:0 0 4px;color:var(--q)}
+h2{font-size:25px;color:var(--q);margin:54px 0 12px;padding-top:6px;border-top:1px solid var(--line)}
+h3{font-size:19px;color:var(--q);margin:30px 0 10px}
+.lead{color:var(--muted);margin-bottom:26px}
+.card{border:1px solid var(--line);border-radius:12px;margin:16px 0;overflow:hidden;background:var(--bg)}
+.card .ttl{padding:9px 14px;font-weight:600;font-size:14.5px;color:#fff}
+.card .bd{padding:10px 16px 12px}
+.sum{border-color:color-mix(in srgb,var(--sum) 45%,transparent)}
+.sum .ttl{background:var(--sum)} .sum .bd{background:var(--sum-bg)}
+.chain .ttl{background:var(--q)}
+.qa .ttl{background:var(--q);display:flex;justify-content:space-between;gap:12px;cursor:pointer;list-style:none}
+.qa .ttl::-webkit-details-marker{display:none}
+.qa .who{opacity:.8;font-weight:400;font-size:13px;white-space:nowrap}
+.qa .bd{background:var(--q-bg)}
+.pic{background:var(--pic-bg);border:1px solid color-mix(in srgb,var(--pic) 35%,transparent);
+  border-radius:10px;padding:9px 13px;margin:12px 0}
+.pic b{color:var(--pic)}
+.board{background:var(--brd-bg);border:1px solid color-mix(in srgb,var(--brd) 35%,transparent);
+  border-radius:10px;padding:9px 13px;margin:12px 0;overflow-x:auto}
+.board b{color:var(--brd)}
+.lbl{color:var(--q)}
+.hook{color:var(--pic);margin:2px 0 12px}
+.cq{margin:14px 0 2px} .cq b,.ca b{color:var(--q)}
+.src{color:var(--muted);font-size:13px;margin-top:8px}
+.tbl{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--q)}
+code{font-size:13.5px;background:var(--q-bg);padding:1px 4px;border-radius:4px}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
+.hidden{display:none}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:2px 7px;
+  border-radius:999px;margin-right:6px;vertical-align:1px;color:#fff}
+.b-a{background:#b3261e} .b-e{background:#c26a00} .b-p{background:#2b6c7a}
+.from{font-size:13px;color:var(--muted);margin:2px 0 8px}
+.from b{color:var(--muted)}
+.prio{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.prio button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;
+  padding:4px 10px;font-size:12.5px;cursor:pointer}
+.prio button.on{background:var(--q);color:#fff;border-color:var(--q)}
+#menu{display:none}
+@media (max-width:860px){
+  .wrap{grid-template-columns:1fr}
+  nav{position:fixed;inset:0 25% 0 0;z-index:5;transform:translateX(-102%);transition:transform .2s ease}
+  nav.open{transform:none;box-shadow:0 0 30px rgba(0,0,0,.25)}
+  main{padding:64px 16px 60px}
+  #menu{display:block;position:fixed;top:12px;left:12px;z-index:6;border:1px solid var(--line);
+    background:var(--bg);color:var(--ink);border-radius:8px;padding:7px 12px;font-size:15px}
+}
+@media print{nav,#menu{display:none}.wrap{display:block}main{max-width:none;padding:0}}
+</style>
+</head>
+<body>
+<button id="menu" aria-label="Open contents">☰ Contents</button>
+<div class="wrap">
+<nav id="nav">
+  <div class="brand">Defense Study Book</div>
+  <div class="sub">ML &amp; Perception · LSTM · ML Advanced · rCFD</div>
+  <input id="q" type="search" placeholder="Filter questions… (e.g. LSTM, batch norm)">
+  <div class="tools">
+    <a href="Defense_Study_Book.pdf">PDF</a>
+    <button id="fold">Fold all</button>
+    <button id="theme">Theme</button>
+  </div>
+  <div class="prio" id="prio">
+    <button data-k="all" class="on">All</button>
+    <button data-k="a">Asked before</button>
+    <button data-k="e">Course exam</button>
+    <button data-k="p">Predicted</button>
+  </div>
+  <a class='l1' href='#s0'>How this book works</a><a class='l1' href='#s1'>Empirical risk minimization</a><a class='l1' href='#s2'>Backpropagation and the delta error</a><a class='l1' href='#s3'>Training: optimizers, activations, regularization</a><a class='l1' href='#s4'>Recurrent networks and LSTM (Prof. Hochreiter)</a><a class='l2' href='#s5'>Recurrent networks and BPTT</a><a class='l2' href='#s6'>LSTM</a><a class='l2' href='#s7'>Beyond LSTM: xLSTM, Mamba, Hopfield</a><a class='l1' href='#s8'>Attention and Transformers</a><a class='l1' href='#s9'>Classical ML asked in the same slot</a><a class='l1' href='#s10'>rCFD and CFD (Prof. Pirker)</a><a class='l1' href='#s11'>Predicted questions and rapid-fire drill</a><a class='l2' href='#s12'>Thesis questions (first 5 minutes)</a><a class='l2' href='#s13'>Rapid-fire (say it in one breath)</a><a class='l1' href='#s14'>Conversation chains</a><a class='l2' href='#s15'>Doors to open and doors to keep closed</a><a class='l1' href='#s16'>Hot topics and the Linz school</a><a class='l2' href='#s17'>The Linz school (IML, JKU)</a><a class='l2' href='#s18'>Hot topics 2025–2026</a><a class='l1' href='#s19'>ML: Advanced Techniques (Brandstetter, Holzleitner)</a><a class='l2' href='#s20'>Generative models and AI for physics (Brandstetter)</a><a class='l2' href='#s21'>Statistical theory (Holzleitner)</a><a class='l1' href='#s22'>New 2025 courses: Geometric DL, Unsupervised, DL Architectures</a><a class='l2' href='#s23'>Deep Learning: Geometric Techniques</a><a class='l2' href='#s24'>ML: Unsupervised Techniques</a><a class='l2' href='#s25'>Deep Learning: Architectures and Generative Techniques</a>
+</nav>
+<main>
+  <h1>Defense Study Book</h1>
+  <div class="lead">Every topic: a 2-minute summary, an everyday picture, a board drill, and the
+  predicted questions with what to say, what to write, and the usual follow-up.</div>
+  <h2 id='s0'>How this book works</h2>
+<p>Every topic has four layers. Read them in this order; the first two take about two minutes.</p>
+<ol><li><b>2-minute summary</b> – the whole topic on half a page: the one idea, the
+  one formula, the words the examiner wants to hear.</li><li><b>Picture it</b> – an everyday image (an analogy). You remember a picture
+  much longer than a sentence, and it gives you words when you are nervous.</li><li><b>Board drill</b> – the formula you must be able to write on the
+  whiteboard. Write it by hand three times, without looking. Hands learn faster than eyes
+  (tactile, or kinaesthetic, learning), and on the day you will stand at a board.</li><li><b>Questions</b> – predicted exam questions. <b>Say</b> is what you say
+  out loud, <b>Write</b> is what you put on the board, <b>Follow-up</b> is the next question
+  that usually comes.</li></ol>
+<b>Priority labels on every question.</b>
+<ul><li><span class='badge b-a'>ASKED BEFORE</span> asked in a past defense (from the list of past students): learn these first.</li><li><span class='badge b-e'>COURSE EXAM</span> asked in the written course exams (LSTM, ML Advanced, Geometric DL): learn second.</li><li><span class='badge b-p'>PREDICTED</span> predicted by this book (rCFD, thesis bridges, hot topics): learn last.</li></ul>
+Below each title, <b>From:</b> names the course, the chapter or unit, and where the question comes from. The examiner who asked it (or is likely to) stands on the right of the title.
+<b>Who asks what</b> (from the list of past students):
+<ul><li>Prof. Klambauer: empirical risk, loss, gradient descent, backprop and the delta error,
+  generalization. “Write the simplest version first.”</li><li>Prof. Hochreiter: delta error, quick questions (regularization, optimizers, activations,
+  the activation from Linz), REINFORCE, and everything LSTM.</li><li>Others (Rekabsaz, Lehner, Schlüter): Transformers and attention, RNNs, SVM, VC dimension,
+  universal approximation.</li><li>Prof. Pirker (elective track): rCFD, your curves, CFD basics. Chapter 7.</li></ul>
+<b>Study plan (suggested).</b> Day 1: Chapters 1–2 plus all board drills. Day 2: Chapters 3–4.
+Day 3: Chapters 5–6. Day 4: Chapters 7–8 and the thesis. Then repeat only the summaries and
+board drills every morning.
+<h2 id='s1'>Empirical risk minimization</h2>
+<div class='card sum'><div class='ttl'>2-minute summary · ERM (Klambauer's favourite first question)</div><div class='bd'>
+<b>One idea.</b> We want a model that is good on <i>future</i> data. We cannot measure that,
+because the true data distribution is unknown. So we measure the average error on the data we
+<i>have</i> and make it small. That is empirical risk minimization.
+<b>Four ingredients:</b> data $Z=\{(\mathbf{x}_n,y_n)\}_{n=1}^N$ • model
+$g(\mathbf{x};\mathbf{w})$ • loss $L(y,\hat y)$ • average + minimize.
+\[
+\Remp(\mathbf{w})=\frac1N\sum_{n=1}^{N}L\bigl(y_n,g(\mathbf{x}_n;\mathbf{w})\bigr),\qquad
+\Rgen(g)=\mathbb{E}_{(\mathbf{x},y)\sim p}\bigl[L(y,g(\mathbf{x};\mathbf{w}))\bigr].
+\]
+<b>Key words:</b> i.i.d. data • unknown $p(\mathbf{x},y)$ • generalization
+error • test set • cross-validation • overfitting.
+</div></div>
+<div class='pic'><b>Picture it.</b> A driving school. The <i>generalization error</i> is how well you drive on any road in
+Austria, which nobody can test completely. The <i>empirical risk</i> is your score on the practice
+course. You train on the practice course (minimize $\Remp$), and the driving test on new roads
+(test set) estimates how you will really drive. Memorizing every bump of the practice course is
+overfitting.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). $Z=\{(\mathbf{x}_n,y_n)\}$ &emsp; $\hat y=g(\mathbf{x};\mathbf{w})$ &emsp;
+$\Remp=\frac1N\sum_n L(y_n,g(\mathbf{x}_n;\mathbf{w}))$ &emsp;
+$\hat{\mathbf{w}}=\arg\min_{\mathbf{w}}\Remp$ &emsp;
+$\mathbf{w}\leftarrow\mathbf{w}-\eta\nabla_{\mathbf{w}}\Remp$.</div>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Write down a supervised data set, a model and the empirical risk.</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;3 Notation, Ch.&nbsp;5.1 ERM · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> A data set is $N$ pairs of input and label, drawn i.i.d. from an unknown distribution. The
+model maps an input to a prediction. The loss compares prediction and label. The empirical risk is
+the mean loss over the training set, and training minimizes it.
+<p><b class='lbl'>Write:</b> 
+$Z=\{(\mathbf{x}_n,y_n)\}_{n=1}^{N}$, $\mathbf{x}_n\in\mathbb{R}^D$;  $\hat y_n=g(\mathbf{x}_n;\mathbf{w})$;  $\Remp(\mathbf{w})=\frac1N\sum_n L(y_n,\hat y_n)$.
+<p><b class='lbl'>Follow-up:</b> “Is this only for neural networks?” No: $g$ can be a linear model, a random forest or a
+kernel machine. Only the inside of $g$ changes.
+<p class='src'>Source: DLNN script WS24, Ch.&nbsp;3 and 5.1, PDF p.&nbsp;23–26, 60.</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Difference between empirical risk and generalization error?</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;5.2–5.3 Generalization error · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> The generalization error is the expected loss over the true distribution: the real quality on
+new data. We cannot compute it because $p$ is unknown. The empirical risk is its estimate on the
+training data, and it is biased low because we chose $\mathbf{w}$ on those data.
+<p><b class='lbl'>Write:</b> 
+$\Rgen=\int L(y,g(\mathbf{x};\mathbf{w}))\,p(\mathbf{x},y)\,\mathrm{d}\mathbf{x}\,\mathrm{d}y
+\ \approx\ \frac1M\sum_{m\in\text{test}}L(y_m,g(\mathbf{x}_m;\mathbf{w}))$.
+<p><b class='lbl'>Follow-up:</b> “How do you estimate it?” Test set (law of large numbers), or $L$-fold cross-validation,
+which is almost unbiased and uses every point once for testing.
+<p class='src'>Source: DLNN script WS24, Sec.&nbsp;5.2–5.3, PDF p.&nbsp;60–64.</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Which loss functions do you know? Which properties do they need?</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;4.1 Loss functions · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> A loss is non-negative and zero for a perfect prediction. For gradient training it must be
+differentiable. The 0–1 loss is not, so we train on a surrogate such as cross-entropy or the hinge
+loss.
+<p><b class='lbl'>Write:</b> 
+Squared $\tfrac12(y-\hat y)^2$ • binary CE $-y\log\hat y-(1-y)\log(1-\hat y)$ •
+categorical CE $-\sum_k y_k\log\hat y_k$ • 0–1 $\mathbb{1}[y\neq\hat y]$ •
+hinge $\max(0,1-y\,g(\mathbf{x}))$.
+<p><b class='lbl'>Follow-up:</b> “Why squared loss for regression?” Under Gaussian noise, minimizing it equals maximizing
+the likelihood.
+<p class='src'>Source: DLNN script WS24, Sec.&nbsp;4.1.2, Table 4.1, Eqs.&nbsp;(4.8)–(4.11).</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Show it on linear regression.</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;4.1 Linear model · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> Linear model, squared loss. The risk is convex, so there is one minimum: closed form or
+gradient descent.
+<p><b class='lbl'>Write:</b> 
+$\Remp=\tfrac12\lVert\mathbf{y}-X\mathbf{w}\rVert^2$,&emsp;
+$\hat{\mathbf{w}}=(X^\top X)^{-1}X^\top\mathbf{y}$,&emsp;
+$\nabla_{\mathbf{w}}\Remp=X^\top(X\mathbf{w}-\mathbf{y})$.
+<p><b class='lbl'>Follow-up:</b> For one sample the gradient is $(\mathbf{w}^\top\mathbf{x}-y)\,\mathbf{x}$: <i>error
+times input</i>. Remember this shape; backprop has exactly the same shape, $\delta_i a_j$.
+<p class='src'>Source: DLNN script WS24, Eqs.&nbsp;(4.12)–(4.15), PDF p.&nbsp;31.</p>
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Overfitting, underfitting, bias–variance, double descent.</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;5.4 Model complexity; Geometric DL exam map</p>
+<p><b class='lbl'>Say:</b> Too simple: underfitting, high bias. Too complex: overfitting, high variance, low training
+error but high test error. Classical picture: U-shaped test error. Large networks: double descent,
+the test error falls again after the interpolation point.
+<p><b class='lbl'>Write:</b>  $\mathbb{E}[(y-g)^2]=\sigma^2_{\text{noise}}+\text{bias}^2+\text{variance}$.
+<div class='pic'><b>Picture it.</b> Darts. Bias: all darts land together but off the centre. Variance: the darts scatter around
+the centre.</div>
+<p class='src'>Source: DLNN script WS24, Sec.&nbsp;5.4, PDF p.&nbsp;65.</p>
+</div></details>
+<h2 id='s2'>Backpropagation and the delta error</h2>
+<div class='card sum'><div class='ttl'>2-minute summary · Backprop (asked by Klambauer AND Hochreiter)</div><div class='bd'>
+<b>One idea.</b> To learn, every weight needs its gradient. Backprop gets all of them with one
+forward pass and one backward pass. The trick is the <i>delta error</i>: how much the loss changes
+when the pre-activation of one neuron changes. Deltas are computed at the output and passed
+<i>down</i> layer by layer.
+<b>Three lines to know by heart:</b>
+\[
+\underbrace{\delta_i=\frac{\partial L}{\partial s_i}}_{\text{definition}}
+\qquad
+\underbrace{\frac{\partial L}{\partial w_{ij}}=\delta_i\,a_j}_{\text{gradient}}
+\qquad
+\underbrace{\delta_j=f'(s_j)\sum_i\delta_i\,w_{ij}}_{\text{recursion}}
+\]
+Output with a matching pair (softmax + cross-entropy, sigmoid + BCE, linear + squared):
+$\bm\delta^{[L]}=\hat{\mathbf{y}}-\mathbf{y}$.
+<b>Key words:</b> forward pass stores $s$ and $a$ • chain rule • delta
+• outer product • $O(W)$ • vanishing / exploding gradients
+(Hochreiter 1991).
+</div></div>
+<div class='pic'><b>Picture it.</b> A football team that lost 3–0. The coach (loss) starts at the goal that was conceded and
+walks <i>backwards</i> through the team. Each player's share of the blame (delta) is: the blame
+of the players he passed to, weighted by how strongly he passed to them ($w_{ij}$), times how
+awake he was himself ($f'(s_j)$). A tired player ($f'\approx0$, saturated sigmoid) passes no blame
+on: that is the vanishing gradient.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). Forward: $s_i=\sum_j w_{ij}a_j$, $a_i=f(s_i)$.  Backward: $\delta_k=\hat y_k-y_k$ (output), $\delta_j=f'(s_j)\sum_i\delta_i w_{ij}$ (hidden).  Update: $\Delta w_{ij}=-\eta\,\delta_i\,a_j$.  Matrix form: $\bm\delta^{[l-1]\top}=\bm\delta^{[l]\top}W^{[l]}\,\mathrm{diag}(f'(\mathbf{s}^{[l-1]}))$, $\partial L/\partial W^{[l]}=\mathbf{a}^{[l-1]}\bm\delta^{[l]\top}$.</div>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Derive the gradient for one weight. Define the delta.</span><span class='who'>Klambauer, Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;4.6 Backpropagation · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> By the chain rule the loss depends on $w_{ij}$ only through $s_i$. The derivative of $s_i$
+with respect to $w_{ij}$ is just $a_j$. What remains, $\partial L/\partial s_i$, we call the delta.
+<p><b class='lbl'>Write:</b> 
+$\dfrac{\partial L}{\partial w_{ij}}=\dfrac{\partial L}{\partial s_i}\dfrac{\partial s_i}{\partial w_{ij}}
+=\delta_i\,a_j$, &emsp; since $s_i=\sum_j w_{ij}a_j\Rightarrow\partial s_i/\partial w_{ij}=a_j$.
+<p><b class='lbl'>Follow-up:</b> “Interpret it.” Gradient = error signal above $\times$ activity below. The same shape as
+linear regression: error $\times$ input.
+<p class='src'>Source: DLNN script WS24, Eqs.&nbsp;(4.63)–(4.68), PDF p.&nbsp;45.</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Derive the recursive formula for the delta of a hidden unit.</span><span class='who'>Klambauer, Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;4.6–4.7 Delta recursion · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> A hidden unit $j$ influences the loss through all units $i$ it feeds. So I sum over them with
+the chain rule.
+<p><b class='lbl'>Write:</b> 
+$\delta_j=\dfrac{\partial L}{\partial s_j}=\sum_i\dfrac{\partial L}{\partial s_i}\dfrac{\partial s_i}{\partial s_j}
+=\sum_i\delta_i\,w_{ij}\,f'(s_j)$, &emsp; because $s_i=\sum_j w_{ij}f(s_j)$.
+<p><b class='lbl'>Follow-up:</b> Past students got stuck on indices; Prof. Hochreiter helped. Keep $i$ = layer above,
+$j$ = layer below, $w_{ij}$ = from $j$ to $i$.
+<p class='src'>Source: DLNN script WS24, Eq.&nbsp;(4.71), PDF p.&nbsp;46.</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Delta at the output for softmax + cross-entropy?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Table&nbsp;4.1 Output deltas · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> Simply prediction minus label, $\bm\delta=\hat{\mathbf{y}}-\mathbf{y}$. The derivative of the
+log inside the cross-entropy cancels the derivative of the softmax.
+<p><b class='lbl'>Write:</b> 
+$L=-\sum_k y_k\log\hat y_k$, $\hat y_k=\frac{e^{s_k}}{\sum_m e^{s_m}}$,
+$\frac{\partial\hat y_k}{\partial s_i}=\hat y_k(\mathbb{1}_{ki}-\hat y_i)$
+$\Rightarrow\frac{\partial L}{\partial s_i}=-\sum_k y_k(\mathbb{1}_{ki}-\hat y_i)=\hat y_i-y_i$
+(using $\sum_k y_k=1$).
+<p><b class='lbl'>Follow-up:</b> Same result for sigmoid + BCE and linear + squared loss: that is why these pairs belong
+together.
+<p class='src'>Source: DLNN script WS24, Table 4.1, Eq.&nbsp;(4.78).</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Vanishing and exploding gradients: where do they come from?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;4.7 Vanishing gradients · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> Each layer multiplies the delta by $W^{[l]}\mathrm{diag}(f'(\mathbf{s}))$. After many layers
+this is a product of many matrices, so the norm shrinks or grows exponentially. For the sigmoid
+$|f'|\le0.25$, so it shrinks. Sepp Hochreiter showed this in 1991 in Linz.
+<p><b class='lbl'>Write:</b> 
+$\lVert\bm\delta^{[l-k]}\rVert\lesssim\bigl(\max|f'|\cdot\lVert W\rVert\bigr)^{k}\lVert\bm\delta^{[l]}\rVert$.
+<p><b class='lbl'>Follow-up:</b> “Remedies?” ReLU / SELU, careful initialization (keep the Jacobian norm near 1),
+normalization, residual connections, LSTM for time.
+<p class='src'>Source: DLNN script WS24, box after Eq.&nbsp;(4.84), PDF p.&nbsp;52–53.</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> How is a neural network built? What is one neuron?</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;3–4 Neuron, MLP · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> A neuron takes a weighted sum of its inputs plus a bias, the pre-activation, and applies a
+non-linear activation. Neurons form layers; layers are stacked; the last layer gives the output.
+<p><b class='lbl'>Write:</b>  $s=\mathbf{w}^\top\mathbf{a}+b$, $a=f(s)$;  layer: $\mathbf{a}^{[l]}=f(W^{[l]}\mathbf{a}^{[l-1]}+\mathbf{b}^{[l]})$.
+<p><b class='lbl'>Follow-up:</b> “And without activation functions?” Then all layers collapse into one linear map
+$W^{[L]}\cdots W^{[1]}=W$. It cannot even solve XOR.
+<p class='src'>Source: DLNN script WS24, Eqs.&nbsp;(3.2)–(3.3), Sec.&nbsp;4.5.</p>
+</div></details>
+<h2 id='s3'>Training: optimizers, activations, regularization</h2>
+<div class='card sum'><div class='ttl'>2-minute summary · The rapid-fire block (Hochreiter asks these fast)</div><div class='bd'>
+<b>Optimizers:</b> GD, SGD, momentum, AdaGrad, RMSprop, Adam.  <b>Activations:</b> sigmoid, tanh, ReLU, Leaky ReLU, ELU, SELU.  <b>From Linz:</b> ELU (Clevert, Unterthiner, Hochreiter) and SELU (Klambauer et al. 2017).  <b>Regularization:</b> weight decay, dropout, early stopping, data augmentation, noise, Flat
+Minimum Search (Hochreiter).  <b>Output layer:</b> linear (regression), sigmoid (binary), softmax (multi-class).  <b>Why mini-batches:</b> good gradient estimate, fast on GPU, useful noise.
+\[
+\mathbf{w}\leftarrow\mathbf{w}-\eta\nabla\Remp,\qquad
+\text{Adam: }\mathbf{w}\leftarrow\mathbf{w}-\eta\,\frac{\hat{\mathbf{m}}}{\sqrt{\hat{\mathbf{v}}}+\epsilon},\qquad
+\text{SELU: }\lambda\begin{cases}x &amp; x&gt;0\\ \alpha(e^x-1)&amp; x\le0\end{cases}
+\]
+with $\lambda\approx1.0507$, $\alpha\approx1.6733$.
+</div></div>
+<div class='pic'><b>Picture it.</b> Walking down a foggy mountain. Gradient descent: look at the slope under your feet and step
+downhill. Momentum: a heavy ball that keeps rolling through small bumps. Adam: shoes that adjust
+their step to how steep and how noisy each direction is. Mini-batch: asking a few people for the
+way instead of everybody (too slow) or one person (too noisy).</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). GD $\mathbf{w}\leftarrow\mathbf{w}-\eta\nabla\Remp$ •
+momentum $\mathbf{v}\leftarrow\mu\mathbf{v}-\eta\nabla\Remp$, $\mathbf{w}\leftarrow\mathbf{w}+\mathbf{v}$ •
+weight decay $\Remp+\frac\lambda2\lVert\mathbf{w}\rVert^2$ •
+dropout: keep unit with prob. $1-p$ •
+batch norm $\hat s=(s-\mu_B)/\sqrt{\sigma_B^2+\epsilon}$, then $\gamma\hat s+\beta$.</div>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Which activation function comes from Linz? What does it do?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;10.4 Self-normalization, Ch.&nbsp;11 Activations · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> SELU, the scaled exponential linear unit, from Klambauer, Unterthiner, Mayr and Hochreiter
+(2017); and before it ELU. SELU makes networks <i>self-normalizing</i>: mean and variance of the
+activations are pulled to $(0,1)$ layer by layer, without batch normalization.
+<p><b class='lbl'>Write:</b>  The map of (mean, variance) from one layer to the next has the fixed point $(0,1)$; its
+Jacobian there has spectral norm $0.7877&lt;1$, so the fixed point is stable (a contraction).
+<div class='pic'><b>Picture it.</b> A thermostat: whatever the temperature, the layer pushes it back to the set point.</div>
+<p class='src'>Source: DLNN script WS24, Sec.&nbsp;10.4, PDF p.&nbsp;137–141.</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Which optimizers do you know? Are there methods other than gradient descent?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;7 Optimizers · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> GD, SGD, momentum, AdaGrad, RMSprop, Adam. Other methods: closed form (linear models),
+IRLS, RProp and Quickprop, second-order methods (Newton, Gauss–Newton, Levenberg–Marquardt,
+conjugate gradients, natural gradient), and gradient-free search (evolutionary algorithms).
+<p class='src'>Source: DLNN script WS24, Ch.&nbsp;7, PDF p.&nbsp;85–101; SS25 script “Higher Order Optimization”.</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Which regularization techniques do you know?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;8 Regularization · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> Weight decay, dropout, early stopping, data augmentation, input and weight noise, weight
+sharing, multi-task learning, pruning (Optimal Brain Damage and Surgeon), and Flat Minimum Search,
+which looks for wide minima that generalize better.
+<p><b class='lbl'>Write:</b>  Weight decay gradient: $\nabla\Remp+\lambda\mathbf{w}$ (the weights shrink each step).
+<p><b class='lbl'>Follow-up:</b> “Why does dropout work?” It trains an ensemble of thinned networks and stops units from
+co-adapting.
+<p class='src'>Source: DLNN script WS24, Ch.&nbsp;8, PDF p.&nbsp;103–119.</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> How can you do feature selection?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Supervised Techniques · feature selection · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> Three families. Filter: rank features by a score like correlation or mutual information.
+Wrapper: search subsets with the model, e.g. forward or backward selection. Embedded: the model
+selects while it trains, e.g. L1 regularization (Lasso) pushes weights to exactly zero.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Why initialize randomly? What does good initialization do?</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;9 Initialization · predicted</p>
+<p><b class='lbl'>Say:</b> Equal weights make all units in a layer learn the same thing, so we break the symmetry with
+random weights. The scale should keep the variance of activations forward and of deltas backward
+constant, so nothing vanishes or explodes.
+<p><b class='lbl'>Write:</b>  $\mathrm{Var}(w)=1/n_{\mathrm{in}}$ (LeCun), $2/n_{\mathrm{in}}$ (He, ReLU),
+$2/(n_{\mathrm{in}}+n_{\mathrm{out}})$ (Glorot).
+<p class='src'>Source: DLNN script WS24, Ch.&nbsp;9, PDF p.&nbsp;123–129.</p>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Universal approximation theorem.</span><span class='who'>Lehner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Supervised Techniques (Lehner) unit&nbsp;6; DLNN&nbsp;II theory chapter · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> One hidden layer with finitely many units and a non-polynomial activation can approximate
+any continuous function on a compact set arbitrarily well. It says such a network exists; it does
+not say how many units, nor that gradient descent finds it.
+<p class='src'>Source: DLNN I+II script SS25, “Deep Learning theory”, PDF p.&nbsp;321.</p>
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> CNNs: why do they work for images? What is ResNet?</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;6 CNNs; DL Architectures (DLNN II) · ResNet · predicted</p>
+<p><b class='lbl'>Say:</b> Local filters with shared weights slide over the image: few parameters, translation
+equivariance. Pooling reduces size and adds invariance. Depth grows the receptive field. ResNet
+adds identity skips, $\mathbf{a}^{[l+1]}=\mathbf{a}^{[l]}+F(\mathbf{a}^{[l]})$, so the Jacobian is
+$I+\partial F$ and gradients pass through hundreds of layers.
+<p><b class='lbl'>Write:</b>  Output size $\lfloor(n+2p-k)/s\rfloor+1$.
+<p class='src'>Source: DLNN script WS24, Ch.&nbsp;6; SS25 script PDF p.&nbsp;176, 323.</p>
+</div></details>
+<h2 id='s4'>Recurrent networks and LSTM (Prof. Hochreiter)</h2>
+<p>This is Prof. Hochreiter's own field: he found the vanishing gradient (1991) and invented LSTM
+with Schmidhuber (1997). Expect him to go deep and to enjoy it. Notation of his lecture: input
+$\mathbf{x}(t)$, pre-activation $\mathbf{s}(t)$, activation $\mathbf{a}(t)$ or hidden state
+$\mathbf{h}(t)$, memory cell $\mathbf{c}(t)$, input weights $W$, recurrent weights $R$, output
+weights $V$.</p>
+<h3 id='s5'>Recurrent networks and BPTT</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · RNN in two minutes</div><div class='bd'>
+<b>One idea.</b> An RNN reads a sequence one step at a time and keeps a hidden state: a summary
+of everything seen so far. The <i>same</i> weights are used at every step, so it works for any
+length. Training = backpropagation through time (BPTT): unroll the net over time and backprop
+through the unrolled graph.
+\[
+\mathbf{s}(t)=W\mathbf{x}(t)+R\,\mathbf{a}(t-1),\qquad \mathbf{a}(t)=f(\mathbf{s}(t)),\qquad
+\hat{\mathbf{y}}(t)=V\mathbf{a}(t),\qquad L=\sum_{t=1}^{T}L(t).
+\]
+\[
+\bm\delta(t)=\mathrm{diag}\bigl(f'(\mathbf{s}(t))\bigr)\Bigl(V^\top\frac{\partial L(t)}{\partial\hat{\mathbf{y}}(t)}+R^\top\bm\delta(t+1)\Bigr),
+\]
+\[
+\frac{\partial L}{\partial R}=\sum_t\bm\delta(t)\,\mathbf{a}(t-1)^\top,\qquad
+\frac{\partial L}{\partial W}=\sum_t\bm\delta(t)\,\mathbf{x}(t)^\top.
+\]
+<b>Key words:</b> weight sharing in time • Turing complete • BPTT
+• truncated BPTT • RTRL • vanishing gradient in time.
+</div></div>
+<div class='pic'><b>Picture it.</b> Reading a novel. You do not remember every word, you keep a running summary in your head
+(the hidden state) and update it with each new sentence, using the same reading skill (the same
+weights) on every page. BPTT is re-reading the book backwards to find which pages caused your
+wrong guess about the murderer.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). $\mathbf{s}(t)=W\mathbf{x}(t)+R\mathbf{a}(t-1)$, $\mathbf{a}(t)=f(\mathbf{s}(t))$, $\hat{\mathbf{y}}(t)=V\mathbf{a}(t)$; $\bm\delta(t)=\mathrm{diag}(f'(\mathbf{s}(t)))\,(V^\top\partial L(t)/\partial\hat{\mathbf{y}}(t)+R^\top\bm\delta(t+1))$; $\partial L/\partial R=\sum_t\bm\delta(t)\mathbf{a}(t-1)^\top$.
+Note: $\bm\delta(t+1)$, the future, not $t-1$. Gradient uses $\mathbf{a}(t-1)$, not $\mathbf{s}(t-1)$.</div>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Which recurrent architectures do you know?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · RNN architectures (Jordan, Elman, NARX, TDNN) · course exam</p>
+<p><b class='lbl'>Say:</b> Jordan network: feeds the <i>output</i> of $t-1$ back as input. Elman network: feeds the
+<i>hidden</i> state back, originally with fixed recurrent weights and trained locally in time.
+Fully recurrent network: trainable recurrent matrix $R$, every hidden unit sees all others.
+NARX: shortcuts to outputs further in the past (delays), which fights vanishing gradients only for a
+finite number of steps. Time-delay networks (TDNN): a fixed window, basically a 1D convolution.
+Then LSTM and GRU with gates.
+<p><b class='lbl'>Follow-up:</b> “Jordan training trick?” Teacher forcing: during training feed the true label of $t-1$
+instead of the prediction.
+<p class='src'>Source: LSTM lecture WS24, <code>Exam_LSTM summary.pdf</code>.</p>
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> BPTT, truncated BPTT and RTRL: compare them.</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · BPTT, truncated BPTT, RTRL · course exam</p>
+<p><b class='lbl'>Say:</b> BPTT: forward through the whole sequence, then backward; exact gradient; memory grows
+linearly with the length $T$; cost $O(T\cdot W)$. Truncated BPTT: backprop only $k$ steps into
+the past; cheaper, but the gradient is an approximation and long dependencies are cut. RTRL:
+carries the derivative of the state with respect to all weights forward in time, so it is online
+and memory does not grow with $T$, but it is very expensive: $O(N^3)$ numbers stored and $O(N^4)$
+operations per step for $N$ hidden units.
+<p><b class='lbl'>Write:</b>  RTRL recursion:
+$\dfrac{\partial\mathbf{s}(t)}{\partial w}=\dfrac{\partial\mathbf{s}(t)}{\partial w}\Big|_{\text{direct}}
++\dfrac{\partial\mathbf{s}(t)}{\partial\mathbf{s}(t-1)}\dfrac{\partial\mathbf{s}(t-1)}{\partial w}$.
+<div class='pic'><b>Picture it.</b> BPTT is watching the whole match recording afterwards. RTRL is a coach who updates his
+notes live during the match: no recording needed, but he must write very fast.</div>
+<p class='src'>Source: LSTM lecture WS24, BPTT/RTRL exam questions.</p>
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Why can a plain RNN not learn long-term dependencies?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · vanishing gradient in time · course exam</p>
+<p><b class='lbl'>Say:</b> The delta is multiplied at every time step by the recurrent Jacobian
+$R^\top\mathrm{diag}(f'(\mathbf{s}))$. Over $k$ steps this is a product of $k$ factors, so it
+decays (or explodes) exponentially in $k$. After 10–20 steps the error from the past is
+practically zero.
+<p><b class='lbl'>Write:</b> 
+$\Bigl\lVert\dfrac{\partial\mathbf{a}(t)}{\partial\mathbf{a}(t-k)}\Bigr\rVert
+=\Bigl\lVert\prod_{\tau=t-k+1}^{t}\mathrm{diag}\bigl(f'(\mathbf{s}(\tau))\bigr)R\Bigr\rVert
+\le\bigl(\max|f'|\,\lVert R\rVert\bigr)^{k}.$
+<p><b class='lbl'>Follow-up:</b> “Gradient clipping?” Only fixes <i>exploding</i>: it rescales the gradient norm to a
+threshold, keeps the direction. It does nothing for vanishing.
+</div></details>
+<h3 id='s6'>LSTM</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · LSTM in two minutes</div><div class='bd'>
+<b>One idea.</b> Give the network a <i>memory cell</i> that is updated by <i>adding</i>, not by
+multiplying through a squashing function. Then the error can flow back through time unchanged:
+the <i>constant error carousel</i> (CEC). Gates, small sigmoid switches between 0 and 1, decide
+what to write (input gate), what to keep (forget gate) and what to show (output gate).
+\[
+\begin{aligned}
+\mathbf{z}(t)&amp;=\tanh\bigl(W_z\mathbf{x}(t)+R_z\mathbf{h}(t-1)+\mathbf{b}_z\bigr)&amp;&amp;\text{cell input}\\
+\mathbf{i}(t)&amp;=\sigma\bigl(W_i\mathbf{x}(t)+R_i\mathbf{h}(t-1)+\mathbf{b}_i\bigr)&amp;&amp;\text{input gate}\\
+\mathbf{f}(t)&amp;=\sigma\bigl(W_f\mathbf{x}(t)+R_f\mathbf{h}(t-1)+\mathbf{b}_f\bigr)&amp;&amp;\text{forget gate}\\
+\mathbf{o}(t)&amp;=\sigma\bigl(W_o\mathbf{x}(t)+R_o\mathbf{h}(t-1)+\mathbf{b}_o\bigr)&amp;&amp;\text{output gate}\\
+\mathbf{c}(t)&amp;=\mathbf{f}(t)\odot\mathbf{c}(t-1)+\mathbf{i}(t)\odot\mathbf{z}(t)&amp;&amp;\text{memory update}\\
+\mathbf{h}(t)&amp;=\mathbf{o}(t)\odot\tanh\bigl(\mathbf{c}(t)\bigr)&amp;&amp;\text{output}
+\end{aligned}
+\]
+<b>Why it works:</b> $\dfrac{\partial\mathbf{c}(t)}{\partial\mathbf{c}(t-1)}=\mathrm{diag}(\mathbf{f}(t))$,
+which is $\approx I$ when the forget gate is open. The original 1997 LSTM had no forget gate:
+$\mathbf{c}(t)=\mathbf{c}(t-1)+\mathbf{i}\odot\mathbf{z}$, derivative exactly $I$. The forget gate
+was added by Gers, Schmidhuber and Cummins (2000).
+</div></div>
+<div class='pic'><b>Picture it.</b> A conveyor belt (the cell state) running through a factory. Things ride on it without being
+changed. Three workers stand next to it: one decides what to put <i>on</i> the belt (input gate),
+one decides what to throw <i>off</i> (forget gate), one decides what to <i>show</i> to the next
+department (output gate). Because the belt does not squash anything, an item put on at the
+beginning is still there at the end: long-term memory.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). $\mathbf{c}(t)=\mathbf{f}\odot\mathbf{c}(t-1)+\mathbf{i}\odot\mathbf{z}$ &emsp;
+$\mathbf{h}(t)=\mathbf{o}\odot\tanh(\mathbf{c}(t))$ &emsp;
+gates $=\sigma(W\mathbf{x}(t)+R\mathbf{h}(t-1)+\mathbf{b})$, cell input $=\tanh(\cdot)$ &emsp;
+$\partial\mathbf{c}(t)/\partial\mathbf{c}(t-1)=\mathrm{diag}(\mathbf{f}(t))\approx I$. Draw the cell: belt on top, three $\sigma$ gates, one $\tanh$ in, one $\tanh$ out.</div>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Explain the constant error carousel.</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · LSTM cell, constant error carousel · course exam</p>
+<p><b class='lbl'>Say:</b> In the original LSTM the cell connects to itself with weight 1 and a linear activation. So
+the local error in the cell is multiplied by exactly 1 at every step: it neither vanishes nor
+explodes. The gates protect this carousel: the input gate protects the cell from irrelevant
+inputs, the output gate protects other units from irrelevant cell content.
+<p><b class='lbl'>Write:</b>  $\mathbf{c}(t)=\mathbf{c}(t-1)+\mathbf{i}(t)\odot\mathbf{z}(t)\ \Rightarrow\
+\partial\mathbf{c}(t)/\partial\mathbf{c}(t-1)=I$.
+<p class='src'>Source: LSTM lecture WS24, CEC slides; Hochreiter &amp; Schmidhuber (1997).</p>
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Why was the forget gate added? What about drift?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · forget gate, drift, ticker steps · course exam</p>
+<p><b class='lbl'>Say:</b> Without a forget gate the cell can only accumulate; on long, continuous input streams the
+state grows without limit and the cell saturates. The forget gate lets the network reset its
+memory. Related: <i>internal state drift</i>, when inputs are mostly of one sign the state drifts
+away; the remedy in the original paper is to bias the input gates towards zero at the start
+(negative bias), so the cell writes only when needed.
+<p><b class='lbl'>Follow-up:</b> “Ticker steps?” Letting the LSTM run extra steps after the input has ended, so it can
+process what it has stored before it must answer.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> LSTM variants: peepholes, CIFG, GRU.</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · LSTM variants, GRU · course exam</p>
+<p><b class='lbl'>Say:</b> Peephole connections let the gates see the cell state $\mathbf{c}(t-1)$ directly.
+CIFG (coupled input and forget gate) sets $\mathbf{f}=1-\mathbf{i}$: write only as much as you
+forget. GRU (Cho et al. 2014) goes further: no separate cell, an update gate that acts as coupled
+input and forget gate, and a reset gate that decides how much the old state enters the candidate.
+<p><b class='lbl'>Write:</b>  GRU: $\mathbf{u}=\sigma(\cdot)$, $\mathbf{r}=\sigma(\cdot)$, $\tilde{\mathbf{h}}=\tanh\bigl(W\mathbf{x}(t)+R(\mathbf{r}\odot\mathbf{h}(t-1))\bigr)$, $\mathbf{h}(t)=(1-\mathbf{u})\odot\mathbf{h}(t-1)+\mathbf{u}\odot\tilde{\mathbf{h}}$.
+<p><b class='lbl'>Follow-up:</b> Other variants from the lecture: multidimensional LSTM (e.g. 2D images, several time
+axes), ConvLSTM (convolutions inside the gates, for video).
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Dropout in LSTMs: why is it special?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · LSTM dropout, zoneout · course exam</p>
+<p><b class='lbl'>Say:</b> Naive dropout on the recurrent state at every step multiplies survival probabilities over
+time, so a memory would survive with probability $(1-p)^T$: long-term memory is destroyed. So we
+use special forms: dropout only on the non-recurrent connections, variational dropout (the same
+mask at every time step), or zoneout (randomly <i>keep</i> the previous state instead of zeroing
+units). Dropout is switched off at evaluation.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Bidirectional LSTM, and one label for a whole sequence.</span><span class='who'>Hochreiter, Schlüter</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · bidirectional RNN, sequence classification · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> A bidirectional LSTM runs one LSTM forward and one backward and concatenates the two hidden
+states, so each step sees past and future; it needs the full sequence, so not for real-time use.
+For one label per sequence use the last hidden state or global average pooling over all states,
+then a classifier. Seq2seq: an encoder LSTM reads the input, a decoder LSTM writes the output.
+</div></details>
+<h3 id='s7'>Beyond LSTM: xLSTM, Mamba, Hopfield</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · Modern sequence models from Linz and elsewhere</div><div class='bd'>
+<b>xLSTM</b> (Beck, Hochreiter et al. 2024): (1) <i>exponential gating</i> with a normalizer
+state, so the model can revise a storage decision (a new, more important input can overwrite the
+old one); (2) <b>sLSTM</b>: scalar memory with memory mixing and a stabilizer against overflow;
+(3) <b>mLSTM</b>: a <i>matrix</i> memory $C\in\mathbb{R}^{d\times d}$ updated by a covariance rule,
+fully parallelizable; its size does not grow with the sequence length.
+\[
+\text{mLSTM: }C_t=f_tC_{t-1}+i_t\,\mathbf{v}_t\mathbf{k}_t^\top,\quad
+\mathbf{n}_t=f_t\mathbf{n}_{t-1}+i_t\mathbf{k}_t,\quad
+\mathbf{h}_t=\mathbf{o}_t\odot\frac{C_t\mathbf{q}_t}{\max(|\mathbf{n}_t^\top\mathbf{q}_t|,1)},\quad i_t=\exp(\tilde i_t).
+\]
+<b>Mamba</b>: a <i>selective</i> state space model, $\mathbf{h}_t=\bar A\mathbf{h}_{t-1}+\bar B\mathbf{x}_t$,
+$\mathbf{y}_t=C\mathbf{h}_t$, where $B$, $C$ and the step $\Delta$ depend on the input; linear in
+sequence length.  <b>Modern Hopfield networks</b> (Ramsauer, Hochreiter et al. 2020): the update
+$\bm\xi^{\text{new}}=X\,\mathrm{softmax}(\beta X^\top\bm\xi)$ is exactly Transformer attention.
+</div></div>
+<div class='pic'><b>Picture it.</b> Old LSTM memory is a notebook where you write in pencil and can only fade old notes. xLSTM's
+exponential gate is a highlighter: a new, important note can outshine everything before it. The
+mLSTM matrix memory is a filing cabinet: store a value under a key ($\mathbf{v}\mathbf{k}^\top$),
+retrieve it later with a query ($C\mathbf{q}$).</div>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> What is new in xLSTM, and why?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · xLSTM (sLSTM, mLSTM) · course exam</p>
+<p><b class='lbl'>Say:</b> LSTM has three limits: it cannot revise a storage decision, its memory is a small scalar
+cell, and it cannot be parallelized over time because of memory mixing. xLSTM answers each:
+exponential gating with normalization revises storage decisions; mLSTM gives a matrix memory
+with key–value storage; and mLSTM drops memory mixing, so it trains in parallel like a
+Transformer while inference stays linear in the sequence length.
+<p><b class='lbl'>Write:</b>  $C_t=f_tC_{t-1}+i_t\mathbf{v}_t\mathbf{k}_t^\top$, retrieval $C_t\mathbf{q}_t$; normalizer
+$\mathbf{n}_t=f_t\mathbf{n}_{t-1}+i_t\mathbf{k}_t$.
+<p class='src'>Source: LSTM lecture WS24, xLSTM exam questions.</p>
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> What connects Hopfield networks and attention?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> IML research · modern Hopfield networks (Ramsauer et al.&nbsp;2020) · predicted</p>
+<p><b class='lbl'>Say:</b> A modern Hopfield network stores patterns $X$ and retrieves the one closest to a query
+$\bm\xi$ with $\bm\xi^{\text{new}}=X\,\mathrm{softmax}(\beta X^\top\bm\xi)$. With $\beta=1/\sqrt{d_k}$
+and learned projections this is exactly the attention formula. So attention is associative
+memory retrieval, and the network can store exponentially many patterns.
+</div></details>
+<h2 id='s8'>Attention and Transformers</h2>
+<div class='card sum'><div class='ttl'>2-minute summary · Attention in two minutes</div><div class='bd'>
+<b>One idea.</b> Instead of squeezing the past into one hidden state, let every token
+<i>look at every other token</i> and take a weighted mean. Each token makes three vectors by
+linear maps: a query (what I look for), a key (what I offer), a value (what I give). Weight =
+softmax of query $\cdot$ key.
+\[
+Q=XW_Q,\quad K=XW_K,\quad V=XW_V,\qquad
+\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\!\Bigl(\frac{QK^\top}{\sqrt{d_k}}\Bigr)V .
+\]
+Shapes with $N$ tokens: $X\in\mathbb{R}^{N\times d}$, $QK^\top\in\mathbb{R}^{N\times N}$ (rows sum
+to 1 after softmax), output $\in\mathbb{R}^{N\times d_v}$.  <b>Transformer block:</b> multi-head self-attention $\to$ add &amp; layer norm $\to$ position-wise
+MLP $\to$ add &amp; layer norm.  <b>Key words:</b> scaled dot product • multi-head • positional encoding
+• permutation equivariance • $O(N^2)$ • encoder/decoder,
+causal mask.
+</div></div>
+<div class='pic'><b>Picture it.</b> A library. You come with a question (query). Every book has a title on its spine (key) and
+content inside (value). You compare your question with every title, trust the best matches most
+(softmax), and read a blend of their contents (weighted sum of values). Multi-head: several
+librarians, each searching by a different criterion.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). $\mathrm{softmax}(QK^\top/\sqrt{d_k})V$; $A_{ij}=\dfrac{\exp(\mathbf{q}_i^\top\mathbf{k}_j/\sqrt{d_k})}{\sum_m\exp(\mathbf{q}_i^\top\mathbf{k}_m/\sqrt{d_k})}$; $\mathbf{o}_i=\sum_j A_{ij}\mathbf{v}_j$; MultiHead $=\mathrm{Concat}(\text{head}_1,\dots,\text{head}_h)W_O$.</div>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Explain the Transformer architecture.</span><span class='who'>Rekabsaz, Lehner</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · Transformer; NLP course · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> The input tokens are embedded and get a positional encoding. The encoder is a stack of blocks,
+each with multi-head self-attention and a feed-forward network, both with residual connections and
+layer normalization. The decoder has the same blocks, but its self-attention is <i>masked</i>
+(a token cannot see the future), and it has a cross-attention layer whose keys and values come from
+the encoder. BERT uses only the encoder (masked language modelling); GPT only the decoder.
+<p><b class='lbl'>Follow-up:</b> “Why residual + layer norm?” Stable gradients through deep stacks, like ResNet.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Write the matrix multiplications of self-attention.</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> LSTM &amp; Transformers (Hochreiter) · scaled dot-product attention · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> Three projections of the same input, one $N\times N$ score matrix, a row-wise softmax, and
+a product with the values.
+<p><b class='lbl'>Write:</b> 
+$X\in\mathbb{R}^{N\times d}$; $Q,K\in\mathbb{R}^{N\times d_k}$, $V\in\mathbb{R}^{N\times d_v}$; $S=QK^\top/\sqrt{d_k}\in\mathbb{R}^{N\times N}$; $A=\mathrm{softmax}_{\text{row}}(S)$; $O=AV\in\mathbb{R}^{N\times d_v}$.
+<p><b class='lbl'>Follow-up:</b> “Why divide by $\sqrt{d_k}$?” With random unit-variance entries the dot product has
+variance $d_k$; dividing keeps it at 1, so the softmax does not saturate and gradients stay alive.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Permutation invariance: why a problem, how to fix?</span><span class='who'>Lehner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Supervised Techniques (Lehner) unit&nbsp;7; LSTM &amp; Transformers (Hochreiter) · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> Self-attention treats the tokens as a set: shuffle the input and the output is shuffled the
+same way (permutation equivariant). Word order is lost. Fix: add a positional encoding to each
+token, fixed sinusoids $\sin(p/10000^{2i/d})$, $\cos(\cdot)$, learned position vectors, or relative
+encodings such as RoPE.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> RNN versus Transformer: complexity and trade-offs.</span><span class='who'>Lehner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Supervised Techniques (Lehner) unit&nbsp;7; LSTM &amp; Transformers (Hochreiter) · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> RNN: $O(N)$ in sequence length, constant memory for inference, but sequential, so slow to
+train and long paths between distant tokens. Transformer: $O(N^2)$ time and memory, but fully
+parallel in training and every pair of tokens is one step apart. xLSTM and Mamba try to get both:
+parallel training and linear inference.
+<p><b class='lbl'>Write:</b>  RNN $O(N\,d^2)$ &emsp; Transformer $O(N^2d)$.
+</div></details>
+<h2 id='s9'>Classical ML asked in the same slot</h2>
+<div class='card sum'><div class='ttl'>2-minute summary · SVM, kernels, VC, likelihood, REINFORCE</div><div class='bd'>
+<b>SVM:</b> largest-margin separating hyperplane; soft margin with slack $\xi_n$ and penalty $C$.
+<b>Kernel trick:</b> the dual needs only dot products, so replace them by $k(\mathbf{x},\mathbf{x}')$.
+<b>VC dimension:</b> the largest point set a model class can shatter; linear in $\mathbb{R}^d$: $d+1$.
+<b>MLE:</b> choose the parameters that make the data most likely; overfits with little data.
+<b>REINFORCE:</b> policy gradient by the log-derivative trick.
+\[
+\min_{\mathbf{w},b,\bm\xi}\tfrac12\lVert\mathbf{w}\rVert^2+C\sum_n\xi_n\ \text{ s.t. }\ y_n(\mathbf{w}^\top\mathbf{x}_n+b)\ge1-\xi_n,\ \xi_n\ge0;
+\qquad
+\nabla_\theta J=\mathbb{E}\Bigl[\sum_t\nabla_\theta\log\pi_\theta(a_t|s_t)\,G_t\Bigr].
+\]
+</div></div>
+<div class='pic'><b>Picture it.</b> SVM: build the widest possible road between two villages; the houses standing right at the
+road's edge are the support vectors, they alone decide where the road goes. Kernel: lift the map
+into 3D, where a curved border becomes a flat wall, without ever drawing the 3D map.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). Primal SVM (above) • dual $\max_{\bm\alpha}\sum\alpha_n-\frac12\sum_{n,m}\alpha_n\alpha_my_ny_mk(\mathbf{x}_n,\mathbf{x}_m)$,
+$0\le\alpha_n\le C$, $\sum\alpha_ny_n=0$ •
+RBF $k=\exp(-\lVert\mathbf{x}-\mathbf{x}'\rVert^2/2\sigma^2)$ •
+$\mathcal{L}(\theta)=\prod_np(\mathbf{x}_n;\theta)$, $\hat\theta=\arg\max\sum_n\log p(\mathbf{x}_n;\theta)$ •
+REINFORCE loss $-\sum_t\log\pi_\theta(a_t|s_t)(G_t-b)$.</div>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Explain the SVM and write the optimization problem with its constraints.</span><span class='who'>Kofler, Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Supervised Techniques · SVM · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> The SVM separates two classes with the hyperplane of maximal margin $2/\lVert\mathbf{w}\rVert$.
+Maximizing the margin is minimizing $\frac12\lVert\mathbf{w}\rVert^2$. The soft margin allows
+violations with slack variables, paid for with $C$. Only points on or inside the margin get
+$\alpha_n&gt;0$: the support vectors.
+<p><b class='lbl'>Write:</b>  (primal and dual as in the board drill); decision $f(\mathbf{x})=\mathrm{sign}\bigl(\sum_n\alpha_ny_nk(\mathbf{x}_n,\mathbf{x})+b\bigr)$.
+<p><b class='lbl'>Follow-up:</b> “Large $C$?” Few violations, narrow margin, risk of overfitting. “Small $C$?” Wide
+margin, more violations.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> What are kernels, why important, what is the kernel trick?</span><span class='who'>Kofler</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Supervised Techniques · kernels · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> A kernel is a dot product in a feature space, $k(\mathbf{x},\mathbf{x}')=\langle\phi(\mathbf{x}),\phi(\mathbf{x}')\rangle$.
+Many algorithms (SVM dual, kernel ridge regression, kernel PCA) use data only through dot
+products, so we plug in the kernel and get a non-linear method at linear cost, without computing
+$\phi$, which may even be infinite-dimensional (RBF). A valid kernel gives a positive
+semi-definite Gram matrix (Mercer).
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> VC dimension: what is it, what is it used for?</span><span class='who'>Kofler</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Supervised Techniques; statistical learning theory · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> The largest number of points that the model class can shatter, i.e. classify correctly under
+every possible labelling. Lines in 2D: 3. It measures capacity and appears in generalization
+bounds: with probability $1-\eta$,
+$\Rgen\le\Remp+\sqrt{\frac{h(\log(2N/h)+1)-\log(\eta/4)}{N}}$, with $h$ the VC dimension.
+Small $h$ or large $N$ $\to$ small gap.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Likelihood, maximum likelihood, expectation maximization.</span><span class='who'>Widmer, Kofler</span></summary><div class='bd'><p class='from'><b>From:</b> Probabilistic Models (Widmer); ML: Unsupervised Techniques · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> The likelihood is the probability of the observed data as a function of the parameters. MLE
+maximizes it (in practice the log). Problem: with little data it overfits, e.g. the sunrise
+problem, where an unseen event gets probability zero; a prior (MAP, Laplace smoothing) fixes it.
+EM is used when there are hidden variables (mixture models, HMMs): the E-step computes the
+posterior of the hidden variables with the current parameters, the M-step maximizes the expected
+complete-data log-likelihood; the likelihood never decreases.
+<p><b class='lbl'>Write:</b>  $\hat\theta_{\mathrm{MLE}}=\arg\max_\theta\sum_n\log p(\mathbf{x}_n;\theta)$; link to ERM: squared loss $\Leftrightarrow$ Gaussian MLE, cross-entropy $\Leftrightarrow$ categorical MLE.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Derive the REINFORCE loss.</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> Deep Reinforcement Learning · policy gradient · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> We maximize the expected return over trajectories. The gradient of an expectation is turned
+into an expectation of a gradient with the log-derivative trick, $\nabla p=p\nabla\log p$. The
+environment dynamics do not depend on $\theta$, so only the policy terms remain.
+<p><b class='lbl'>Write:</b> 
+$\nabla_\theta J=\nabla_\theta\!\int p_\theta(\tau)G(\tau)\,\mathrm{d}\tau
+=\int p_\theta(\tau)\nabla_\theta\log p_\theta(\tau)G(\tau)\,\mathrm{d}\tau$, $\log p_\theta(\tau)=\log p(s_0)+\sum_t\bigl[\log\pi_\theta(a_t|s_t)+\log p(s_{t+1}|s_t,a_t)\bigr]$ $\Rightarrow\nabla_\theta J=\mathbb{E}_\tau\bigl[\sum_t\nabla_\theta\log\pi_\theta(a_t|s_t)\,G_t\bigr]$.
+<p><b class='lbl'>Follow-up:</b> “Why a baseline $b$?” Subtracting $b(s_t)$ does not change the expected gradient but
+lowers its variance.
+<div class='pic'><b>Picture it.</b> Training a dog: after a good walk (high return), make every action of that walk a bit more
+likely; after a bad one, a bit less.</div>
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Confusion matrix, precision, recall, AUC.</span><span class='who'>general</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Supervised Techniques; AI and Visualization · evaluation · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> Precision $=TP/(TP+FP)$: of what I called positive, how much is right. Recall
+$=TP/(TP+FN)$: of all positives, how many I found. The ROC curve plots true-positive rate against
+false-positive rate over all thresholds; AUC is the probability that a random positive scores
+higher than a random negative (0.5 chance, 1 perfect).
+</div></details>
+<h2 id='s10'>rCFD and CFD (Prof. Pirker)</h2>
+<div class='card sum'><div class='ttl'>2-minute summary · rCFD in two minutes</div><div class='bd'>
+<b>One idea.</b> Solve the expensive flow once, record <i>how the fluid moves</i> as
+cell-to-cell maps, then replay those maps many times to carry a scalar (species, temperature).
+Momentum and pressure are never solved again: hundreds of times faster.
+\[
+T_j^{*}=\sum_iM^{(f)}_{ji}T_i,\qquad
+\mathbf{T}^{n+1}=\mathcal{B}\Bigl(\mathcal{C}\bigl(\mathcal{S}(\mathbf{M}^{(f_n)}\mathbf{T}^n)\bigr)\Bigr),\qquad
+R_{fg}=\lVert\Phi^{(f)}-\Phi^{(g)}\rVert .
+\]
+map $\mathbf{M}$ (advection) • face swap $\mathcal{S}$ (diffusion) •
+correction $\mathcal{C}$ (your work) • conservation constraint $\mathcal{B}$. <b>Pirker's three bold failures:</b> (1) mass imbalance $\to$ global monitor + mass-acting face
+swaps; (2) unphysical diffusion $\to$ locally adapted swaps (sub-grid viscosity); (3) weak
+recurrence prominence $\to$ recurrence islands. <b>Works:</b> recurring flow, passive scalar. <b>Fails:</b> the scalar drives the flow, or the
+process changes state $\to$ multi-state rCFD.
+</div></div>
+<div class='pic'><b>Picture it.</b> A GPS that recorded one drive through the city. Next time you only replay the recorded route
+(cheap), you do not recompute it. It works as long as the streets are the same. If a street is
+closed (a new boundary condition, like the cooled lid), the recording does not know the detour:
+you need a new recording for that situation.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). $\mathbf{T}^{n+1}=\mathcal{B}(\mathcal{C}(\mathcal{S}(\mathbf{M}\mathbf{T}^n)))$ •
+$\Delta_{\mathrm{swap}}=\fsd V\,(T_{c_1}-T_{c_0})/2$, $D_{\mathrm{eq}}=\fsd c_s^2/(2\Delta t)$ •
+limiter $\Delta q_f=s\min(Q_h^+,Q_c^-)$ •
+$Co=u\Delta t/\Delta x&lt;1$, $d=\Gamma\Delta t/\Delta x^2&lt;0.5$ • $Re=uL/\nu$.</div>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Flow-based versus transport-based rCFD?</span><span class='who'>Pirker</span></summary><div class='bd'><p class='from'><b>From:</b> Numerical Methods in Fluid Mechanics (Pirker) · rCFD lecture, slides 16–34 · predicted</p>
+<p><b class='lbl'>Say:</b> Flow-based: stitch recorded flow sequences into a long artificial flow and solve a transport
+equation on it (Lichtenegger &amp; Pirker 2016, about 100$\times$ faster). Transport-based: replace
+convection by cell-to-cell shifts and diffusion by face swaps, no equation solved (Pirker &amp;
+Lichtenegger 2018, steel ladle 26&nbsp;h $\to$ 1.6&nbsp;s). My thesis uses the transport-based form.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Recurrence matrix and prominence – and your case?</span><span class='who'>Pirker</span></summary><div class='bd'><p class='from'><b>From:</b> Numerical Methods in Fluid Mechanics (Pirker) · rCFD slides 50–51; thesis Sec.&nbsp;2.4 · predicted</p>
+<p><b class='lbl'>Say:</b> The recurrence norm compares two recorded states; all pairs form the matrix. A row (recurrence
+vector) rises and oscillates about a plateau; deep dips = the flow comes back = we can jump.
+Prominence $P_{\mathrm{rel}}=\langle d_{\max}-d_{\min}\rangle/\bar d$, required 0.05–0.1. Mine: median
+0.028, two blocks (filling, settling), no return $\to$ sequential replay.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Why did the recorded local diffusivity not help?</span><span class='who'>Pirker</span></summary><div class='bd'><p class='from'><b>From:</b> Thesis Sec.&nbsp;2.8.1; Numerical Methods in Fluid Mechanics (Pirker) · explicit limits · predicted</p>
+<p><b class='lbl'>Say:</b> The exchange is explicit and capped at half a cell per face and step, a diffusion number
+$\mathrm{Di}=D\Delta t/c_s^2\le0.5$. The recorded $D$ asks for $\mathrm{Di}\approx4$ everywhere, so
+every face hits the cap and the field behaves like $\fsd=0.5$ (three replays bit-identical).
+An implicit exchange or a smaller step would let it act. This is the explicit stability limit of
+the lecture, $d&lt;0.5$.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Numerical diffusion: where in your thesis?</span><span class='who'>Pirker</span></summary><div class='bd'><p class='from'><b>From:</b> Numerical Methods in Fluid Mechanics (Pirker) · FV&nbsp;II numerical diffusion; thesis Sec.&nbsp;4.2 · predicted</p>
+<p><b class='lbl'>Say:</b> First-order upwind is stable but adds false diffusion that smears fronts. In my replay the
+smearing comes from the face exchange, not the maps (maps only keep the front at 2–4&nbsp;mm). My
+correction is an anti-diffusive step bounded like flux-corrected transport: conservative, no new
+extremum, front 15.7 $\to$ 5.3/4.5&nbsp;mm against 5.0&nbsp;mm.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> rCFD and digital twins.</span><span class='who'>Pirker</span></summary><div class='bd'><p class='from'><b>From:</b> Numerical Methods in Fluid Mechanics (Pirker) · rCFD slides 59–72 digital twins · predicted</p>
+<p><b class='lbl'>Say:</b> CSTR models are instant but blind to heterogeneity; CFD sees it but takes days. rCFD built on
+CFD can run alongside the process as a soft sensor ($T_{\max}$, $\sigma_T$), aligned with live data
+to stop error accumulation. My thesis adds two warnings: a boundary condition can switch the flow
+regime, and the heat budget must use the same fluid properties as the recording.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> CFD basics he may check quickly.</span><span class='who'>Pirker</span></summary><div class='bd'><p class='from'><b>From:</b> Numerical Methods in Fluid Mechanics (Pirker) · GovEq, FV, SIMPLE, turbulence · predicted</p>
+<p><b class='lbl'>Say:</b> <b>Re</b> $=uL/\nu$ (mine 99, laminar). <b>Material derivative</b> $\mathrm{D}/\mathrm{D}t=\partial_t+\mathbf{u}\cdot\nabla$.
+<b>FVM</b>: integrate over cells, fluxes through faces, locally conservative, $a_Pc_P=\sum a_{NB}c_{NB}+b$.
+<b>SIMPLE</b>: guess $p$, solve $\mathbf{u}^*$, pressure correction from continuity, correct, repeat.
+<b>Turbulence</b>: cascade to Kolmogorov $\eta=(\nu^3/\varepsilon)^{1/4}$; RANS models all, LES the
+small eddies, DNS none; $\nu_t=C_\mu k^2/\varepsilon$. <b>Boussinesq</b>: constant density except in
+the gravity term (mine: 1.5 per cent density change).
+</div></details>
+<h2 id='s11'>Predicted questions and rapid-fire drill</h2>
+<h3 id='s12'>Thesis questions (first 5 minutes)</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · Your thesis in two minutes</div><div class='bd'>
+rCFD records a flow once and replays it to carry a scalar. It was built for passive scalars; I
+tested it on temperature, which drives its own flow (buoyant jet in a $75\times75\times15$&nbsp;mm tank,
+Re 99). (1) No single mixing constant is best: the outlet sits under the front, so smearing
+drains heat. (2) A bounded, vertically weighted anti-diffusive correction brings the front from
+15.7 to 5.3/4.5&nbsp;mm (reference 5.0), no value outside the data range. (3) Under wall cooling the
+replay was 4.34&nbsp;K too warm because the reference used $c_p$ of air (1006.43) and the replay of
+water (4182); on one fluid 0.66&nbsp;K, corrected 0.06&nbsp;K on 9.62&nbsp;K. (4) What remains is missing
+transport: a recorded flux cuts the heterogeneity error from 1.66 to 0.26&nbsp;K. Take-home: a
+database belongs to a flow regime.
+</div></div>
+<div class='pic'><b>Picture it.</b> A cooking video recorded once (preparation) and replayed to cook many times (replay). It
+works for soup that just gets stirred (passive scalar). For bread that rises by itself (buoyancy),
+the video does not show how your dough will move, so you must correct it.</div>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> What problem did you solve, and why ML/AI?</span><span class='who'>chair</span></summary><div class='bd'><p class='from'><b>From:</b> Thesis, Appendix A1 (story summary) · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> I measured what a recurrence replay loses when the scalar is not passive, and repaired most of
+it without solving the flow again. It is AI for simulation: expensive solver data is reused by a
+cheap model; choosing the next frame is a nearest-neighbour search; and my main result is a
+generalization result: the database covers a regime, and a new boundary condition is
+out-of-distribution.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> What would you do differently?</span><span class='who'>chair</span></summary><div class='bd'><p class='from'><b>From:</b> Thesis, Ch.&nbsp;8 and future work · asked in past defenses</p>
+<p><b class='lbl'>Say:</b> Check the material properties of both simulations on the first day: the specific-heat mismatch
+cost the most time. Then an implicit exchange so the recorded diffusivity can act.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> How would you solve your problem with deep learning?</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> Thesis $\times$ DL: graph neural networks · predicted</p>
+<p><b class='lbl'>Say:</b> Learn the correction $\mathcal{C}$ with a graph neural network on the mesh: input the field
+and the recorded map, output the next field, loss = distance to the reference plus a penalty on the
+energy balance. The risk is the same as in my thesis: it only generalizes inside the regime of its
+training data.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Could an LSTM replace the replay?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> Thesis $\times$ LSTM &amp; Transformers (Hochreiter) · predicted</p>
+<p><b class='lbl'>Say:</b> An LSTM (or xLSTM) could learn the time evolution of a low-dimensional state, e.g. the POD
+coefficients of Figure 5.9, as a sequence-to-sequence model. It would be cheap and could carry
+memory of the filling phase, which is exactly where my replay lags. But it needs many trajectories
+to generalize, and without a conservation constraint it can drift in energy, which rCFD
+guarantees by construction.
+</div></details>
+<h3 id='s13'>Rapid-fire (say it in one breath)</h3>
+<div class='tbl'><table><tr><th>Question</th><th>Answer</th></tr><tr><td>Most powerful learning machine?</td><td>The brain; closest method: neural networks.</td></tr><tr><td>Delta, softmax + CE?</td><td>$\hat{\mathbf{y}}-\mathbf{y}$.</td></tr><tr><td>Activation from Linz?</td><td>SELU (self-normalizing), ELU.</td></tr><tr><td>Who found vanishing gradients?</td><td>Hochreiter, 1991, Linz.</td></tr><tr><td>Constant error carousel?</td><td>Cell self-loop weight 1, linear: error flows unchanged.</td></tr><tr><td>Forget gate added by?</td><td>Gers, Schmidhuber, Cummins, 2000.</td></tr><tr><td>GRU gates?</td><td>Update (coupled input/forget) and reset.</td></tr><tr><td>BPTT memory?</td><td>Linear in $T$; RTRL: independent of $T$, $O(N^4)$ per step.</td></tr><tr><td>Truncated BPTT?</td><td>Cuts the past after $k$ steps; approximate gradient.</td></tr><tr><td>Gradient clipping fixes?</td><td>Exploding only, not vanishing.</td></tr><tr><td>Why $\sqrt{d_k}$?</td><td>Keeps dot-product variance at 1; softmax does not saturate.</td></tr><tr><td>Attention complexity?</td><td>$O(N^2)$; RNN $O(N)$.</td></tr><tr><td>Positional encoding why?</td><td>Attention is permutation-equivariant.</td></tr><tr><td>xLSTM two ideas?</td><td>Exponential gating; matrix memory (mLSTM).</td></tr><tr><td>Hopfield $\leftrightarrow$ attention?</td><td>$X\,\mathrm{softmax}(\beta X^\top\bm\xi)$ = attention.</td></tr><tr><td>UAT hidden layers?</td><td>One, finitely many units.</td></tr><tr><td>Non-differentiable loss?</td><td>0–1 loss; use cross-entropy or hinge.</td></tr><tr><td>Regularization?</td><td>Weight decay, dropout, early stopping, augmentation, FMS.</td></tr><tr><td>Optimizers?</td><td>SGD, momentum, AdaGrad, RMSprop, Adam.</td></tr><tr><td>Output activation, regression?</td><td>Linear + squared loss.</td></tr><tr><td>VC dim. of lines in 2D?</td><td>3.</td></tr><tr><td>Kernel trick?</td><td>Dot products $\to$ $k(\mathbf{x},\mathbf{x}')$.</td></tr><tr><td>MLE problem?</td><td>Overfits with little data (sunrise problem).</td></tr><tr><td>Your Re / grid / frames?</td><td>99 / 1&nbsp;mm cubes / 600 frames.</td></tr><tr><td>Your speed-up?</td><td>About 260 times.</td></tr></table></div>
+<h2 id='s14'>Conversation chains</h2>
+<p>Past students all say it: the exam is a conversation. The examiner takes a word from your answer
+and asks about it. So every word you say is a door. This chapter turns that into a tool: each
+answer ends with a <i>hook</i>, one sentence that names the next topic. You open the door you
+want, to a room you have prepared.</p>
+<div class='card sum'><div class='ttl'>2-minute summary · How to use the chains</div><div class='bd'>
+<b>Rule 1.</b> Answer in 2–3 sentences, then say the hook. Stop. Let the examiner walk through
+the door.  <b>Rule 2.</b> Only say words you can explain. “Batch norm” in your answer means a batch-norm
+question in two seconds.  <b>Rule 3.</b> If the examiner goes elsewhere, fine: jump to the matching step of another chain.  <b>Rule 4.</b> Learn a chain as a <i>story</i>, not as a list: each step is the answer to the
+problem of the step before.  Symbols: <b>Q</b> question • <b>A</b> your short answer
+• <b>$\to$ hook</b> the sentence that opens the next door.
+</div></div>
+<div class='card chain'><div class='ttl'>Chain 1 – From data to batch normalization (Klambauer, Hochreiter)</div><div class='bd'>
+<div class='pic'><b>Picture it.</b> A story in one line: <i>we want small risk</i> $\to$ <i>we need gradients</i> $\to$
+<i>gradients vanish</i> $\to$ <i>we fix the signal size</i> $\to$ <i>with activations, with
+initialization, with normalization</i>.</div>
+<p class='cq'><b>Q.</b> What is the goal of learning?</p>
+<p class='ca'><b>A.</b> Small error on new data, the generalization error. We cannot measure it, so we minimize the
+empirical risk $\Remp=\frac1N\sum_nL(y_n,g(\mathbf{x}_n;\mathbf{w}))$ on the training data.</p>
+<p class='hook'>→ <b>hook:</b> <i>To minimize it we need a differentiable loss, so we use cross-entropy instead of the 0–1 loss.</i></p>
+<p class='cq'><b>Q.</b> Why cross-entropy?</p>
+<p class='ca'><b>A.</b> It is differentiable, and minimizing it is maximum likelihood for a categorical output. With
+softmax at the output the delta becomes simply $\hat{\mathbf{y}}-\mathbf{y}$.</p>
+<p class='hook'>→ <b>hook:</b> <i>We then minimize it with gradient descent, in practice with mini-batches.</i></p>
+<p class='cq'><b>Q.</b> Gradient descent and mini-batches?</p>
+<p class='ca'><b>A.</b> $\mathbf{w}\leftarrow\mathbf{w}-\eta\nabla\Remp$. A mini-batch gives a good, cheap gradient
+estimate, runs in parallel on a GPU, and its noise helps to find flat minima.</p>
+<p class='hook'>→ <b>hook:</b> <i>The gradient itself we get with backpropagation.</i></p>
+<p class='cq'><b>Q.</b> Backpropagation?</p>
+<p class='ca'><b>A.</b> Forward pass, store $s$ and $a$. Delta at the output, then down:
+$\delta_j=f'(s_j)\sum_i\delta_iw_{ij}$. Gradient $\partial L/\partial w_{ij}=\delta_ia_j$.</p>
+<p class='hook'>→ <b>hook:</b> <i>Because the delta is multiplied by $f'$ and $W$ in every layer, it can vanish.</i></p>
+<p class='cq'><b>Q.</b> Vanishing gradients?</p>
+<p class='ca'><b>A.</b> A product of many Jacobians shrinks or grows exponentially. With sigmoid $|f'|\le0.25$.
+Found by Hochreiter in 1991.</p>
+<p class='hook'>→ <b>hook:</b> <i>Three fixes: the activation function, the initialization, and normalization.</i></p>
+<p class='cq'><b>Q.</b> Which activation helps?</p>
+<p class='ca'><b>A.</b> ReLU does not saturate for positive inputs. SELU, from Linz, even keeps mean 0 and variance 1
+by itself: self-normalizing, with a stable fixed point.</p>
+<p class='hook'>→ <b>hook:</b> <i>The same goal, a constant variance, is also the idea of good initialization.</i></p>
+<p class='cq'><b>Q.</b> Initialization?</p>
+<p class='ca'><b>A.</b> Random, to break symmetry, with variance $1/n_{\mathrm{in}}$ (or $2/n_{\mathrm{in}}$ for ReLU)
+so the signal keeps its size forward and backward.</p>
+<p class='hook'>→ <b>hook:</b> <i>During training the statistics drift again, and batch normalization corrects that.</i></p>
+<p class='cq'><b>Q.</b> Batch normalization?</p>
+<p class='ca'><b>A.</b> Standardize each pre-activation over the mini-batch,
+$\hat s=(s-\mu_B)/\sqrt{\sigma_B^2+\epsilon}$, then learn scale and shift, $\gamma\hat s+\beta$.
+Training is faster and more stable, and it regularizes a little. Layer norm does the same over the
+features instead of the batch, which suits RNNs and Transformers.</p>
+<p class='hook'>→ <b>hook:</b> <i>SELU reaches the same effect without any batch statistics, which is why it was developed here.</i></p>
+</div></div>
+<div class='card chain'><div class='ttl'>Chain 2 – From RNN to xLSTM (Hochreiter)</div><div class='bd'>
+<div class='pic'><b>Picture it.</b> <i>RNNs forget</i> $\to$ <i>LSTM remembers on a conveyor belt</i> $\to$ <i>Transformers
+look at everything, but pay $N^2$</i> $\to$ <i>xLSTM brings memory back at linear cost</i>.</div>
+<p class='cq'><b>Q.</b> What is an RNN?</p>
+<p class='ca'><b>A.</b> A network with a hidden state that is fed back: $\mathbf{s}(t)=W\mathbf{x}(t)+R\mathbf{a}(t-1)$.
+Same weights at every step, any sequence length, Turing complete.</p>
+<p class='hook'>→ <b>hook:</b> <i>We train it with backpropagation through time.</i></p>
+<p class='cq'><b>Q.</b> BPTT?</p>
+<p class='ca'><b>A.</b> Unroll in time and backprop: $\bm\delta(t)=\mathrm{diag}(f')(V^\top\partial L(t)/\partial\hat{\mathbf{y}}+R^\top\bm\delta(t+1))$.
+Memory grows with the sequence length; RTRL avoids that but costs $O(N^4)$ per step.</p>
+<p class='hook'>→ <b>hook:</b> <i>The problem is that the error from far in the past vanishes.</i></p>
+<p class='cq'><b>Q.</b> Why does it vanish?</p>
+<p class='ca'><b>A.</b> At every step it is multiplied by $R^\top\mathrm{diag}(f')$; after $k$ steps by the $k$-th power.
+Clipping helps against exploding, not vanishing.</p>
+<p class='hook'>→ <b>hook:</b> <i>LSTM solves it with the constant error carousel.</i></p>
+<p class='cq'><b>Q.</b> The constant error carousel?</p>
+<p class='ca'><b>A.</b> A memory cell updated by addition, $\mathbf{c}(t)=\mathbf{f}\odot\mathbf{c}(t-1)+\mathbf{i}\odot\mathbf{z}$,
+so $\partial\mathbf{c}(t)/\partial\mathbf{c}(t-1)=\mathrm{diag}(\mathbf{f})\approx I$. The error rides
+the belt unchanged. Gates decide what to write, keep and read.</p>
+<p class='hook'>→ <b>hook:</b> <i>The forget gate was added later, and GRU simplified the gates.</i></p>
+<p class='cq'><b>Q.</b> Forget gate and GRU?</p>
+<p class='ca'><b>A.</b> Gers et al. 2000: the forget gate lets the cell reset on long streams. GRU couples input and
+forget into one update gate and adds a reset gate; fewer parameters, similar results.</p>
+<p class='hook'>→ <b>hook:</b> <i>LSTMs still read step by step; attention removed that bottleneck.</i></p>
+<p class='cq'><b>Q.</b> Attention and Transformers?</p>
+<p class='ca'><b>A.</b> $\mathrm{softmax}(QK^\top/\sqrt{d_k})V$: every token looks at every token in one step, fully
+parallel. The price is $O(N^2)$ in the sequence length.</p>
+<p class='hook'>→ <b>hook:</b> <i>xLSTM tries to keep the parallel training but with linear cost.</i></p>
+<p class='cq'><b>Q.</b> xLSTM?</p>
+<p class='ca'><b>A.</b> Exponential gating with a normalizer, so storage decisions can be revised; and mLSTM, a matrix
+memory $C_t=f_tC_{t-1}+i_t\mathbf{v}_t\mathbf{k}_t^\top$, parallel in training, linear in inference.</p>
+<p class='hook'>→ <b>hook:</b> <i>And the attention formula itself is the update rule of a modern Hopfield network.</i></p>
+</div></div>
+<div class='card chain'><div class='ttl'>Chain 3 – Generalization and regularization (Klambauer)</div><div class='bd'>
+<div class='pic'><b>Picture it.</b> <i>Fit the data</i> $\to$ <i>but not too well</i> $\to$ <i>measure it honestly</i>
+$\to$ <i>control it</i>.</div>
+<p class='cq'><b>Q.</b> What is overfitting?</p>
+<p class='ca'><b>A.</b> Training error low, test error high: the model learned the noise. Too much capacity for the data.</p>
+<p class='hook'>→ <b>hook:</b> <i>Capacity can be measured, for example by the VC dimension.</i></p>
+<p class='cq'><b>Q.</b> VC dimension?</p>
+<p class='ca'><b>A.</b> The largest point set the model class can shatter; lines in 2D: 3. Bounds say the gap between
+test and training error grows with it and shrinks with $N$.</p>
+<p class='hook'>→ <b>hook:</b> <i>In practice we do not use the bound, we estimate the test error directly.</i></p>
+<p class='cq'><b>Q.</b> How?</p>
+<p class='ca'><b>A.</b> Held-out test set, or $L$-fold cross-validation, which is almost unbiased and uses all data.</p>
+<p class='hook'>→ <b>hook:</b> <i>If the estimate shows overfitting, we regularize.</i></p>
+<p class='cq'><b>Q.</b> Regularization?</p>
+<p class='ca'><b>A.</b> Weight decay $\frac\lambda2\lVert\mathbf{w}\rVert^2$, dropout, early stopping, data augmentation,
+Flat Minimum Search. They all limit effective capacity.</p>
+<p class='hook'>→ <b>hook:</b> <i>Interestingly, very large networks can generalize even without it: double descent.</i></p>
+<p class='cq'><b>Q.</b> Double descent?</p>
+<p class='ca'><b>A.</b> Past the interpolation point the test error falls again as the model grows; the classical
+U-curve is only the first half.</p>
+</div></div>
+<div class='card chain'><div class='ttl'>Chain 4 – From your thesis into ML (Klambauer, chair)</div><div class='bd'>
+<div class='pic'><b>Picture it.</b> <i>rCFD is data reuse</i> $\to$ <i>data reuse means generalization</i> $\to$ <i>generalization
+fails outside the training regime</i> $\to$ <i>a learned model would face the same limit</i>.</div>
+<p class='cq'><b>Q.</b> Why is your thesis AI?</p>
+<p class='ca'><b>A.</b> The expensive solver produces data once, and a cheap model reuses it. Choosing the next frame
+is a nearest-neighbour search over recorded states.</p>
+<p class='hook'>→ <b>hook:</b> <i>So the key question is the same as in ML: how far does it generalize?</i></p>
+<p class='cq'><b>Q.</b> How far does it generalize?</p>
+<p class='ca'><b>A.</b> Within its regime. The adiabatic recording fails under the cooled lid because cold plumes
+create a motion it never saw: out-of-distribution.</p>
+<p class='hook'>→ <b>hook:</b> <i>A learned surrogate would have the same limit, but it could learn the missing correction.</i></p>
+<p class='cq'><b>Q.</b> Which model would you use?</p>
+<p class='ca'><b>A.</b> A graph neural network on the mesh: cells are nodes, faces are edges, message passing like the
+face exchange. Loss: distance to the reference plus an energy-balance penalty.</p>
+<p class='hook'>→ <b>hook:</b> <i>The penalty matters, because conservation is what rCFD guarantees by construction.</i></p>
+<p class='cq'><b>Q.</b> Why conservation?</p>
+<p class='ca'><b>A.</b> My corrections are conservative: every face exchange appears twice with opposite signs, so the
+heat in the tank only moves. A learned model without that constraint can drift in energy.</p>
+</div></div>
+<div class='card chain'><div class='ttl'>Chain 5 – From numerical diffusion to your limiter (Pirker)</div><div class='bd'>
+<div class='pic'><b>Picture it.</b> <i>Schemes smear</i> $\to$ <i>explicit steps have limits</i> $\to$ <i>my cap is such a limit</i>
+$\to$ <i>un-smearing needs a limiter</i>.</div>
+<p class='cq'><b>Q.</b> What is numerical diffusion?</p>
+<p class='ca'><b>A.</b> First-order upwind is stable but adds false diffusion that smears fronts, error $\propto\Delta x$.
+Central differencing is sharper but oscillates when the grid Peclet number exceeds 2.</p>
+<p class='hook'>→ <b>hook:</b> <i>In my replay the smearing comes from the face exchange, which is an explicit step.</i></p>
+<p class='cq'><b>Q.</b> Limits of explicit steps?</p>
+<p class='ca'><b>A.</b> Convection needs $Co=u\Delta t/\Delta x&lt;1$, diffusion $d=\Gamma\Delta t/\Delta x^2&lt;0.5$.</p>
+<p class='hook'>→ <b>hook:</b> <i>This is exactly why the recorded diffusivity could not act.</i></p>
+<p class='cq'><b>Q.</b> Why not?</p>
+<p class='ca'><b>A.</b> The exchange is capped at $\mathrm{Di}\le0.5$; the recorded field asked for about 4. Every face hit
+the cap, so it behaved like the constant $\fsd=0.5$.</p>
+<p class='hook'>→ <b>hook:</b> <i>To undo the smearing I needed anti-diffusion, and that needs a limiter.</i></p>
+<p class='cq'><b>Q.</b> Your limiter?</p>
+<p class='ca'><b>A.</b> Negative diffusion is ill-posed and blows up at the grid scale. So I move heat up the gradient
+only as far as both cells' local bounds allow, $\Delta q_f=s\min(Q_h^+,Q_c^-)$, like flux-corrected
+transport: conservative, no new extremum.</p>
+<p class='hook'>→ <b>hook:</b> <i>And I weight it towards the vertical, because the front is horizontal.</i></p>
+</div></div>
+<h3 id='s15'>Doors to open and doors to keep closed</h3>
+<div class='tbl'><table><tr><th>Say it (you have a room behind it)</th><th>Avoid unless asked (deep rooms)</th></tr><tr><td>empirical risk, cross-entropy, mini-batch</td><td>natural gradient, Fisher information</td></tr><tr><td>delta error, vanishing gradient, SELU</td><td>neural tangent kernel</td></tr><tr><td>constant error carousel, forget gate, GRU</td><td>multidimensional LSTM details</td></tr><tr><td>attention, $\sqrt{d_k}$, positional encoding</td><td>rotary embeddings in depth</td></tr><tr><td>flux-corrected transport, limiter, conservative</td><td>Harten's TVD theory</td></tr><tr><td>out-of-distribution, regime, nearest neighbour</td><td>Koopman operators, propagators in depth</td></tr></table></div>
+<h2 id='s16'>Hot topics and the Linz school</h2>
+<p>Examiners like to end with “what is new in the field?” or “what do you know about our
+work?”. This chapter gives you short, safe answers. It covers the Institute for Machine Learning
+(IML) at JKU first, because Prof. Hochreiter and Prof. Klambauer will enjoy talking about their
+own work, and then the general hot topics of 2025–2026.</p>
+<h3 id='s17'>The Linz school (IML, JKU)</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · Linz in two minutes: one timeline</div><div class='bd'>
+<div class='tbl'><table><tr><td>1991</td><td>Vanishing gradient analysed (Hochreiter, diploma thesis)</td></tr><tr><td>1997</td><td>LSTM (Hochreiter &amp; Schmidhuber); Flat Minimum Search</td></tr><tr><td>2014</td><td>DeepTox wins the Tox21 challenge (Mayr, Klambauer, Unterthiner, Hochreiter)</td></tr><tr><td>2015/17</td><td>ELU (Clevert et al.) and SELU, self-normalizing networks (Klambauer et al.)</td></tr><tr><td>2017</td><td>FID, the standard score for generative image models (Heusel et al.)</td></tr><tr><td>2018/19</td><td>Frechet ChemNet Distance (Preuer et al.); RUDDER, reward redistribution (Arjona-Medina et al.)</td></tr><tr><td>2020</td><td>Hopfield Networks is All You Need (Ramsauer et al.): attention = Hopfield update</td></tr><tr><td>2024</td><td>xLSTM (Beck et al.); Vision-LSTM; NeuralDEM with Prof. Pirker's group</td></tr><tr><td>2025</td><td>xLSTM 7B language model and TiRex time-series model (NXAI, Hochreiter's company)</td></tr></table></div>
+<b>The common thread:</b> memory and gradient flow (LSTM, xLSTM, Hopfield), stable deep training
+(SELU, flat minima), and AI for science (DeepTox, molecules, physics simulation).
+</div></div>
+<div class='pic'><b>Picture it.</b> Linz is the “memory school” of deep learning. Its big ideas are all about keeping
+information alive: the error in time (LSTM), the signal in depth (SELU), patterns in memory
+(Hopfield), and now long sequences at linear cost (xLSTM).</div>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> What do you know about the research of our institute?</span><span class='who'>Hochreiter, Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> IML research overview · predicted</p>
+<p><b class='lbl'>Say:</b> The institute is known for LSTM and the analysis of vanishing gradients, for self-normalizing
+networks with SELU, and for modern Hopfield networks, which showed that attention is an associative
+memory. Recently xLSTM brought LSTM back at scale, with exponential gating and a matrix memory, and
+the company NXAI built a 7-billion-parameter xLSTM language model and the TiRex forecasting model.
+There is also strong work on AI for science: drug discovery since DeepTox, and physics simulation.
+<p class='hook'>→ <b>hook:</b> <i>For me the physics side is the closest: NeuralDEM was done together with my supervisor's group.</i></p>
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> What is NeuralDEM, and how does it relate to your thesis?</span><span class='who'>Pirker, Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> NeuralDEM (Alkin, Brandstetter, Pirker et al.&nbsp;2024) · predicted</p>
+<p><b class='lbl'>Say:</b> NeuralDEM (Alkin, Brandstetter, Pirker, Lichtenegger and others, 2024) replaces the discrete
+element method for industrial particulate flows with a deep-learning surrogate that runs in real
+time. It treats the particles as a continuous field and learns their evolution with a
+transformer-type model. It is the learned cousin of rCFD: both reuse expensive simulation data to
+run fast, rCFD by storing operators, NeuralDEM by learning them.
+<p><b class='lbl'>Follow-up:</b> “Which is better?” rCFD conserves the scalar by construction and needs no training;
+a learned model can generalize to new states if it has seen enough of them. My thesis shows the
+limit they share: a new flow regime is out of the data.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Why would anyone use an LSTM today, when Transformers exist?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> xLSTM (Beck et al.&nbsp;2024); LSTM &amp; Transformers (Hochreiter) · predicted</p>
+<p><b class='lbl'>Say:</b> Transformers cost $O(N^2)$ in the context length and their memory grows with it at
+inference. xLSTM keeps a fixed-size state, so inference is linear in length and constant in memory,
+which matters for long contexts, robotics and edge devices. With exponential gating and the mLSTM
+matrix memory it reaches Transformer-level language modelling, and mLSTM trains in parallel.
+<p><b class='lbl'>Write:</b>  $C_t=f_tC_{t-1}+i_t\mathbf{v}_t\mathbf{k}_t^\top$,&emsp;
+$\mathbf{h}_t=\mathbf{o}_t\odot\dfrac{C_t\mathbf{q}_t}{\max(|\mathbf{n}_t^\top\mathbf{q}_t|,1)}$.
+<p class='hook'>→ <b>hook:</b> <i>The same idea works for images (Vision-LSTM) and for time series (TiRex).</i></p>
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> What is RUDDER?</span><span class='who'>Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> RUDDER (Arjona-Medina et al.&nbsp;2019); Deep RL · predicted</p>
+<p><b class='lbl'>Say:</b> In reinforcement learning with delayed rewards, credit assignment is slow. RUDDER trains an
+LSTM to predict the return of an episode and then redistributes the reward to the steps where the
+prediction jumps, i.e. to the actions that actually mattered. The expected future reward becomes
+close to zero, so learning is much faster.
+<div class='pic'><b>Picture it.</b> A football goal is credited not only to the scorer, but to the pass that made the difference.</div>
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> What is the FID?</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> FID (Heusel et al.&nbsp;2017) · predicted</p>
+<p><b class='lbl'>Say:</b> The Frechet Inception Distance measures how close generated images are to real ones: fit
+a Gaussian to Inception-network features of both sets and compute the Frechet distance.
+<p><b class='lbl'>Write:</b>  $\mathrm{FID}=\lVert\bm\mu_r-\bm\mu_g\rVert^2+\mathrm{Tr}\bigl(\Sigma_r+\Sigma_g-2(\Sigma_r\Sigma_g)^{1/2}\bigr)$.
+<p><b class='lbl'>Follow-up:</b> The same idea for molecules is the Frechet ChemNet Distance.
+</div></details>
+<h3 id='s18'>Hot topics 2025–2026</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · Six trends to name</div><div class='bd'>
+<ol><li><b>Reasoning LLMs:</b> models trained with reinforcement learning on verifiable rewards
+  (maths, code) to think longer before answering: test-time compute.</li><li><b>Alignment:</b> RLHF and its simpler successor DPO learn from human preferences.</li><li><b>Efficient sequence models:</b> xLSTM, Mamba (state space), linear attention; and
+  mixture-of-experts Transformers that activate only a few experts per token.</li><li><b>Generative models:</b> diffusion and flow matching for images, video, molecules.</li><li><b>Agents and retrieval:</b> LLMs that call tools and read documents (RAG).</li><li><b>AI for science:</b> protein structure (AlphaFold 3), weather (GraphCast, GenCast),
+  neural surrogates for CFD and particle flows (NeuralDEM), foundation models for physics.</li></ol>
+Plus regulation: the EU AI Act (risk-based rules), which links to your AI and Law courses.
+</div></div>
+<div class='pic'><b>Picture it.</b> The field is moving from “bigger models” to “smarter use of compute”: think longer
+(reasoning), use only the needed part (mixture of experts), remember cheaply (xLSTM, Mamba), and
+ask tools instead of guessing (agents).</div>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> What is flow matching? (You had it in ML: Advanced Techniques.)</span><span class='who'>general</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques · flow matching unit · predicted</p>
+<p><b class='lbl'>Say:</b> A generative model that learns a velocity field which moves noise to data along a path. With
+the straight path $\mathbf{x}_t=(1-t)\mathbf{x}_0+t\mathbf{x}_1$ the target velocity is simply
+$\mathbf{x}_1-\mathbf{x}_0$, so training is a plain regression. Sampling solves the ODE
+$\mathrm{d}\mathbf{x}/\mathrm{d}t=\mathbf{v}_\theta(\mathbf{x},t)$.
+<p><b class='lbl'>Write:</b>  $L(\theta)=\mathbb{E}_{t,\mathbf{x}_0,\mathbf{x}_1}\bigl\lVert\mathbf{v}_\theta(\mathbf{x}_t,t)-(\mathbf{x}_1-\mathbf{x}_0)\bigr\rVert^2$.
+<p class='hook'>→ <b>hook:</b> <i>Diffusion models are the same family with a noisy, curved path.</i></p>
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Diffusion models in two sentences?</span><span class='who'>general</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques · diffusion (VDM) · predicted</p>
+<p><b class='lbl'>Say:</b> Add Gaussian noise step by step until the data is pure noise, and train a network to predict
+the added noise; sampling runs the process backwards. Loss:
+$\mathbb{E}\lVert\bm\epsilon-\bm\epsilon_\theta(\sqrt{\bar\alpha_t}\mathbf{x}_0+\sqrt{1-\bar\alpha_t}\bm\epsilon,t)\rVert^2$.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> How are LLMs aligned? RLHF versus DPO.</span><span class='who'>general</span></summary><div class='bd'><p class='from'><b>From:</b> Current literature: RLHF, DPO · predicted</p>
+<p><b class='lbl'>Say:</b> RLHF: train a reward model on human preference pairs, then optimize the LLM against it with
+RL (PPO), with a KL penalty to stay close to the original model. DPO skips the reward model and
+optimizes the preferences directly with a classification-like loss.
+<p><b class='lbl'>Write:</b>  DPO: $L=-\log\sigma\Bigl(\beta\log\dfrac{\pi_\theta(y_w|x)}{\pi_{\mathrm{ref}}(y_w|x)}-\beta\log\dfrac{\pi_\theta(y_l|x)}{\pi_{\mathrm{ref}}(y_l|x)}\Bigr)$.
+<p class='hook'>→ <b>hook:</b> <i>Reasoning models go one step further: they learn from rewards that can be checked automatically.</i></p>
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> What are reasoning models and test-time compute?</span><span class='who'>general</span></summary><div class='bd'><p class='from'><b>From:</b> Current literature: reasoning models · predicted</p>
+<p><b class='lbl'>Say:</b> Models that write out intermediate steps (chain of thought) before the answer, trained with
+reinforcement learning on tasks whose answers can be verified, like maths or code. Spending more
+computation at inference, by thinking longer or sampling several solutions, improves accuracy:
+test-time compute becomes a new scaling axis next to model size and data.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Mixture of experts and state space models?</span><span class='who'>general</span></summary><div class='bd'><p class='from'><b>From:</b> Current literature: MoE, Mamba · predicted</p>
+<p><b class='lbl'>Say:</b> Mixture of experts: many feed-forward “experts”, a router sends each token to the top-$k$,
+so the model has many parameters but uses few per token:
+$\mathbf{y}=\sum_{i\in\text{top-}k}g_i(\mathbf{x})E_i(\mathbf{x})$. State space models like Mamba:
+a linear recurrence $\mathbf{h}_t=\bar A\mathbf{h}_{t-1}+\bar B\mathbf{x}_t$ with input-dependent
+(selective) parameters; linear in sequence length, like xLSTM.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Where is AI for simulation going?</span><span class='who'>Pirker, general</span></summary><div class='bd'><p class='from'><b>From:</b> AI for science literature; NeuralDEM · predicted</p>
+<p><b class='lbl'>Say:</b> From single surrogates to foundation models for physics: neural operators and transformer
+surrogates trained on many simulations, weather models that beat numerical forecasts in speed,
+and industrial real-time twins like NeuralDEM. The open problems are the ones my thesis met:
+conservation, generalization to new regimes, and trust, i.e. knowing when the surrogate is out of
+its data.
+</div></details>
+<h2 id='s19'>ML: Advanced Techniques (Brandstetter, Holzleitner)</h2>
+<p>This chapter follows the three written exams of the course (July 2024, July 2026, September retry).
+The course has two halves: generative models and AI for physics (Prof. Brandstetter) and
+statistical theory (Dr. Holzleitner: estimators, learning theory, kernels, EM, causality). If one
+of them sits on your committee, expect the conversation to start here.</p>
+<h3 id='s20'>Generative models and AI for physics (Brandstetter)</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · Generative models in two minutes</div><div class='bd'>
+<b>VAE:</b> encoder $q_\phi(\mathbf{z}|\mathbf{x})$, decoder $p_\theta(\mathbf{x}|\mathbf{z})$,
+maximize the ELBO $=\mathbb{E}_q[\log p_\theta(\mathbf{x}|\mathbf{z})]-D_{\mathrm{KL}}(q_\phi(\mathbf{z}|\mathbf{x})\Vert p(\mathbf{z}))\le\log p(\mathbf{x})$;
+reparametrization $\mathbf{z}=\bm\mu+\bm\sigma\odot\bm\epsilon$ makes sampling differentiable.  <b>Diffusion:</b> forward $q(\mathbf{x}_t|\mathbf{x}_{t-1})=\mathcal{N}(\sqrt{\alpha_t}\mathbf{x}_{t-1},(1-\alpha_t)I)$,
+closed form $q(\mathbf{x}_t|\mathbf{x}_0)=\mathcal{N}(\sqrt{\bar\alpha_t}\mathbf{x}_0,(1-\bar\alpha_t)I)$,
+$\bar\alpha_t=\prod_{s\le t}\alpha_s$; learn to denoise.  <b>Flow matching:</b> regress a velocity field, $\lVert\mathbf{v}_\theta(\mathbf{x}_t,t)-(\mathbf{x}_1-\mathbf{x}_0)\rVert^2$.  <b>Neural ODE:</b> $\mathrm{d}\mathbf{h}/\mathrm{d}t=f_\theta(\mathbf{h},t)$; a ResNet block is one Euler step.  <b>pPCA:</b> $\mathbf{x}=W\mathbf{z}+\bm\mu+\bm\epsilon$, all Gaussian, a linear generative model.
+</div></div>
+<div class='pic'><b>Picture it.</b> Diffusion: drop ink into water and film it (forward process, easy). Then learn to play the
+film backwards (reverse process, hard): from a cloudy glass back to the clean drop. The VAE is a
+zip file: compress to a short code, unzip again, and keep the codes tidy (KL term) so random codes
+also unzip into something sensible.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). ELBO $=\mathbb{E}_q[\log p(\mathbf{x}|\mathbf{z})]-D_{\mathrm{KL}}(q(\mathbf{z}|\mathbf{x})\Vert p(\mathbf{z}))$ •
+$q(\mathbf{x}_t|\mathbf{x}_0)=\mathcal{N}(\sqrt{\bar\alpha_t}\mathbf{x}_0,(1-\bar\alpha_t)I)$ •
+$\mathbf{x}_t=\sqrt{\bar\alpha_t}\mathbf{x}_0+\sqrt{1-\bar\alpha_t}\bm\epsilon$ •
+loss $\lVert\bm\epsilon-\bm\epsilon_\theta(\mathbf{x}_t,t)\rVert^2$ •
+ResNet $\mathbf{h}_{l+1}=\mathbf{h}_l+f(\mathbf{h}_l)$ $\leftrightarrow$ Euler $\mathbf{h}(t+\Delta t)=\mathbf{h}(t)+\Delta t\,f(\mathbf{h},t)$.</div>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Diffusion: what is $q(\mathbf{x}_t|\mathbf{x}_0)$, and what are the ELBO terms?</span><span class='who'>Brandstetter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Brandstetter) · diffusion · exam July 2024, Q1</p>
+<p><b class='lbl'>Say:</b> Each forward step adds Gaussian noise; Gaussians compose, so we can jump to any step directly:
+$q(\mathbf{x}_t|\mathbf{x}_0)=\mathcal{N}(\sqrt{\bar\alpha_t}\mathbf{x}_0,(1-\bar\alpha_t)I)$. The ELBO has
+three parts. $L_1=\mathbb{E}_q[\log p_\theta(\mathbf{x}_0|\mathbf{x}_1)]$: reconstruction of the data
+from the first latent step. $L_2=D_{\mathrm{KL}}(q(\mathbf{x}_T|\mathbf{x}_0)\Vert p(\mathbf{x}_T))$:
+how well the forward process reaches the prior, a standard Gaussian; it has no parameters and goes
+to 0 for large $T$. $L_3=\sum_{t\ge2}\mathbb{E}_q\bigl[D_{\mathrm{KL}}(q(\mathbf{x}_{t-1}|\mathbf{x}_t,\mathbf{x}_0)\Vert p_\theta(\mathbf{x}_{t-1}|\mathbf{x}_t))\bigr]$:
+the denoising terms; minimized when the learned denoising step matches the true one, and computed in
+closed form because both are Gaussian.
+<p><b class='lbl'>Follow-up:</b> “Why predict the noise?” The KL between Gaussians reduces to a squared error between the
+true and predicted noise: $\lVert\bm\epsilon-\bm\epsilon_\theta\rVert^2$.
+<p class='src'>Source: ML: Advanced Techniques, exam 2024 Q1; <code>VDM.pdf</code>.</p>
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Hierarchical VAE with two latents: posterior and ELBO?</span><span class='who'>Brandstetter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Brandstetter) · hierarchical VAE · exam July 2024</p>
+<p><b class='lbl'>Say:</b> Generative chain $\mathbf{z}_2\to\mathbf{z}_1\to\mathbf{x}$, so the inference goes the other
+way: $Q(\mathbf{z}_1,\mathbf{z}_2|\mathbf{x})=q(\mathbf{z}_1|\mathbf{x})\,q(\mathbf{z}_2|\mathbf{z}_1)$.
+<p><b class='lbl'>Write:</b> 
+ELBO $=\mathbb{E}\bigl[\log p(\mathbf{x}|\mathbf{z}_1)\bigr]-D_{\mathrm{KL}}\bigl(q(\mathbf{z}_1|\mathbf{x})\Vert p(\mathbf{z}_1|\mathbf{z}_2)\bigr)-D_{\mathrm{KL}}\bigl(q(\mathbf{z}_2|\mathbf{z}_1)\Vert p(\mathbf{z}_2)\bigr)$.
+<p><b class='lbl'>Follow-up:</b> “Why is training hard?” Sampling in the forward pass blocks gradients (fixed by the
+reparametrization trick), and posterior collapse: the KL term can switch latents off.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> VAE facts from the exam.</span><span class='who'>Brandstetter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Brandstetter) · VAE · exam July 2024</p>
+<p><b class='lbl'>Say:</b> Maximizing the ELBO maximizes a lower bound on $\log p(\mathbf{x})$; it is tight, i.e. equal
+to the log-likelihood, only when $q(\mathbf{z}|\mathbf{x})$ equals the true posterior. We do not know
+the true posterior, so we approximate it with the encoder. With the reparametrization trick
+$\mathbf{z}=\bm\mu+\bm\sigma\odot\bm\epsilon$ the randomness moves into $\bm\epsilon$ and gradients
+flow through $\bm\mu,\bm\sigma$. The encoder is not used for generation: sample $\mathbf{z}\sim p(\mathbf{z})$
+and decode.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Neural ODEs: which statements are true?</span><span class='who'>Brandstetter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Brandstetter) · Neural ODEs · exam July 2024</p>
+<p><b class='lbl'>Say:</b> A residual update $\mathbf{h}_{t+1}=\mathbf{h}_t+f(\mathbf{h}_t)$ is an Euler step; in the limit
+the forward pass is $\mathrm{d}\mathbf{h}/\mathrm{d}t=f_\theta(\mathbf{h}(t),t)$, solved by any ODE
+solver, and time plays the role of the layer index. Gradients come from the adjoint method: a second
+ODE solved backwards in time, whose initial condition is the gradient of the loss at the final state,
+$\mathbf{a}(T)=\partial L/\partial\mathbf{h}(T)$. Memory is constant in depth because intermediate
+states are not stored. The backward solve need not use the same time steps as the forward one.
+<p><b class='lbl'>Write:</b>  $\dfrac{\mathrm{d}\mathbf{a}}{\mathrm{d}t}=-\mathbf{a}^\top\dfrac{\partial f}{\partial\mathbf{h}}$,&emsp;
+$\dfrac{\mathrm{d}L}{\mathrm{d}\theta}=-\displaystyle\int_T^0\mathbf{a}^\top\dfrac{\partial f}{\partial\theta}\,\mathrm{d}t$.
+<p class='hook'>→ <b>hook:</b> <i>My thesis is also an ODE in time, solved with a very cheap stored operator instead of a learned $f$.</i></p>
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Describe the Kuramoto–Sivashinsky equation. Why is it used?</span><span class='who'>Brandstetter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Brandstetter) · neural PDE surrogates · exam July 2024</p>
+<p><b class='lbl'>Say:</b> A time-dependent, fourth-order, non-linear PDE that produces spatio-temporal chaos:
+$u_t+uu_x+u_{xx}+u_{xxxx}=0$. The $u_{xx}$ term pumps energy in at large scales, the fourth-order
+term damps small scales, the non-linear term moves energy between them. It is a standard benchmark
+for neural PDE surrogates, because long rollouts must stay stable although errors grow.
+<div class='pic'><b>Picture it.</b> A pot of soup on the stove that never settles into a pattern but never blows up either.</div>
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Probabilistic PCA.</span><span class='who'>Brandstetter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Brandstetter) · probabilistic PCA · exam July 2024</p>
+<p><b class='lbl'>Say:</b> A linear Gaussian latent model: $\mathbf{z}\sim\mathcal{N}(0,I)$, $\mathbf{x}=W\mathbf{z}+\bm\mu+\bm\epsilon$,
+$\bm\epsilon\sim\mathcal{N}(0,\sigma^2I)$; $W$ maps the low-dimensional latent space to data space.
+Generation: sample $\mathbf{z}$, then sample $\mathbf{x}$ from an isotropic Gaussian around $W\mathbf{z}+\bm\mu$.
+The maximum-likelihood $W$ is spanned by the eigenvectors with the <i>largest</i> eigenvalues of the
+data covariance, and the likelihood is tractable in closed form. It is the simplest <i>linear</i>
+generative model, and a VAE is its non-linear version.
+</div></details>
+<h3 id='s21'>Statistical theory (Holzleitner)</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · Statistics and learning theory in two minutes</div><div class='bd'>
+<b>Estimator quality:</b> bias $=\mathbb{E}[\hat w]-w$, $\mathrm{MSE}=\mathrm{bias}^2+\mathrm{Var}$.  <b>Fisher information</b> $I(\theta)=\mathbb{E}[(\partial_\theta\log p(X;\theta))^2]$; <b>Cramer–Rao:</b>
+any unbiased estimator has $\mathrm{Var}(\hat\theta)\ge1/(nI(\theta))$; the MLE is consistent and
+asymptotically normal with exactly that variance (efficient).  <b>Learning theory (0–1 loss):</b> Bayes classifier (best possible), best model in the class,
+learned model. Excess risk $=$ approximation error (class too small, deterministic) $+$ estimation
+error (too little data, random). Hoeffding bounds the gap for <i>one</i> fixed model; for the learned
+model we need <i>uniform</i> convergence over the class, via symmetrization and the shattering
+coefficient, which is polynomial in $n$ when the VC dimension is finite.  <b>Kernels:</b> $k$ is a kernel iff every Gram matrix is symmetric positive semi-definite; the RKHS
+has the reproducing property $f(\mathbf{x})=\langle f,k(\cdot,\mathbf{x})\rangle$.  <b>EM:</b> $\log p(X|\theta)=\mathcal{L}(q,\theta)+D_{\mathrm{KL}}(q\Vert p(Z|X,\theta))$; E-step sets
+$q$ to the posterior, M-step maximizes $\mathcal{L}$ over $\theta$.  <b>Causality:</b> association $\to$ intervention (do) $\to$ counterfactual.
+</div></div>
+<div class='pic'><b>Picture it.</b> Bias is a scale that always shows 1 kg too much; variance is a scale that jumps around. A good
+scale needs both small, which is exactly the MSE. Learning theory asks: if the scale was right on
+the 50 items in the shop, will it be right on every item? Hoeffding answers for one scale, uniform
+convergence for a whole shelf of scales at once.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). $\mathrm{MSE}=\mathrm{bias}^2+\mathrm{Var}$ • $\mathrm{Var}(\hat\theta)\ge\dfrac{1}{nI(\theta)}$ •
+Hoeffding $P(|R_{\mathrm{emp}}(f)-R(f)|&gt;\epsilon)\le2e^{-2n\epsilon^2}$ •
+$R(f)\le R_{\mathrm{emp}}(f)+\sqrt{\dfrac{h(\log(2n/h)+1)+\log(4/\delta)}{n}}$ •
+$\gamma_{nk}=\dfrac{\pi_k\mathcal{N}(\mathbf{x}_n|\bm\mu_k,\Sigma_k)}{\sum_j\pi_j\mathcal{N}(\mathbf{x}_n|\bm\mu_j,\Sigma_j)}$, $\pi_k=N_k/N$.</div>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Two estimators of a mean: bias, variance, which to choose?</span><span class='who'>Holzleitner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Holzleitner) · estimators · exams 2024 and 2026</p>
+<p><b class='lbl'>Say:</b> The exam example: $X_1,X_2,X_3$ i.i.d. with $\mu=3$, $\sigma^2=2$;
+$\hat w_1=\frac13(X_1+X_2+X_3)+1$ and $\hat w_2=\frac13(X_1+2X_2+X_3)$. Both are biased:
+$\mathbb{E}\hat w_1=\mu+1$, $\mathbb{E}\hat w_2=\frac43\mu=4$, so both have bias 1.
+$\mathrm{Var}(\hat w_1)=\frac{3\sigma^2}{9}=0.67$, $\mathrm{Var}(\hat w_2)=\frac{6\sigma^2}{9}=1.33$.
+MSE $=1+0.67=1.67$ against $1+1.33=2.33$: choose $\hat w_1$.
+<p><b class='lbl'>Follow-up:</b> Rule: $\mathrm{Var}(\sum a_iX_i)=\sigma^2\sum a_i^2$ for independent $X_i$; the constant $+1$
+changes the bias, not the variance.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Fisher information, Cramer–Rao and the MLE.</span><span class='who'>Holzleitner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Holzleitner) · Fisher information · exams 2024, 2026, retry</p>
+<p><b class='lbl'>Say:</b> The score $\partial_\theta\log p(X;\theta)$ is the slope of the log-likelihood; its mean is 0
+and its variance is the Fisher information $I(\theta)$: how sharply the data pin down $\theta$.
+Cramer–Rao: every <i>unbiased</i> estimator has variance at least $1/(nI(\theta))$. The MLE is
+consistent and asymptotically normal, $\sqrt n(\hat\theta_{\mathrm{MLE}}-\theta)\to\mathcal{N}(0,1/I(\theta))$,
+so it reaches the bound asymptotically. The bound says nothing about biased estimators, which can have
+smaller variance.
+<p><b class='lbl'>Write:</b>  $I(\theta)=\mathbb{E}\bigl[(\partial_\theta\log p)^2\bigr]=-\mathbb{E}\bigl[\partial_\theta^2\log p\bigr]$.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Consistency, uniform convergence, Hoeffding, symmetrization.</span><span class='who'>Holzleitner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Holzleitner) · statistical learning theory · exams 2024 and 2026</p>
+<p><b class='lbl'>Say:</b> For a <i>fixed</i> model the law of large numbers gives $R_{\mathrm{emp}}\to R$, and Hoeffding
+gives the rate. But the learned model is chosen <i>with</i> the data, so we need the gap to be small
+for all models of the class at once: uniform convergence, which implies consistency (not the other
+way round in general). Symmetrization replaces the true risk by the empirical risk on a second
+“ghost” sample, so only the finitely many labellings of $2n$ points matter; their number is the
+shattering coefficient, polynomial in $n$ if the VC dimension is finite. The bound has the form
+$R\le R_{\mathrm{emp}}+$ capacity term. SLT assumes no knowledge of the data distribution.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> VC dimension of origin-centred circles (inside $=+1$).</span><span class='who'>Holzleitner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Holzleitner) · VC dimension · exams 2024 and 2026</p>
+<p><b class='lbl'>Say:</b> One point: both labels are possible by choosing the radius, so it is shattered, $h\ge1$. Two
+points at distances $d_1&lt;d_2$: the labelling “inner point $-1$, outer point $+1$” is impossible,
+because any circle containing the outer point also contains the inner one. So $h=1$. A class with
+infinitely many models can still have a small VC dimension.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Kernels and RKHS.</span><span class='who'>Holzleitner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Holzleitner) · kernels, RKHS · exam July 2026</p>
+<p><b class='lbl'>Say:</b> $k$ is a kernel iff all its Gram matrices are symmetric positive semi-definite (non-negative
+eigenvalues). Moore–Aronszajn: every such kernel defines a unique RKHS, with the reproducing
+property $f(\mathbf{x})=\langle f,k(\cdot,\mathbf{x})\rangle_{\mathcal{H}}$. We never need the feature
+map explicitly; we only run linear methods in the RKHS through kernel evaluations. Gauss kernel
+$\exp(-\lVert\mathbf{x}-\mathbf{x}'\rVert^2/2\sigma^2)$: similarity decays smoothly with distance;
+$\sigma$ is a hyperparameter.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> EM for mixture models, and maximum entropy.</span><span class='who'>Holzleitner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Holzleitner) · EM, maximum entropy · exam 2026, retry</p>
+<p><b class='lbl'>Say:</b> The log of a sum makes the mixture likelihood hard. Introduce one-hot latents $\mathbf{z}_n$.
+E-step: with the parameters fixed, compute the responsibilities $\gamma_{nk}$, the posterior
+probability that point $n$ belongs to component $k$ (the expectation of the latent). M-step: with the
+responsibilities fixed, update the parameters; the weights $\pi_k=N_k/N$ come from a Lagrange
+multiplier for $\sum_k\pi_k=1$. The likelihood never decreases, but EM finds a local maximum.
+In general $\log p=\mathcal{L}(q,\theta)+\mathrm{KL}$, and since $\mathrm{KL}\ge0$, $\mathcal{L}$ is a lower bound.
+Maximum entropy: among all distributions that match measured moments (e.g. mean and variance),
+pick the one with the largest entropy, the least extra assumption; mean and variance give the
+Gaussian. It does not assume a parametric family in advance.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Causality: SCM, intervention, backdoor, ladder.</span><span class='who'>Holzleitner</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Advanced Techniques (Holzleitner) · causality · exam July 2026</p>
+<p><b class='lbl'>Say:</b> A structural causal model writes each variable as a function of its parents and a noise term.
+An intervention $do(X=x)$ cuts all arrows <i>into</i> $X$, so after intervening on $B$ it is
+independent of its parent $A$. The backdoor criterion: a set $Z$ that blocks every path from $T$ to
+$Y$ entering $T$ from behind, and contains no descendant of $T$, allows
+$P(y|do(t))=\sum_zP(y|t,z)P(z)$. Pearl's ladder: association, intervention, counterfactual.
+Counterfactuals (“what if Forrest had slept 8 hours?”): keep the individual's noise terms, change
+the variable, recompute. Randomized controlled trials remove confounding by design.
+<p><b class='lbl'>Write:</b>  Adjustment: $P(y\mid do(t))=\sum_zP(y\mid t,z)\,P(z)$.
+</div></details>
+<h2 id='s22'>New 2025 courses: Geometric DL, Unsupervised, DL Architectures</h2>
+<p>The 2025 curriculum added <i>Deep Learning: Geometric Techniques</i> and renamed the deep learning
+courses (<i>Basic Techniques</i> = old DLNN&nbsp;I, <i>Architectures and Generative Techniques</i> =
+old DLNN&nbsp;II). An examiner who teaches them may use their vocabulary, so this chapter covers what is
+new. Most of DL Basic is already in Chapters&nbsp;1–3.</p>
+<h3 id='s23'>Deep Learning: Geometric Techniques</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · Geometric deep learning in two minutes</div><div class='bd'>
+<b>Problem:</b> the curse of dimensionality; local methods need exponentially many samples in
+high dimension. <b>Remedy:</b> priors about the <i>structure</i> of the data.  <b>Two priors.</b> (1) <i>Symmetry</i>: the task does not change under a group $G$ of
+transformations (translations for images, permutations for sets and graphs, rotations for
+molecules). (2) <i>Scale separation</i>: coarse-grain the signal step by step.  <b>Invariance</b> $f(\rho(g)x)=f(x)$, <b>equivariance</b> $f(\rho(g)x)=\rho'(g)f(x)$.  <b>Blueprint:</b> equivariant layers $\to$ non-linearity $\to$ local pooling (coarsening) $\to$
+repeat $\to$ global invariant pooling $\to$ MLP. CNNs (grids, translations), DeepSets (sets,
+permutations), GNNs (graphs, permutations), Transformers (complete graphs) are all instances.  <b>Message passing:</b> $\mathbf{h}_i'=\phi\bigl(\mathbf{h}_i,\bigoplus_{j\in\mathcal{N}(i)}\psi(\mathbf{h}_i,\mathbf{h}_j,\mathbf{e}_{ij})\bigr)$,
+$\bigoplus$ permutation-invariant (sum, mean, max).
+</div></div>
+<div class='pic'><b>Picture it.</b> A face is still a face if you move the photo (translation) and a molecule is still the same
+molecule if you number its atoms differently (permutation). Building these facts into the network
+means it never has to learn them from data, which is the cure for the curse of dimensionality.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). Group axioms: closure, associativity, identity, inverse • equivariance
+$f(\rho(g)x)=\rho'(g)f(x)$ • DeepSets $f(X)=\rho\bigl(\sum_i\phi(\mathbf{x}_i)\bigr)$ •
+set permutation $X\mapsto PX$ • GCN $H'=\sigma(\hat D^{-1/2}\hat A\hat D^{-1/2}HW)$ •
+group averaging $\bar f(x)=\frac{1}{|G|}\sum_{g\in G}f(\rho(g)x)$.</div>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> What is the curse of dimensionality, and what is the manifold hypothesis?</span><span class='who'>GDL lecturer, Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL: Geometric Techniques · curse of dimensionality · course exam question map</p>
+<p><b class='lbl'>Say:</b> In high dimension the volume grows so fast that data become sparse; local methods (nearest
+neighbours, kernels with small bandwidth) need a number of samples exponential in the dimension.
+For Lipschitz functions the estimation error decays only like $N^{-1/d}$. The manifold hypothesis
+says real data lie near a low-dimensional manifold inside the high-dimensional space, so the
+<i>intrinsic</i> dimension is small; together with symmetry priors this makes learning possible.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Define a group, invariance and equivariance.</span><span class='who'>GDL lecturer</span></summary><div class='bd'><p class='from'><b>From:</b> DL: Geometric Techniques · geometric priors · course exam question map</p>
+<p><b class='lbl'>Say:</b> A group is a set with an operation that is closed and associative, has an identity, and has an
+inverse for every element. It acts on the domain, and the action lifts to signals via a
+representation $\rho(g)$ (a linear map). $f$ is invariant if $f(\rho(g)x)=f(x)$, equivariant if
+$f(\rho(g)x)=\rho'(g)f(x)$: transform then map equals map then transform (a commutative diagram).
+Inverses are needed so that the lifted action $(\rho(g)x)(u)=x(g^{-1}u)$ is well defined.
+<p><b class='lbl'>Follow-up:</b> “How do you make any function invariant?” Average over the group:
+$\bar f(x)=\frac1{|G|}\sum_gf(\rho(g)x)$. The approximation error does not grow if the target is
+invariant; the estimation error shrinks, roughly by the size of the group.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> DeepSets and linear equivariant maps on sets.</span><span class='who'>GDL lecturer, Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL: Geometric Techniques · sets · course exam question map</p>
+<p><b class='lbl'>Say:</b> The symmetry group of a set of $n$ elements is the permutation group $S_n$; a permutation acts
+on the feature matrix as $X\mapsto PX$. Every linear permutation-equivariant layer has the form
+$F(X)=XA+\frac1n\mathbf{1}\mathbf{1}^\top XB$ (the same map for every element plus a shared term).
+DeepSets: an equivariant per-element encoder $\phi$ (learned), a sum (fixed, invariant), then a
+learned decoder $\rho$: $f(X)=\rho(\sum_i\phi(\mathbf{x}_i))$.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Message passing, and the Weisfeiler–Leman test.</span><span class='who'>GDL lecturer, Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL: Geometric Techniques · graphs; also asked (GNNs) in past defenses</p>
+<p><b class='lbl'>Say:</b> A graph adds edges to a set. Each layer: every node computes messages from its neighbours,
+aggregates them with a permutation-invariant function, and updates its state. Node outputs are
+equivariant, a final readout makes graph outputs invariant. The WL test refines node colours by
+hashing each node's colour with the multiset of its neighbours' colours; if the histograms differ,
+the graphs are not isomorphic; if they agree, we cannot tell. MPNNs are at most as powerful as WL,
+and exactly as powerful if the aggregation is injective on multisets (sum, as in GIN, not mean or max).
+<p><b class='lbl'>Follow-up:</b> “Limits?” Over-squashing: information from many distant nodes is squeezed through few
+edges; it depends mostly on graph topology (bottlenecks). Remedies: positional encodings,
+subgraph GNNs, graph rewiring.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> Transformers as graph networks; CNNs as the grid case.</span><span class='who'>GDL lecturer</span></summary><div class='bd'><p class='from'><b>From:</b> DL: Geometric Techniques · graphs, grids · course exam question map</p>
+<p><b class='lbl'>Say:</b> Self-attention is message passing on the complete graph with attention weights as edge
+weights. Without positional encodings it is permutation-equivariant; with them it is not, by
+design. A CNN is the blueprint on a grid with the translation group: convolution is the (only)
+linear translation-equivariant map, pooling does the coarse-graining.
+</div></details>
+<h3 id='s24'>ML: Unsupervised Techniques</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · Unsupervised learning in two minutes</div><div class='bd'>
+<b>PCA:</b> directions of maximal variance = eigenvectors of the covariance; unique up to sign if
+eigenvalues differ. <b>Kernel PCA:</b> PCA on the centred Gram matrix
+$\tilde K=K-\mathbf{1}_NK-K\mathbf{1}_N+\mathbf{1}_NK\mathbf{1}_N$.  <b>ICA:</b> find <i>statistically independent</i> non-Gaussian sources; unique up to order and
+scale; whitening then rotation; contrast functions (kurtosis, negentropy); Infomax.  <b>Factor analysis:</b> $\mathbf{x}=W\mathbf{z}+\bm\mu+\bm\epsilon$ with diagonal (not isotropic)
+noise, so $\mathbf{x}\sim\mathcal{N}(\bm\mu,WW^\top+\Psi)$; fitted with EM.  <b>MDS:</b> embed points so distances are kept. <b>NMF:</b> $X\approx WH$, $W,H\ge0$, parts-based.  <b>Mixtures + EM</b>, <b>clustering</b> (k-means = hard EM), <b>max entropy</b>.
+</div></div>
+<div class='pic'><b>Picture it.</b> PCA finds the longest axis of the cloud of points. ICA is the cocktail party: two people talk
+at once into two microphones, and ICA separates the two voices because each voice on its own is
+not Gaussian.</div>
+<div class='board'><b>Board drill</b> (write it by hand 3 times). PCA: $C=\frac1N\sum_n(\mathbf{x}_n-\bar{\mathbf{x}})(\mathbf{x}_n-\bar{\mathbf{x}})^\top$, $C\mathbf{u}=\lambda\mathbf{u}$ •
+FA: $\mathbf{x}\sim\mathcal{N}(\bm\mu,WW^\top+\Psi)$ •
+ICA: $\mathbf{x}=A\mathbf{s}$, $\mathbf{y}=W\mathbf{x}$, maximize non-Gaussianity •
+k-means: $\min\sum_n\lVert\mathbf{x}_n-\bm\mu_{c(n)}\rVert^2$.</div>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> What is PCA, how is it computed, is it unique?</span><span class='who'>Klambauer, Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Unsupervised Techniques · PCA · Fragenkatalog Q8–10</p>
+<p><b class='lbl'>Say:</b> Centre the data, compute the covariance matrix, and take its eigenvectors with the largest
+eigenvalues (or the SVD of the data matrix). They are the orthogonal directions of maximal
+variance, and projecting on them gives the best linear reconstruction in squared error. Unique up
+to the sign of each vector when the eigenvalues are distinct; with equal eigenvalues any rotation
+inside that eigenspace is also a solution. Properties: linear, orthogonal, uncorrelated components.
+</div></details>
+<details class='card qa k-e' open><summary class='ttl'><span>Q · <span class='badge b-e'>COURSE EXAM</span> ICA versus PCA versus factor analysis.</span><span class='who'>Klambauer, Hochreiter</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Unsupervised Techniques · ICA, FA · Fragenkatalog Q13–23</p>
+<p><b class='lbl'>Say:</b> PCA: uncorrelated, orthogonal directions of maximal variance. ICA: statistically
+<i>independent</i> components, which needs non-Gaussian sources; unique up to permutation and
+scaling. It whitens the data (then only a rotation is left) and finds the rotation that maximizes
+non-Gaussianity with a contrast function such as kurtosis or negentropy; Infomax maximizes the
+information flow through a non-linearity. Factor analysis: a latent Gaussian model like pPCA but
+with a diagonal noise covariance, so every feature has its own noise; fitted with EM, whose E-step
+estimates the posterior mean and covariance of the factors.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Clustering: k-means and its relation to EM.</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> ML: Unsupervised Techniques · clustering, mixtures · predicted</p>
+<p><b class='lbl'>Say:</b> k-means alternates two steps: assign each point to the nearest centre, then move each centre
+to the mean of its points; the objective $\sum_n\lVert\mathbf{x}_n-\bm\mu_{c(n)}\rVert^2$ never
+increases. It is the hard-assignment limit of EM for a Gaussian mixture with equal isotropic
+variances: responsibilities become 0 or 1.
+</div></details>
+<h3 id='s25'>Deep Learning: Architectures and Generative Techniques</h3>
+<div class='card sum'><div class='ttl'>2-minute summary · DL Architectures in two minutes</div><div class='bd'>
+<b>CNN families:</b> LeNet $\to$ AlexNet $\to$ VGG (small $3\times3$ filters) $\to$ Inception
+(parallel filters) $\to$ ResNet (skips) $\to$ DenseNet.  <b>Vision tasks:</b> classification; semantic segmentation (class per pixel, U-Net, FCN);
+object detection (boxes: R-CNN family two-stage, YOLO/SSD one-stage, IoU, non-maximum suppression);
+instance segmentation (Mask R-CNN).  <b>Generative:</b> autoencoder, VAE (ELBO), GAN (minimax), normalizing flows (exact likelihood by
+change of variables), diffusion, autoregressive models (PixelCNN).  $\min_G\max_D\ \mathbb{E}[\log D(\mathbf{x})]+\mathbb{E}[\log(1-D(G(\mathbf{z})))]$;&emsp;
+flow: $\log p(\mathbf{x})=\log p(\mathbf{z})+\log\lvert\det\partial\mathbf{z}/\partial\mathbf{x}\rvert$.
+</div></div>
+<div class='pic'><b>Picture it.</b> GAN: a forger (generator) and a detective (discriminator) train against each other until the
+detective can no longer tell the fakes from the real paintings.</div>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Semantic segmentation versus object detection. Name architectures.</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL: Architectures (DLNN II) · segmentation and detection, SS25 script PDF p.&nbsp;197–239; U-Net asked in a past defense</p>
+<p><b class='lbl'>Say:</b> Semantic segmentation gives every pixel a class; U-Net (encoder–decoder with skip
+connections) or FCN. Object detection gives boxes plus classes; two-stage detectors (Faster R-CNN:
+region proposals, then classification) or one-stage (YOLO, SSD: predict boxes on a grid directly).
+Quality by intersection over union (IoU); duplicate boxes removed by non-maximum suppression.
+Instance segmentation (Mask R-CNN) separates individual objects of the same class.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> GANs: objective, problems, fixes.</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL: Architectures (DLNN II) · GANs, SS25 script PDF p.&nbsp;265–279 · predicted</p>
+<p><b class='lbl'>Say:</b> The generator maps noise to samples, the discriminator tells real from fake; they play
+$\min_G\max_D\mathbb{E}[\log D(\mathbf{x})]+\mathbb{E}[\log(1-D(G(\mathbf{z})))]$. At the optimum the
+generator minimizes the Jensen–Shannon divergence. Problems: mode collapse, unstable training,
+vanishing generator gradients. Fixes: non-saturating loss, Wasserstein GAN, spectral normalization,
+and the two time-scale update rule (TTUR, from Linz), with the FID to measure quality.
+</div></details>
+<details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> Autoencoder, VAE, normalizing flow: what is the difference?</span><span class='who'>Klambauer</span></summary><div class='bd'><p class='from'><b>From:</b> DL: Architectures (DLNN II) · generative models, SS25 script PDF p.&nbsp;242–297 · predicted</p>
+<p><b class='lbl'>Say:</b> An autoencoder compresses and reconstructs; its latent space is not organised, so it is poor
+for sampling. A VAE makes the latent space a distribution with a KL term, so we can sample, but the
+likelihood is only bounded (ELBO). A normalizing flow uses invertible layers and the change of
+variables formula, so the likelihood is exact, at the price of equal dimensions and constrained
+layers. Diffusion trades speed for quality with many denoising steps.
+</div></details>
+
+</main>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  renderMathInElement(document.body, {
+    delimiters: [{left: "\\[", right: "\\]", display: true}, {left: "$", right: "$", display: false}],
+    macros: {"\\Remp": "R_{\\mathrm{emp}}", "\\Rgen": "R_{\\mathrm{gen}}", "\\fsd": "f_{\\mathrm{sd}}"},
+    throwOnError: false
+  });
+});
+var nav = document.getElementById("nav");
+document.getElementById("menu").onclick = function () { nav.classList.toggle("open"); };
+nav.addEventListener("click", function (e) { if (e.target.tagName === "A") nav.classList.remove("open"); });
+var folded = false;
+document.getElementById("fold").onclick = function () {
+  folded = !folded;
+  document.querySelectorAll("details.qa").forEach(function (d) { d.open = !folded; });
+  this.textContent = folded ? "Open all" : "Fold all";
+};
+document.getElementById("theme").onclick = function () {
+  var r = document.documentElement, dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  var cur = r.getAttribute("data-theme") || (dark ? "dark" : "light");
+  var next = cur === "dark" ? "light" : "dark";
+  r.setAttribute("data-theme", next);
+  try { localStorage.setItem("theme", next); } catch (e) {}
+};
+try { var t = localStorage.getItem("theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+var prio = "all";
+function applyFilter() {
+  var term = document.getElementById("q").value.trim().toLowerCase();
+  document.querySelectorAll("details.qa, .card.sum, .card.chain").forEach(function (c) {
+    var okText = !term || c.textContent.toLowerCase().indexOf(term) >= 0;
+    var okPrio = prio === "all" || (c.classList.contains("qa") && c.classList.contains("k-" + prio));
+    c.classList.toggle("hidden", !(okText && okPrio));
+  });
+}
+document.getElementById("q").addEventListener("input", applyFilter);
+document.querySelectorAll("#prio button").forEach(function (b) {
+  b.onclick = function () {
+    prio = b.getAttribute("data-k");
+    document.querySelectorAll("#prio button").forEach(function (x) { x.classList.toggle("on", x === b); });
+    applyFilter();
+  };
+});
+</script>
+</body>
+</html>

@@ -39,7 +39,8 @@ $\bm\delta(t)=\mathrm{diag}(f'(\mathbf{s}(t)))\,(V^\top\partial L(t)/\partial\ha
 $\partial L/\partial R=\sum_t\bm\delta(t)\mathbf{a}(t-1)^\top$.
 Note: $\bm\delta(t+1)$, the future, not $t-1$. Gradient uses $\mathbf{a}(t-1)$, not $\mathbf{s}(t-1)$.}
 
-\begin{qabox}[Hochreiter]{Which recurrent architectures do you know?}
+\begin{qabox}[Hochreiter]{\cexam Which recurrent architectures do you know?}
+\from{LSTM \& Transformers (Hochreiter) · RNN architectures (Jordan, Elman, NARX, TDNN) · course exam}
 \ans Jordan network: feeds the \emph{output} of $t-1$ back as input. Elman network: feeds the
 \emph{hidden} state back, originally with fixed recurrent weights and trained locally in time.
 Fully recurrent network: trainable recurrent matrix $R$, every hidden unit sees all others.
@@ -51,7 +52,8 @@ instead of the prediction.
 \src{LSTM lecture WS24, \texttt{Exam\_LSTM summary.pdf}.}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{BPTT, truncated BPTT and RTRL: compare them.}
+\begin{qabox}[Hochreiter]{\cexam BPTT, truncated BPTT and RTRL: compare them.}
+\from{LSTM \& Transformers (Hochreiter) · BPTT, truncated BPTT, RTRL · course exam}
 \ans BPTT: forward through the whole sequence, then backward; exact gradient; memory grows
 linearly with the length $T$; cost $O(T\cdot W)$. Truncated BPTT: backprop only $k$ steps into
 the past; cheaper, but the gradient is an approximation and long dependencies are cut. RTRL:
@@ -66,7 +68,8 @@ notes live during the match: no recording needed, but he must write very fast.}
 \src{LSTM lecture WS24, BPTT/RTRL exam questions.}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Why can a plain RNN not learn long-term dependencies?}
+\begin{qabox}[Hochreiter]{\cexam Why can a plain RNN not learn long-term dependencies?}
+\from{LSTM \& Transformers (Hochreiter) · vanishing gradient in time · course exam}
 \ans The delta is multiplied at every time step by the recurrent Jacobian
 $R^\top\mathrm{diag}(f'(\mathbf{s}))$. Over $k$ steps this is a product of $k$ factors, so it
 decays (or explodes) exponentially in $k$. After 10--20 steps the error from the past is
@@ -114,7 +117,8 @@ gates $=\sigma(W\mathbf{x}(t)+R\mathbf{h}(t-1)+\mathbf{b})$, cell input $=\tanh(
 $\partial\mathbf{c}(t)/\partial\mathbf{c}(t-1)=\mathrm{diag}(\mathbf{f}(t))\approx I$.\
 Draw the cell: belt on top, three $\sigma$ gates, one $\tanh$ in, one $\tanh$ out.}
 
-\begin{qabox}[Hochreiter]{Explain the constant error carousel.}
+\begin{qabox}[Hochreiter]{\cexam Explain the constant error carousel.}
+\from{LSTM \& Transformers (Hochreiter) · LSTM cell, constant error carousel · course exam}
 \ans In the original LSTM the cell connects to itself with weight 1 and a linear activation. So
 the local error in the cell is multiplied by exactly 1 at every step: it neither vanishes nor
 explodes. The gates protect this carousel: the input gate protects the cell from irrelevant
@@ -124,7 +128,8 @@ inputs, the output gate protects other units from irrelevant cell content.
 \src{LSTM lecture WS24, CEC slides; Hochreiter \& Schmidhuber (1997).}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Why was the forget gate added? What about drift?}
+\begin{qabox}[Hochreiter]{\cexam Why was the forget gate added? What about drift?}
+\from{LSTM \& Transformers (Hochreiter) · forget gate, drift, ticker steps · course exam}
 \ans Without a forget gate the cell can only accumulate; on long, continuous input streams the
 state grows without limit and the cell saturates. The forget gate lets the network reset its
 memory. Related: \emph{internal state drift}, when inputs are mostly of one sign the state drifts
@@ -134,7 +139,8 @@ away; the remedy in the original paper is to bias the input gates towards zero a
 process what it has stored before it must answer.
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{LSTM variants: peepholes, CIFG, GRU.}
+\begin{qabox}[Hochreiter]{\cexam LSTM variants: peepholes, CIFG, GRU.}
+\from{LSTM \& Transformers (Hochreiter) · LSTM variants, GRU · course exam}
 \ans Peephole connections let the gates see the cell state $\mathbf{c}(t-1)$ directly.
 CIFG (coupled input and forget gate) sets $\mathbf{f}=1-\mathbf{i}$: write only as much as you
 forget. GRU (Cho et al.\ 2014) goes further: no separate cell, an update gate that acts as coupled
@@ -146,7 +152,8 @@ $\mathbf{h}(t)=(1-\mathbf{u})\odot\mathbf{h}(t-1)+\mathbf{u}\odot\tilde{\mathbf{
 axes), ConvLSTM (convolutions inside the gates, for video).
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Dropout in LSTMs: why is it special?}
+\begin{qabox}[Hochreiter]{\cexam Dropout in LSTMs: why is it special?}
+\from{LSTM \& Transformers (Hochreiter) · LSTM dropout, zoneout · course exam}
 \ans Naive dropout on the recurrent state at every step multiplies survival probabilities over
 time, so a memory would survive with probability $(1-p)^T$: long-term memory is destroyed. So we
 use special forms: dropout only on the non-recurrent connections, variational dropout (the same
@@ -154,7 +161,8 @@ mask at every time step), or zoneout (randomly \emph{keep} the previous state in
 units). Dropout is switched off at evaluation.
 \end{qabox}
 
-\begin{qabox}[Hochreiter, Schl\"uter]{Bidirectional LSTM, and one label for a whole sequence.}
+\begin{qabox}[Hochreiter, Schl\"uter]{\asked Bidirectional LSTM, and one label for a whole sequence.}
+\from{LSTM \& Transformers (Hochreiter) · bidirectional RNN, sequence classification · asked in past defenses}
 \ans A bidirectional LSTM runs one LSTM forward and one backward and concatenates the two hidden
 states, so each step sees past and future; it needs the full sequence, so not for real-time use.
 For one label per sequence use the last hidden state or global average pooling over all states,
@@ -186,7 +194,8 @@ exponential gate is a highlighter: a new, important note can outshine everything
 mLSTM matrix memory is a filing cabinet: store a value under a key ($\mathbf{v}\mathbf{k}^\top$),
 retrieve it later with a query ($C\mathbf{q}$).}
 
-\begin{qabox}[Hochreiter]{What is new in xLSTM, and why?}
+\begin{qabox}[Hochreiter]{\cexam What is new in xLSTM, and why?}
+\from{LSTM \& Transformers (Hochreiter) · xLSTM (sLSTM, mLSTM) · course exam}
 \ans LSTM has three limits: it cannot revise a storage decision, its memory is a small scalar
 cell, and it cannot be parallelized over time because of memory mixing. xLSTM answers each:
 exponential gating with normalization revises storage decisions; mLSTM gives a matrix memory
@@ -197,7 +206,8 @@ $\mathbf{n}_t=f_t\mathbf{n}_{t-1}+i_t\mathbf{k}_t$.
 \src{LSTM lecture WS24, xLSTM exam questions.}
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{What connects Hopfield networks and attention?}
+\begin{qabox}[Hochreiter]{\pred What connects Hopfield networks and attention?}
+\from{IML research · modern Hopfield networks (Ramsauer et al.~2020) · predicted}
 \ans A modern Hopfield network stores patterns $X$ and retrieves the one closest to a query
 $\bm\xi$ with $\bm\xi^{\text{new}}=X\,\mathrm{softmax}(\beta X^\top\bm\xi)$. With $\beta=1/\sqrt{d_k}$
 and learned projections this is exactly the attention formula. So attention is associative

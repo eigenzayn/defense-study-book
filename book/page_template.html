@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Defense Study Book</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<style>
+:root{
+  --bg:#ffffff; --ink:#1d232b; --muted:#5d6773; --line:#dfe4ea;
+  --q:#1f4e79; --q-bg:#f3f7fb; --sum:#0f6e5a; --sum-bg:#eef7f4;
+  --pic:#8a4b00; --pic-bg:#fff6ea; --brd:#5b2c83; --brd-bg:#f6f1fa; --nav:#f7f9fb;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#12161b; --ink:#e3e8ee; --muted:#9aa5b1; --line:#2a323b;
+    --q:#8fbce6; --q-bg:#18212b; --sum:#6fd0b6; --sum-bg:#14231f;
+    --pic:#f0b36a; --pic-bg:#261d12; --brd:#c8a6ea; --brd-bg:#1f1829; --nav:#161b21;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#12161b; --ink:#e3e8ee; --muted:#9aa5b1; --line:#2a323b;
+  --q:#8fbce6; --q-bg:#18212b; --sum:#6fd0b6; --sum-bg:#14231f;
+  --pic:#f0b36a; --pic-bg:#261d12; --brd:#c8a6ea; --brd-bg:#1f1829; --nav:#161b21;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.62 "Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif}
+.wrap{display:grid;grid-template-columns:290px minmax(0,1fr);min-height:100vh}
+nav{position:sticky;top:0;height:100vh;overflow:auto;background:var(--nav);
+  border-right:1px solid var(--line);padding:22px 18px}
+nav .brand{font-weight:700;font-size:18px;color:var(--q);margin-bottom:4px}
+nav .sub{color:var(--muted);font-size:13px;margin-bottom:14px}
+nav input{width:100%;padding:9px 11px;border:1px solid var(--line);border-radius:8px;
+  background:var(--bg);color:var(--ink);font-size:14px;margin-bottom:12px}
+nav a{display:block;color:var(--ink);text-decoration:none;padding:4px 6px;border-radius:6px;font-size:14px}
+nav a.l2{padding-left:18px;color:var(--muted);font-size:13px}
+nav a:hover{background:var(--q-bg)}
+nav .tools{display:flex;gap:8px;margin:10px 0 16px}
+nav .tools a,nav .tools button{flex:1;text-align:center;border:1px solid var(--line);border-radius:8px;
+  padding:6px;font-size:13px;background:var(--bg);color:var(--ink);cursor:pointer}
+main{padding:36px 48px 80px;max-width:900px}
+h1{font-size:32px;margin:0 0 4px;color:var(--q)}
+h2{font-size:25px;color:var(--q);margin:54px 0 12px;padding-top:6px;border-top:1px solid var(--line)}
+h3{font-size:19px;color:var(--q);margin:30px 0 10px}
+.lead{color:var(--muted);margin-bottom:26px}
+.card{border:1px solid var(--line);border-radius:12px;margin:16px 0;overflow:hidden;background:var(--bg)}
+.card .ttl{padding:9px 14px;font-weight:600;font-size:14.5px;color:#fff}
+.card .bd{padding:10px 16px 12px}
+.sum{border-color:color-mix(in srgb,var(--sum) 45%,transparent)}
+.sum .ttl{background:var(--sum)} .sum .bd{background:var(--sum-bg)}
+.chain .ttl{background:var(--q)}
+.qa .ttl{background:var(--q);display:flex;justify-content:space-between;gap:12px;cursor:pointer;list-style:none}
+.qa .ttl::-webkit-details-marker{display:none}
+.qa .who{opacity:.8;font-weight:400;font-size:13px;white-space:nowrap}
+.qa .bd{background:var(--q-bg)}
+.pic{background:var(--pic-bg);border:1px solid color-mix(in srgb,var(--pic) 35%,transparent);
+  border-radius:10px;padding:9px 13px;margin:12px 0}
+.pic b{color:var(--pic)}
+.board{background:var(--brd-bg);border:1px solid color-mix(in srgb,var(--brd) 35%,transparent);
+  border-radius:10px;padding:9px 13px;margin:12px 0;overflow-x:auto}
+.board b{color:var(--brd)}
+.lbl{color:var(--q)}
+.hook{color:var(--pic);margin:2px 0 12px}
+.cq{margin:14px 0 2px} .cq b,.ca b{color:var(--q)}
+.src{color:var(--muted);font-size:13px;margin-top:8px}
+.tbl{overflow-x:auto;margin:10px 0}
+table{border-collapse:collapse;width:100%;font-size:14.5px}
+td,th{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--q)}
+code{font-size:13.5px;background:var(--q-bg);padding:1px 4px;border-radius:4px}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:4px 0}
+.hidden{display:none}
+.badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;padding:2px 7px;
+  border-radius:999px;margin-right:6px;vertical-align:1px;color:#fff}
+.b-a{background:#b3261e} .b-e{background:#c26a00} .b-p{background:#2b6c7a}
+.from{font-size:13px;color:var(--muted);margin:2px 0 8px}
+.from b{color:var(--muted)}
+.prio{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 14px}
+.prio button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;
+  padding:4px 10px;font-size:12.5px;cursor:pointer}
+.prio button.on{background:var(--q);color:#fff;border-color:var(--q)}
+#menu{display:none}
+@media (max-width:860px){
+  .wrap{grid-template-columns:1fr}
+  nav{position:fixed;inset:0 25% 0 0;z-index:5;transform:translateX(-102%);transition:transform .2s ease}
+  nav.open{transform:none;box-shadow:0 0 30px rgba(0,0,0,.25)}
+  main{padding:64px 16px 60px}
+  #menu{display:block;position:fixed;top:12px;left:12px;z-index:6;border:1px solid var(--line);
+    background:var(--bg);color:var(--ink);border-radius:8px;padding:7px 12px;font-size:15px}
+}
+@media print{nav,#menu{display:none}.wrap{display:block}main{max-width:none;padding:0}}
+</style>
+</head>
+<body>
+<button id="menu" aria-label="Open contents">☰ Contents</button>
+<div class="wrap">
+<nav id="nav">
+  <div class="brand">Defense Study Book</div>
+  <div class="sub">ML &amp; Perception · LSTM · ML Advanced · rCFD</div>
+  <input id="q" type="search" placeholder="Filter questions… (e.g. LSTM, batch norm)">
+  <div class="tools">
+    <a href="Defense_Study_Book.pdf">PDF</a>
+    <button id="fold">Fold all</button>
+    <button id="theme">Theme</button>
+  </div>
+  <div class="prio" id="prio">
+    <button data-k="all" class="on">All</button>
+    <button data-k="a">Asked before</button>
+    <button data-k="e">Course exam</button>
+    <button data-k="p">Predicted</button>
+  </div>
+  {{NAV}}
+</nav>
+<main>
+  <h1>Defense Study Book</h1>
+  <div class="lead">Every topic: a 2-minute summary, an everyday picture, a board drill, and the
+  predicted questions with what to say, what to write, and the usual follow-up.</div>
+  {{BODY}}
+</main>
+</div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  renderMathInElement(document.body, {
+    delimiters: [{left: "\\[", right: "\\]", display: true}, {left: "$", right: "$", display: false}],
+    macros: {"\\Remp": "R_{\\mathrm{emp}}", "\\Rgen": "R_{\\mathrm{gen}}", "\\fsd": "f_{\\mathrm{sd}}"},
+    throwOnError: false
+  });
+});
+var nav = document.getElementById("nav");
+document.getElementById("menu").onclick = function () { nav.classList.toggle("open"); };
+nav.addEventListener("click", function (e) { if (e.target.tagName === "A") nav.classList.remove("open"); });
+var folded = false;
+document.getElementById("fold").onclick = function () {
+  folded = !folded;
+  document.querySelectorAll("details.qa").forEach(function (d) { d.open = !folded; });
+  this.textContent = folded ? "Open all" : "Fold all";
+};
+document.getElementById("theme").onclick = function () {
+  var r = document.documentElement, dark = matchMedia("(prefers-color-scheme: dark)").matches;
+  var cur = r.getAttribute("data-theme") || (dark ? "dark" : "light");
+  var next = cur === "dark" ? "light" : "dark";
+  r.setAttribute("data-theme", next);
+  try { localStorage.setItem("theme", next); } catch (e) {}
+};
+try { var t = localStorage.getItem("theme"); if (t) document.documentElement.setAttribute("data-theme", t); } catch (e) {}
+var prio = "all";
+function applyFilter() {
+  var term = document.getElementById("q").value.trim().toLowerCase();
+  document.querySelectorAll("details.qa, .card.sum, .card.chain").forEach(function (c) {
+    var okText = !term || c.textContent.toLowerCase().indexOf(term) >= 0;
+    var okPrio = prio === "all" || (c.classList.contains("qa") && c.classList.contains("k-" + prio));
+    c.classList.toggle("hidden", !(okText && okPrio));
+  });
+}
+document.getElementById("q").addEventListener("input", applyFilter);
+document.querySelectorAll("#prio button").forEach(function (b) {
+  b.onclick = function () {
+    prio = b.getAttribute("data-k");
+    document.querySelectorAll("#prio button").forEach(function (x) { x.classList.toggle("on", x === b); });
+    applyFilter();
+  };
+});
+</script>
+</body>
+</html>

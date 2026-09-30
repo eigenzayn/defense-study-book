@@ -18,7 +18,8 @@ database belongs to a flow regime.
 works for soup that just gets stirred (passive scalar). For bread that rises by itself (buoyancy),
 the video does not show how your dough will move, so you must correct it.}
 
-\begin{qabox}[chair]{What problem did you solve, and why ML/AI?}
+\begin{qabox}[chair]{\asked What problem did you solve, and why ML/AI?}
+\from{Thesis, Appendix A1 (story summary) · asked in past defenses}
 \ans I measured what a recurrence replay loses when the scalar is not passive, and repaired most of
 it without solving the flow again. It is AI for simulation: expensive solver data is reused by a
 cheap model; choosing the next frame is a nearest-neighbour search; and my main result is a
@@ -26,19 +27,22 @@ generalization result: the database covers a regime, and a new boundary conditio
 out-of-distribution.
 \end{qabox}
 
-\begin{qabox}[chair]{What would you do differently?}
+\begin{qabox}[chair]{\asked What would you do differently?}
+\from{Thesis, Ch.~8 and future work · asked in past defenses}
 \ans Check the material properties of both simulations on the first day: the specific-heat mismatch
 cost the most time. Then an implicit exchange so the recorded diffusivity can act.
 \end{qabox}
 
-\begin{qabox}[Klambauer]{How would you solve your problem with deep learning?}
+\begin{qabox}[Klambauer]{\pred How would you solve your problem with deep learning?}
+\from{Thesis $\times$ DL: graph neural networks · predicted}
 \ans Learn the correction $\mathcal{C}$ with a graph neural network on the mesh: input the field
 and the recorded map, output the next field, loss = distance to the reference plus a penalty on the
 energy balance. The risk is the same as in my thesis: it only generalizes inside the regime of its
 training data.
 \end{qabox}
 
-\begin{qabox}[Hochreiter]{Could an LSTM replace the replay?}
+\begin{qabox}[Hochreiter]{\pred Could an LSTM replace the replay?}
+\from{Thesis $\times$ LSTM \& Transformers (Hochreiter) · predicted}
 \ans An LSTM (or xLSTM) could learn the time evolution of a low-dimensional state, e.g.\ the POD
 coefficients of Figure 5.9, as a sequence-to-sequence model. It would be cheap and could carry
 memory of the filling phase, which is exactly where my replay lags. But it needs many trajectories

@@ -3,6 +3,7 @@
 Study notes for the Master's examination in Artificial Intelligence:
 Machine Learning & Perception, LSTM and sequence models, and recurrence CFD.
 
+**Read online:** https://eigenzayn.github.io/defense-study-book/  
 **Read the PDF:** [Defense_Study_Book.pdf](Defense_Study_Book.pdf)
 
 Each topic has four layers:
@@ -18,3 +19,7 @@ Sources are the JKU lecture scripts (Deep Learning and Neural Networks I/II, LST
 and the Numerical Methods in Fluid Mechanics lecture.
 
 Build: `cd book && pdflatex study_book.tex` (twice).
+
+Every question carries a priority label: ASKED BEFORE (past defenses), COURSE EXAM, or PREDICTED, plus a "From:" line with course, chapter and origin.
+
+Chapters also cover ML: Advanced Techniques (Brandstetter, Holzleitner) and the 2025 courses (Geometric DL, ML Unsupervised, DL Architectures).
