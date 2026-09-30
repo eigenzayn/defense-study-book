@@ -1,0 +1,74 @@
+\section{rCFD and CFD (Prof.\ Pirker)}
+
+\begin{summary}{rCFD in two minutes}
+\textsf{One idea.} Solve the expensive flow once, record \emph{how the fluid moves} as
+cell-to-cell maps, then replay those maps many times to carry a scalar (species, temperature).
+Momentum and pressure are never solved again: hundreds of times faster.
+\[
+T_j^{*}=\sum_iM^{(f)}_{ji}T_i,\qquad
+\mathbf{T}^{n+1}=\mathcal{B}\Bigl(\mathcal{C}\bigl(\mathcal{S}(\mathbf{M}^{(f_n)}\mathbf{T}^n)\bigr)\Bigr),\qquad
+R_{fg}=\lVert\Phi^{(f)}-\Phi^{(g)}\rVert .
+\]
+map $\mathbf{M}$ (advection) \textbullet{} face swap $\mathcal{S}$ (diffusion) \textbullet{}
+correction $\mathcal{C}$ (your work) \textbullet{} conservation constraint $\mathcal{B}$.\
+\textsf{Pirker's three bold failures:} (1) mass imbalance $\to$ global monitor + mass-acting face
+swaps; (2) unphysical diffusion $\to$ locally adapted swaps (sub-grid viscosity); (3) weak
+recurrence prominence $\to$ recurrence islands.\
+\textsf{Works:} recurring flow, passive scalar. \textsf{Fails:} the scalar drives the flow, or the
+process changes state $\to$ multi-state rCFD.
+\end{summary}
+
+\pic{A GPS that recorded one drive through the city. Next time you only replay the recorded route
+(cheap), you do not recompute it. It works as long as the streets are the same. If a street is
+closed (a new boundary condition, like the cooled lid), the recording does not know the detour:
+you need a new recording for that situation.}
+
+\board{$\mathbf{T}^{n+1}=\mathcal{B}(\mathcal{C}(\mathcal{S}(\mathbf{M}\mathbf{T}^n)))$ \textbullet{}
+$\Delta_{\mathrm{swap}}=\fsd V\,(T_{c_1}-T_{c_0})/2$, $D_{\mathrm{eq}}=\fsd c_s^2/(2\Delta t)$ \textbullet{}
+limiter $\Delta q_f=s\min(Q_h^+,Q_c^-)$ \textbullet{}
+$Co=u\Delta t/\Delta x<1$, $d=\Gamma\Delta t/\Delta x^2<0.5$ \textbullet{} $Re=uL/\nu$.}
+
+\begin{qabox}[Pirker]{Flow-based versus transport-based rCFD?}
+\ans Flow-based: stitch recorded flow sequences into a long artificial flow and solve a transport
+equation on it (Lichtenegger \& Pirker 2016, about 100$\times$ faster). Transport-based: replace
+convection by cell-to-cell shifts and diffusion by face swaps, no equation solved (Pirker \&
+Lichtenegger 2018, steel ladle 26~h $\to$ 1.6~s). My thesis uses the transport-based form.
+\end{qabox}
+
+\begin{qabox}[Pirker]{Recurrence matrix and prominence -- and your case?}
+\ans The recurrence norm compares two recorded states; all pairs form the matrix. A row (recurrence
+vector) rises and oscillates about a plateau; deep dips = the flow comes back = we can jump.
+Prominence $P_{\mathrm{rel}}=\langle d_{\max}-d_{\min}\rangle/\bar d$, required 0.05--0.1. Mine: median
+0.028, two blocks (filling, settling), no return $\to$ sequential replay.
+\end{qabox}
+
+\begin{qabox}[Pirker]{Why did the recorded local diffusivity not help?}
+\ans The exchange is explicit and capped at half a cell per face and step, a diffusion number
+$\mathrm{Di}=D\Delta t/c_s^2\le0.5$. The recorded $D$ asks for $\mathrm{Di}\approx4$ everywhere, so
+every face hits the cap and the field behaves like $\fsd=0.5$ (three replays bit-identical).
+An implicit exchange or a smaller step would let it act. This is the explicit stability limit of
+the lecture, $d<0.5$.
+\end{qabox}
+
+\begin{qabox}[Pirker]{Numerical diffusion: where in your thesis?}
+\ans First-order upwind is stable but adds false diffusion that smears fronts. In my replay the
+smearing comes from the face exchange, not the maps (maps only keep the front at 2--4~mm). My
+correction is an anti-diffusive step bounded like flux-corrected transport: conservative, no new
+extremum, front 15.7 $\to$ 5.3/4.5~mm against 5.0~mm.
+\end{qabox}
+
+\begin{qabox}[Pirker]{rCFD and digital twins.}
+\ans CSTR models are instant but blind to heterogeneity; CFD sees it but takes days. rCFD built on
+CFD can run alongside the process as a soft sensor ($T_{\max}$, $\sigma_T$), aligned with live data
+to stop error accumulation. My thesis adds two warnings: a boundary condition can switch the flow
+regime, and the heat budget must use the same fluid properties as the recording.
+\end{qabox}
+
+\begin{qabox}[Pirker]{CFD basics he may check quickly.}
+\ans \textsf{Re} $=uL/\nu$ (mine 99, laminar). \textsf{Material derivative} $\mathrm{D}/\mathrm{D}t=\partial_t+\mathbf{u}\cdot\nabla$.
+\textsf{FVM}: integrate over cells, fluxes through faces, locally conservative, $a_Pc_P=\sum a_{NB}c_{NB}+b$.
+\textsf{SIMPLE}: guess $p$, solve $\mathbf{u}^*$, pressure correction from continuity, correct, repeat.
+\textsf{Turbulence}: cascade to Kolmogorov $\eta=(\nu^3/\varepsilon)^{1/4}$; RANS models all, LES the
+small eddies, DNS none; $\nu_t=C_\mu k^2/\varepsilon$. \textsf{Boussinesq}: constant density except in
+the gravity term (mine: 1.5 per cent density change).
+\end{qabox}

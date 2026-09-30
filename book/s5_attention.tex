@@ -1,0 +1,61 @@
+\section{Attention and Transformers}
+
+\begin{summary}{Attention in two minutes}
+\textsf{One idea.} Instead of squeezing the past into one hidden state, let every token
+\emph{look at every other token} and take a weighted mean. Each token makes three vectors by
+linear maps: a query (what I look for), a key (what I offer), a value (what I give). Weight =
+softmax of query $\cdot$ key.
+\[
+Q=XW_Q,\quad K=XW_K,\quad V=XW_V,\qquad
+\mathrm{Attention}(Q,K,V)=\mathrm{softmax}\!\Bigl(\frac{QK^\top}{\sqrt{d_k}}\Bigr)V .
+\]
+Shapes with $N$ tokens: $X\in\mathbb{R}^{N\times d}$, $QK^\top\in\mathbb{R}^{N\times N}$ (rows sum
+to 1 after softmax), output $\in\mathbb{R}^{N\times d_v}$. \
+\textsf{Transformer block:} multi-head self-attention $\to$ add \& layer norm $\to$ position-wise
+MLP $\to$ add \& layer norm. \
+\textsf{Key words:} scaled dot product \textbullet{} multi-head \textbullet{} positional encoding
+\textbullet{} permutation equivariance \textbullet{} $O(N^2)$ \textbullet{} encoder/decoder,
+causal mask.
+\end{summary}
+
+\pic{A library. You come with a question (query). Every book has a title on its spine (key) and
+content inside (value). You compare your question with every title, trust the best matches most
+(softmax), and read a blend of their contents (weighted sum of values). Multi-head: several
+librarians, each searching by a different criterion.}
+
+\board{$\mathrm{softmax}(QK^\top/\sqrt{d_k})V$;\ $A_{ij}=\dfrac{\exp(\mathbf{q}_i^\top\mathbf{k}_j/\sqrt{d_k})}{\sum_m\exp(\mathbf{q}_i^\top\mathbf{k}_m/\sqrt{d_k})}$;\
+$\mathbf{o}_i=\sum_j A_{ij}\mathbf{v}_j$;\ MultiHead $=\mathrm{Concat}(\text{head}_1,\dots,\text{head}_h)W_O$.}
+
+\begin{qabox}[Rekabsaz, Lehner]{Explain the Transformer architecture.}
+\ans The input tokens are embedded and get a positional encoding. The encoder is a stack of blocks,
+each with multi-head self-attention and a feed-forward network, both with residual connections and
+layer normalization. The decoder has the same blocks, but its self-attention is \emph{masked}
+(a token cannot see the future), and it has a cross-attention layer whose keys and values come from
+the encoder. BERT uses only the encoder (masked language modelling); GPT only the decoder.
+\follow ``Why residual + layer norm?'' Stable gradients through deep stacks, like ResNet.
+\end{qabox}
+
+\begin{qabox}[Klambauer]{Write the matrix multiplications of self-attention.}
+\ans Three projections of the same input, one $N\times N$ score matrix, a row-wise softmax, and
+a product with the values.
+\formula
+$X\in\mathbb{R}^{N\times d}$;\ $Q,K\in\mathbb{R}^{N\times d_k}$, $V\in\mathbb{R}^{N\times d_v}$;\
+$S=QK^\top/\sqrt{d_k}\in\mathbb{R}^{N\times N}$;\ $A=\mathrm{softmax}_{\text{row}}(S)$;\ $O=AV\in\mathbb{R}^{N\times d_v}$.
+\follow ``Why divide by $\sqrt{d_k}$?'' With random unit-variance entries the dot product has
+variance $d_k$; dividing keeps it at 1, so the softmax does not saturate and gradients stay alive.
+\end{qabox}
+
+\begin{qabox}[Lehner]{Permutation invariance: why a problem, how to fix?}
+\ans Self-attention treats the tokens as a set: shuffle the input and the output is shuffled the
+same way (permutation equivariant). Word order is lost. Fix: add a positional encoding to each
+token, fixed sinusoids $\sin(p/10000^{2i/d})$, $\cos(\cdot)$, learned position vectors, or relative
+encodings such as RoPE.
+\end{qabox}
+
+\begin{qabox}[Lehner]{RNN versus Transformer: complexity and trade-offs.}
+\ans RNN: $O(N)$ in sequence length, constant memory for inference, but sequential, so slow to
+train and long paths between distant tokens. Transformer: $O(N^2)$ time and memory, but fully
+parallel in training and every pair of tokens is one step apart. xLSTM and Mamba try to get both:
+parallel training and linear inference.
+\formula RNN $O(N\,d^2)$ \quad Transformer $O(N^2d)$.
+\end{qabox}

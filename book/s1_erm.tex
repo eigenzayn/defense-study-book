@@ -1,0 +1,87 @@
+\section{Empirical risk minimization}
+
+\begin{summary}{ERM (Klambauer's favourite first question)}
+\textsf{One idea.} We want a model that is good on \emph{future} data. We cannot measure that,
+because the true data distribution is unknown. So we measure the average error on the data we
+\emph{have} and make it small. That is empirical risk minimization.
+
+\textsf{Four ingredients:} data $Z=\{(\mathbf{x}_n,y_n)\}_{n=1}^N$ \textbullet{} model
+$g(\mathbf{x};\mathbf{w})$ \textbullet{} loss $L(y,\hat y)$ \textbullet{} average + minimize.
+\[
+\Remp(\mathbf{w})=\frac1N\sum_{n=1}^{N}L\bigl(y_n,g(\mathbf{x}_n;\mathbf{w})\bigr),\qquad
+\Rgen(g)=\mathbb{E}_{(\mathbf{x},y)\sim p}\bigl[L(y,g(\mathbf{x};\mathbf{w}))\bigr].
+\]
+\textsf{Key words:} i.i.d.\ data \textbullet{} unknown $p(\mathbf{x},y)$ \textbullet{} generalization
+error \textbullet{} test set \textbullet{} cross-validation \textbullet{} overfitting.
+\end{summary}
+
+\pic{A driving school. The \emph{generalization error} is how well you drive on any road in
+Austria, which nobody can test completely. The \emph{empirical risk} is your score on the practice
+course. You train on the practice course (minimize $\Remp$), and the driving test on new roads
+(test set) estimates how you will really drive. Memorizing every bump of the practice course is
+overfitting.}
+
+\board{$Z=\{(\mathbf{x}_n,y_n)\}$ \quad $\hat y=g(\mathbf{x};\mathbf{w})$ \quad
+$\Remp=\frac1N\sum_n L(y_n,g(\mathbf{x}_n;\mathbf{w}))$ \quad
+$\hat{\mathbf{w}}=\arg\min_{\mathbf{w}}\Remp$ \quad
+$\mathbf{w}\leftarrow\mathbf{w}-\eta\nabla_{\mathbf{w}}\Remp$.}
+
+\begin{qabox}[Klambauer]{Write down a supervised data set, a model and the empirical risk.}
+\ans A data set is $N$ pairs of input and label, drawn i.i.d.\ from an unknown distribution. The
+model maps an input to a prediction. The loss compares prediction and label. The empirical risk is
+the mean loss over the training set, and training minimizes it.
+\formula
+$Z=\{(\mathbf{x}_n,y_n)\}_{n=1}^{N}$,\ $\mathbf{x}_n\in\mathbb{R}^D$; \
+$\hat y_n=g(\mathbf{x}_n;\mathbf{w})$; \
+$\Remp(\mathbf{w})=\frac1N\sum_n L(y_n,\hat y_n)$.
+\follow ``Is this only for neural networks?'' No: $g$ can be a linear model, a random forest or a
+kernel machine. Only the inside of $g$ changes.
+\src{DLNN script WS24, Ch.~3 and 5.1, PDF p.~23--26, 60.}
+\end{qabox}
+
+\begin{qabox}[Klambauer]{Difference between empirical risk and generalization error?}
+\ans The generalization error is the expected loss over the true distribution: the real quality on
+new data. We cannot compute it because $p$ is unknown. The empirical risk is its estimate on the
+training data, and it is biased low because we chose $\mathbf{w}$ on those data.
+\formula
+$\Rgen=\int L(y,g(\mathbf{x};\mathbf{w}))\,p(\mathbf{x},y)\,\mathrm{d}\mathbf{x}\,\mathrm{d}y
+\ \approx\ \frac1M\sum_{m\in\text{test}}L(y_m,g(\mathbf{x}_m;\mathbf{w}))$.
+\follow ``How do you estimate it?'' Test set (law of large numbers), or $L$-fold cross-validation,
+which is almost unbiased and uses every point once for testing.
+\src{DLNN script WS24, Sec.~5.2--5.3, PDF p.~60--64.}
+\end{qabox}
+
+\begin{qabox}[Klambauer]{Which loss functions do you know? Which properties do they need?}
+\ans A loss is non-negative and zero for a perfect prediction. For gradient training it must be
+differentiable. The 0--1 loss is not, so we train on a surrogate such as cross-entropy or the hinge
+loss.
+\formula
+Squared $\tfrac12(y-\hat y)^2$ \textbullet{} binary CE $-y\log\hat y-(1-y)\log(1-\hat y)$ \textbullet{}
+categorical CE $-\sum_k y_k\log\hat y_k$ \textbullet{} 0--1 $\mathbb{1}[y\neq\hat y]$ \textbullet{}
+hinge $\max(0,1-y\,g(\mathbf{x}))$.
+\follow ``Why squared loss for regression?'' Under Gaussian noise, minimizing it equals maximizing
+the likelihood.
+\src{DLNN script WS24, Sec.~4.1.2, Table 4.1, Eqs.~(4.8)--(4.11).}
+\end{qabox}
+
+\begin{qabox}[Klambauer]{Show it on linear regression.}
+\ans Linear model, squared loss. The risk is convex, so there is one minimum: closed form or
+gradient descent.
+\formula
+$\Remp=\tfrac12\lVert\mathbf{y}-X\mathbf{w}\rVert^2$,\quad
+$\hat{\mathbf{w}}=(X^\top X)^{-1}X^\top\mathbf{y}$,\quad
+$\nabla_{\mathbf{w}}\Remp=X^\top(X\mathbf{w}-\mathbf{y})$.
+\follow For one sample the gradient is $(\mathbf{w}^\top\mathbf{x}-y)\,\mathbf{x}$: \emph{error
+times input}. Remember this shape; backprop has exactly the same shape, $\delta_i a_j$.
+\src{DLNN script WS24, Eqs.~(4.12)--(4.15), PDF p.~31.}
+\end{qabox}
+
+\begin{qabox}[Klambauer]{Overfitting, underfitting, bias--variance, double descent.}
+\ans Too simple: underfitting, high bias. Too complex: overfitting, high variance, low training
+error but high test error. Classical picture: U-shaped test error. Large networks: double descent,
+the test error falls again after the interpolation point.
+\formula $\mathbb{E}[(y-g)^2]=\sigma^2_{\text{noise}}+\text{bias}^2+\text{variance}$.
+\pic{Darts. Bias: all darts land together but off the centre. Variance: the darts scatter around
+the centre.}
+\src{DLNN script WS24, Sec.~5.4, PDF p.~65.}
+\end{qabox}

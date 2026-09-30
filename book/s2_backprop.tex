@@ -1,0 +1,90 @@
+\section{Backpropagation and the delta error}
+
+\begin{summary}{Backprop (asked by Klambauer AND Hochreiter)}
+\textsf{One idea.} To learn, every weight needs its gradient. Backprop gets all of them with one
+forward pass and one backward pass. The trick is the \emph{delta error}: how much the loss changes
+when the pre-activation of one neuron changes. Deltas are computed at the output and passed
+\emph{down} layer by layer.
+
+\textsf{Three lines to know by heart:}
+\[
+\underbrace{\delta_i=\frac{\partial L}{\partial s_i}}_{\text{definition}}
+\qquad
+\underbrace{\frac{\partial L}{\partial w_{ij}}=\delta_i\,a_j}_{\text{gradient}}
+\qquad
+\underbrace{\delta_j=f'(s_j)\sum_i\delta_i\,w_{ij}}_{\text{recursion}}
+\]
+Output with a matching pair (softmax + cross-entropy, sigmoid + BCE, linear + squared):
+$\bm\delta^{[L]}=\hat{\mathbf{y}}-\mathbf{y}$.
+
+\textsf{Key words:} forward pass stores $s$ and $a$ \textbullet{} chain rule \textbullet{} delta
+\textbullet{} outer product \textbullet{} $O(W)$ \textbullet{} vanishing / exploding gradients
+(Hochreiter 1991).
+\end{summary}
+
+\pic{A football team that lost 3--0. The coach (loss) starts at the goal that was conceded and
+walks \emph{backwards} through the team. Each player's share of the blame (delta) is: the blame
+of the players he passed to, weighted by how strongly he passed to them ($w_{ij}$), times how
+awake he was himself ($f'(s_j)$). A tired player ($f'\approx0$, saturated sigmoid) passes no blame
+on: that is the vanishing gradient.}
+
+\board{Forward: $s_i=\sum_j w_{ij}a_j$, $a_i=f(s_i)$. \
+Backward: $\delta_k=\hat y_k-y_k$ (output), $\delta_j=f'(s_j)\sum_i\delta_i w_{ij}$ (hidden). \
+Update: $\Delta w_{ij}=-\eta\,\delta_i\,a_j$. \
+Matrix form: $\bm\delta^{[l-1]\top}=\bm\delta^{[l]\top}W^{[l]}\,\mathrm{diag}(f'(\mathbf{s}^{[l-1]}))$,\
+$\partial L/\partial W^{[l]}=\mathbf{a}^{[l-1]}\bm\delta^{[l]\top}$.}
+
+\begin{qabox}[Klambauer, Hochreiter]{Derive the gradient for one weight. Define the delta.}
+\ans By the chain rule the loss depends on $w_{ij}$ only through $s_i$. The derivative of $s_i$
+with respect to $w_{ij}$ is just $a_j$. What remains, $\partial L/\partial s_i$, we call the delta.
+\formula
+$\dfrac{\partial L}{\partial w_{ij}}=\dfrac{\partial L}{\partial s_i}\dfrac{\partial s_i}{\partial w_{ij}}
+=\delta_i\,a_j$, \quad since $s_i=\sum_j w_{ij}a_j\Rightarrow\partial s_i/\partial w_{ij}=a_j$.
+\follow ``Interpret it.'' Gradient = error signal above $\times$ activity below. The same shape as
+linear regression: error $\times$ input.
+\src{DLNN script WS24, Eqs.~(4.63)--(4.68), PDF p.~45.}
+\end{qabox}
+
+\begin{qabox}[Klambauer, Hochreiter]{Derive the recursive formula for the delta of a hidden unit.}
+\ans A hidden unit $j$ influences the loss through all units $i$ it feeds. So I sum over them with
+the chain rule.
+\formula
+$\delta_j=\dfrac{\partial L}{\partial s_j}=\sum_i\dfrac{\partial L}{\partial s_i}\dfrac{\partial s_i}{\partial s_j}
+=\sum_i\delta_i\,w_{ij}\,f'(s_j)$, \quad because $s_i=\sum_j w_{ij}f(s_j)$.
+\follow Past students got stuck on indices; Prof.\ Hochreiter helped. Keep $i$ = layer above,
+$j$ = layer below, $w_{ij}$ = from $j$ to $i$.
+\src{DLNN script WS24, Eq.~(4.71), PDF p.~46.}
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{Delta at the output for softmax + cross-entropy?}
+\ans Simply prediction minus label, $\bm\delta=\hat{\mathbf{y}}-\mathbf{y}$. The derivative of the
+log inside the cross-entropy cancels the derivative of the softmax.
+\formula
+$L=-\sum_k y_k\log\hat y_k$, $\hat y_k=\frac{e^{s_k}}{\sum_m e^{s_m}}$,
+$\frac{\partial\hat y_k}{\partial s_i}=\hat y_k(\mathbb{1}_{ki}-\hat y_i)$
+$\Rightarrow\frac{\partial L}{\partial s_i}=-\sum_k y_k(\mathbb{1}_{ki}-\hat y_i)=\hat y_i-y_i$
+(using $\sum_k y_k=1$).
+\follow Same result for sigmoid + BCE and linear + squared loss: that is why these pairs belong
+together.
+\src{DLNN script WS24, Table 4.1, Eq.~(4.78).}
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{Vanishing and exploding gradients: where do they come from?}
+\ans Each layer multiplies the delta by $W^{[l]}\mathrm{diag}(f'(\mathbf{s}))$. After many layers
+this is a product of many matrices, so the norm shrinks or grows exponentially. For the sigmoid
+$|f'|\le0.25$, so it shrinks. Sepp Hochreiter showed this in 1991 in Linz.
+\formula
+$\lVert\bm\delta^{[l-k]}\rVert\lesssim\bigl(\max|f'|\cdot\lVert W\rVert\bigr)^{k}\lVert\bm\delta^{[l]}\rVert$.
+\follow ``Remedies?'' ReLU / SELU, careful initialization (keep the Jacobian norm near 1),
+normalization, residual connections, LSTM for time.
+\src{DLNN script WS24, box after Eq.~(4.84), PDF p.~52--53.}
+\end{qabox}
+
+\begin{qabox}[Klambauer]{How is a neural network built? What is one neuron?}
+\ans A neuron takes a weighted sum of its inputs plus a bias, the pre-activation, and applies a
+non-linear activation. Neurons form layers; layers are stacked; the last layer gives the output.
+\formula $s=\mathbf{w}^\top\mathbf{a}+b$, $a=f(s)$; \ layer: $\mathbf{a}^{[l]}=f(W^{[l]}\mathbf{a}^{[l-1]}+\mathbf{b}^{[l]})$.
+\follow ``And without activation functions?'' Then all layers collapse into one linear map
+$W^{[L]}\cdots W^{[1]}=W$. It cannot even solve XOR.
+\src{DLNN script WS24, Eqs.~(3.2)--(3.3), Sec.~4.5.}
+\end{qabox}

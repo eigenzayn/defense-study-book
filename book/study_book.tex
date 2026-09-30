@@ -1,0 +1,72 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper,margin=2.1cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{booktabs,tabularx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+
+\definecolor{qcol}{HTML}{1F4E79}
+\definecolor{sumcol}{HTML}{0F6E5A}
+\definecolor{piccol}{HTML}{8A4B00}
+\definecolor{brdcol}{HTML}{5B2C83}
+\definecolor{srccol}{HTML}{666666}
+
+\setlist{nosep,leftmargin=1.4em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\titleformat{\section}{\Large\sffamily\color{qcol}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\sffamily\color{qcol}}{\thesubsection}{0.6em}{}
+\pagestyle{fancy}\fancyhf{}
+\lhead{\small\sffamily Defense Study Book}\rhead{\small\sffamily ML \& Perception \textbullet{} LSTM \textbullet{} rCFD}
+\cfoot{\small\thepage}
+
+% 2-minute summary
+\newtcolorbox{summary}[1]{enhanced,breakable,colback=sumcol!6,colframe=sumcol!70,boxrule=0.5pt,arc=2pt,
+  title={\sffamily 2-minute summary \textbullet{} #1},fonttitle=\small,coltitle=white,colbacktitle=sumcol!85,
+  left=6pt,right=6pt,top=4pt,bottom=4pt}
+% analogy
+\newtcolorbox{pict}{enhanced,breakable,colback=piccol!6,colframe=piccol!55,boxrule=0.4pt,arc=2pt,
+  left=6pt,right=6pt,top=3pt,bottom=3pt}
+\newcommand{\pic}[1]{\begin{pict}\textsf{\color{piccol}Picture it.}\ #1\end{pict}}
+% tactile board drill
+\newtcolorbox{boardbox}{enhanced,breakable,colback=brdcol!5,colframe=brdcol!55,boxrule=0.4pt,arc=2pt,
+  left=6pt,right=6pt,top=3pt,bottom=3pt}
+\newcommand{\board}[1]{\begin{boardbox}\textsf{\color{brdcol}Board drill (write it by hand 3 times).}\ #1\end{boardbox}}
+% Q&A
+\newcounter{qa}[section]\renewcommand{\theqa}{\thesection.\arabic{qa}}
+\newtcolorbox{qabox}[2][]{enhanced,breakable,colback=qcol!3,colframe=qcol!55,boxrule=0.4pt,arc=1.5pt,
+  left=6pt,right=6pt,top=4pt,bottom=4pt,
+  title={\refstepcounter{qa}\sffamily Q\theqa\quad #2\hfill\footnotesize #1},coltitle=white,colbacktitle=qcol!85,fonttitle=\small}
+\newcommand{\ans}{\textsf{\color{qcol}Say:}\ }
+\newcommand{\formula}{\par\textsf{\color{qcol}Write:}\par}
+\newcommand{\follow}{\par\textsf{\color{qcol}Follow-up:}\ }
+\newcommand{\src}[1]{\par{\footnotesize\color{srccol}Source: #1}}
+
+\newcommand{\Remp}{R_{\mathrm{emp}}}
+\newcommand{\Rgen}{R_{\mathrm{gen}}}
+\newcommand{\fsd}{f_{\mathrm{sd}}}
+
+\begin{document}
+\begin{center}
+{\LARGE\sffamily\color{qcol} Defense Study Book}\\[5pt]
+{\large\sffamily Machine Learning \& Perception \textbullet{} LSTM (Hochreiter) \textbullet{} rCFD and CFD}\\[5pt]
+{\small\sffamily Version 2 \textbullet{} October 2026}
+\end{center}
+\input{s0_method}
+\tableofcontents
+\clearpage
+\input{s1_erm}
+\input{s2_backprop}
+\input{s3_training}
+\input{s4_lstm}
+\input{s5_attention}
+\input{s6_classic}
+\input{s7_rcfd}
+\input{s8_predicted}
+\end{document}

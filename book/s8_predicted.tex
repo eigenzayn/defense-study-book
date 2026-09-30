@@ -1,0 +1,82 @@
+\section{Predicted questions and rapid-fire drill}
+
+\subsection{Thesis questions (first 5 minutes)}
+
+\begin{summary}{Your thesis in two minutes}
+rCFD records a flow once and replays it to carry a scalar. It was built for passive scalars; I
+tested it on temperature, which drives its own flow (buoyant jet in a $75\times75\times15$~mm tank,
+Re 99). (1) No single mixing constant is best: the outlet sits under the front, so smearing
+drains heat. (2) A bounded, vertically weighted anti-diffusive correction brings the front from
+15.7 to 5.3/4.5~mm (reference 5.0), no value outside the data range. (3) Under wall cooling the
+replay was 4.34~K too warm because the reference used $c_p$ of air (1006.43) and the replay of
+water (4182); on one fluid 0.66~K, corrected 0.06~K on 9.62~K. (4) What remains is missing
+transport: a recorded flux cuts the heterogeneity error from 1.66 to 0.26~K. Take-home: a
+database belongs to a flow regime.
+\end{summary}
+
+\pic{A cooking video recorded once (preparation) and replayed to cook many times (replay). It
+works for soup that just gets stirred (passive scalar). For bread that rises by itself (buoyancy),
+the video does not show how your dough will move, so you must correct it.}
+
+\begin{qabox}[chair]{What problem did you solve, and why ML/AI?}
+\ans I measured what a recurrence replay loses when the scalar is not passive, and repaired most of
+it without solving the flow again. It is AI for simulation: expensive solver data is reused by a
+cheap model; choosing the next frame is a nearest-neighbour search; and my main result is a
+generalization result: the database covers a regime, and a new boundary condition is
+out-of-distribution.
+\end{qabox}
+
+\begin{qabox}[chair]{What would you do differently?}
+\ans Check the material properties of both simulations on the first day: the specific-heat mismatch
+cost the most time. Then an implicit exchange so the recorded diffusivity can act.
+\end{qabox}
+
+\begin{qabox}[Klambauer]{How would you solve your problem with deep learning?}
+\ans Learn the correction $\mathcal{C}$ with a graph neural network on the mesh: input the field
+and the recorded map, output the next field, loss = distance to the reference plus a penalty on the
+energy balance. The risk is the same as in my thesis: it only generalizes inside the regime of its
+training data.
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{Could an LSTM replace the replay?}
+\ans An LSTM (or xLSTM) could learn the time evolution of a low-dimensional state, e.g.\ the POD
+coefficients of Figure 5.9, as a sequence-to-sequence model. It would be cheap and could carry
+memory of the filling phase, which is exactly where my replay lags. But it needs many trajectories
+to generalize, and without a conservation constraint it can drift in energy, which rCFD
+guarantees by construction.
+\end{qabox}
+
+\subsection{Rapid-fire (say it in one breath)}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}>{\raggedright\arraybackslash}p{0.40\linewidth}X@{}}
+\toprule
+Question & Answer \\ \midrule
+Most powerful learning machine? & The brain; closest method: neural networks. \\
+Delta, softmax + CE? & $\hat{\mathbf{y}}-\mathbf{y}$. \\
+Activation from Linz? & SELU (self-normalizing), ELU. \\
+Who found vanishing gradients? & Hochreiter, 1991, Linz. \\
+Constant error carousel? & Cell self-loop weight 1, linear: error flows unchanged. \\
+Forget gate added by? & Gers, Schmidhuber, Cummins, 2000. \\
+GRU gates? & Update (coupled input/forget) and reset. \\
+BPTT memory? & Linear in $T$; RTRL: independent of $T$, $O(N^4)$ per step. \\
+Truncated BPTT? & Cuts the past after $k$ steps; approximate gradient. \\
+Gradient clipping fixes? & Exploding only, not vanishing. \\
+Why $\sqrt{d_k}$? & Keeps dot-product variance at 1; softmax does not saturate. \\
+Attention complexity? & $O(N^2)$; RNN $O(N)$. \\
+Positional encoding why? & Attention is permutation-equivariant. \\
+xLSTM two ideas? & Exponential gating; matrix memory (mLSTM). \\
+Hopfield $\leftrightarrow$ attention? & $X\,\mathrm{softmax}(\beta X^\top\bm\xi)$ = attention. \\
+UAT hidden layers? & One, finitely many units. \\
+Non-differentiable loss? & 0--1 loss; use cross-entropy or hinge. \\
+Regularization? & Weight decay, dropout, early stopping, augmentation, FMS. \\
+Optimizers? & SGD, momentum, AdaGrad, RMSprop, Adam. \\
+Output activation, regression? & Linear + squared loss. \\
+VC dim.\ of lines in 2D? & 3. \\
+Kernel trick? & Dot products $\to$ $k(\mathbf{x},\mathbf{x}')$. \\
+MLE problem? & Overfits with little data (sunrise problem). \\
+Your Re / grid / frames? & 99 / 1~mm cubes / 600 frames. \\
+Your speed-up? & About 260 times. \\
+\bottomrule
+\end{tabularx}
+\end{center}

@@ -1,0 +1,86 @@
+\section{Training: optimizers, activations, regularization}
+
+\begin{summary}{The rapid-fire block (Hochreiter asks these fast)}
+\textsf{Optimizers:} GD, SGD, momentum, AdaGrad, RMSprop, Adam. \
+\textsf{Activations:} sigmoid, tanh, ReLU, Leaky ReLU, ELU, SELU. \
+\textsf{From Linz:} ELU (Clevert, Unterthiner, Hochreiter) and SELU (Klambauer et al.\ 2017). \
+\textsf{Regularization:} weight decay, dropout, early stopping, data augmentation, noise, Flat
+Minimum Search (Hochreiter). \
+\textsf{Output layer:} linear (regression), sigmoid (binary), softmax (multi-class). \
+\textsf{Why mini-batches:} good gradient estimate, fast on GPU, useful noise.
+\[
+\mathbf{w}\leftarrow\mathbf{w}-\eta\nabla\Remp,\qquad
+\text{Adam: }\mathbf{w}\leftarrow\mathbf{w}-\eta\,\frac{\hat{\mathbf{m}}}{\sqrt{\hat{\mathbf{v}}}+\epsilon},\qquad
+\text{SELU: }\lambda\begin{cases}x & x>0\\ \alpha(e^x-1)& x\le0\end{cases}
+\]
+with $\lambda\approx1.0507$, $\alpha\approx1.6733$.
+\end{summary}
+
+\pic{Walking down a foggy mountain. Gradient descent: look at the slope under your feet and step
+downhill. Momentum: a heavy ball that keeps rolling through small bumps. Adam: shoes that adjust
+their step to how steep and how noisy each direction is. Mini-batch: asking a few people for the
+way instead of everybody (too slow) or one person (too noisy).}
+
+\board{GD $\mathbf{w}\leftarrow\mathbf{w}-\eta\nabla\Remp$ \textbullet{}
+momentum $\mathbf{v}\leftarrow\mu\mathbf{v}-\eta\nabla\Remp$, $\mathbf{w}\leftarrow\mathbf{w}+\mathbf{v}$ \textbullet{}
+weight decay $\Remp+\frac\lambda2\lVert\mathbf{w}\rVert^2$ \textbullet{}
+dropout: keep unit with prob.\ $1-p$ \textbullet{}
+batch norm $\hat s=(s-\mu_B)/\sqrt{\sigma_B^2+\epsilon}$, then $\gamma\hat s+\beta$.}
+
+\begin{qabox}[Hochreiter]{Which activation function comes from Linz? What does it do?}
+\ans SELU, the scaled exponential linear unit, from Klambauer, Unterthiner, Mayr and Hochreiter
+(2017); and before it ELU. SELU makes networks \emph{self-normalizing}: mean and variance of the
+activations are pulled to $(0,1)$ layer by layer, without batch normalization.
+\formula The map of (mean, variance) from one layer to the next has the fixed point $(0,1)$; its
+Jacobian there has spectral norm $0.7877<1$, so the fixed point is stable (a contraction).
+\pic{A thermostat: whatever the temperature, the layer pushes it back to the set point.}
+\src{DLNN script WS24, Sec.~10.4, PDF p.~137--141.}
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{Which optimizers do you know? Are there methods other than gradient descent?}
+\ans GD, SGD, momentum, AdaGrad, RMSprop, Adam. Other methods: closed form (linear models),
+IRLS, RProp and Quickprop, second-order methods (Newton, Gauss--Newton, Levenberg--Marquardt,
+conjugate gradients, natural gradient), and gradient-free search (evolutionary algorithms).
+\src{DLNN script WS24, Ch.~7, PDF p.~85--101; SS25 script ``Higher Order Optimization''.}
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{Which regularization techniques do you know?}
+\ans Weight decay, dropout, early stopping, data augmentation, input and weight noise, weight
+sharing, multi-task learning, pruning (Optimal Brain Damage and Surgeon), and Flat Minimum Search,
+which looks for wide minima that generalize better.
+\formula Weight decay gradient: $\nabla\Remp+\lambda\mathbf{w}$ (the weights shrink each step).
+\follow ``Why does dropout work?'' It trains an ensemble of thinned networks and stops units from
+co-adapting.
+\src{DLNN script WS24, Ch.~8, PDF p.~103--119.}
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{How can you do feature selection?}
+\ans Three families. Filter: rank features by a score like correlation or mutual information.
+Wrapper: search subsets with the model, e.g.\ forward or backward selection. Embedded: the model
+selects while it trains, e.g.\ L1 regularization (Lasso) pushes weights to exactly zero.
+\end{qabox}
+
+\begin{qabox}[Klambauer]{Why initialize randomly? What does good initialization do?}
+\ans Equal weights make all units in a layer learn the same thing, so we break the symmetry with
+random weights. The scale should keep the variance of activations forward and of deltas backward
+constant, so nothing vanishes or explodes.
+\formula $\mathrm{Var}(w)=1/n_{\mathrm{in}}$ (LeCun), $2/n_{\mathrm{in}}$ (He, ReLU),
+$2/(n_{\mathrm{in}}+n_{\mathrm{out}})$ (Glorot).
+\src{DLNN script WS24, Ch.~9, PDF p.~123--129.}
+\end{qabox}
+
+\begin{qabox}[Lehner]{Universal approximation theorem.}
+\ans One hidden layer with finitely many units and a non-polynomial activation can approximate
+any continuous function on a compact set arbitrarily well. It says such a network exists; it does
+not say how many units, nor that gradient descent finds it.
+\src{DLNN I+II script SS25, ``Deep Learning theory'', PDF p.~321.}
+\end{qabox}
+
+\begin{qabox}[Klambauer]{CNNs: why do they work for images? What is ResNet?}
+\ans Local filters with shared weights slide over the image: few parameters, translation
+equivariance. Pooling reduces size and adds invariance. Depth grows the receptive field. ResNet
+adds identity skips, $\mathbf{a}^{[l+1]}=\mathbf{a}^{[l]}+F(\mathbf{a}^{[l]})$, so the Jacobian is
+$I+\partial F$ and gradients pass through hundreds of layers.
+\formula Output size $\lfloor(n+2p-k)/s\rfloor+1$.
+\src{DLNN script WS24, Ch.~6; SS25 script PDF p.~176, 323.}
+\end{qabox}

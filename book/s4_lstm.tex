@@ -1,0 +1,205 @@
+\section{Recurrent networks and LSTM (Prof.\ Hochreiter)}
+
+This is Prof.\ Hochreiter's own field: he found the vanishing gradient (1991) and invented LSTM
+with Schmidhuber (1997). Expect him to go deep and to enjoy it. Notation of his lecture: input
+$\mathbf{x}(t)$, pre-activation $\mathbf{s}(t)$, activation $\mathbf{a}(t)$ or hidden state
+$\mathbf{h}(t)$, memory cell $\mathbf{c}(t)$, input weights $W$, recurrent weights $R$, output
+weights $V$.
+
+\subsection{Recurrent networks and BPTT}
+
+\begin{summary}{RNN in two minutes}
+\textsf{One idea.} An RNN reads a sequence one step at a time and keeps a hidden state: a summary
+of everything seen so far. The \emph{same} weights are used at every step, so it works for any
+length. Training = backpropagation through time (BPTT): unroll the net over time and backprop
+through the unrolled graph.
+\[
+\mathbf{s}(t)=W\mathbf{x}(t)+R\,\mathbf{a}(t-1),\qquad \mathbf{a}(t)=f(\mathbf{s}(t)),\qquad
+\hat{\mathbf{y}}(t)=V\mathbf{a}(t),\qquad L=\sum_{t=1}^{T}L(t).
+\]
+\[
+\bm\delta(t)=\mathrm{diag}\bigl(f'(\mathbf{s}(t))\bigr)\Bigl(V^\top\frac{\partial L(t)}{\partial\hat{\mathbf{y}}(t)}+R^\top\bm\delta(t+1)\Bigr),
+\]
+\[
+\frac{\partial L}{\partial R}=\sum_t\bm\delta(t)\,\mathbf{a}(t-1)^\top,\qquad
+\frac{\partial L}{\partial W}=\sum_t\bm\delta(t)\,\mathbf{x}(t)^\top.
+\]
+\textsf{Key words:} weight sharing in time \textbullet{} Turing complete \textbullet{} BPTT
+\textbullet{} truncated BPTT \textbullet{} RTRL \textbullet{} vanishing gradient in time.
+\end{summary}
+
+\pic{Reading a novel. You do not remember every word, you keep a running summary in your head
+(the hidden state) and update it with each new sentence, using the same reading skill (the same
+weights) on every page. BPTT is re-reading the book backwards to find which pages caused your
+wrong guess about the murderer.}
+
+\board{$\mathbf{s}(t)=W\mathbf{x}(t)+R\mathbf{a}(t-1)$,\ $\mathbf{a}(t)=f(\mathbf{s}(t))$,\
+$\hat{\mathbf{y}}(t)=V\mathbf{a}(t)$;\
+$\bm\delta(t)=\mathrm{diag}(f'(\mathbf{s}(t)))\,(V^\top\partial L(t)/\partial\hat{\mathbf{y}}(t)+R^\top\bm\delta(t+1))$;\
+$\partial L/\partial R=\sum_t\bm\delta(t)\mathbf{a}(t-1)^\top$.
+Note: $\bm\delta(t+1)$, the future, not $t-1$. Gradient uses $\mathbf{a}(t-1)$, not $\mathbf{s}(t-1)$.}
+
+\begin{qabox}[Hochreiter]{Which recurrent architectures do you know?}
+\ans Jordan network: feeds the \emph{output} of $t-1$ back as input. Elman network: feeds the
+\emph{hidden} state back, originally with fixed recurrent weights and trained locally in time.
+Fully recurrent network: trainable recurrent matrix $R$, every hidden unit sees all others.
+NARX: shortcuts to outputs further in the past (delays), which fights vanishing gradients only for a
+finite number of steps. Time-delay networks (TDNN): a fixed window, basically a 1D convolution.
+Then LSTM and GRU with gates.
+\follow ``Jordan training trick?'' Teacher forcing: during training feed the true label of $t-1$
+instead of the prediction.
+\src{LSTM lecture WS24, \texttt{Exam\_LSTM summary.pdf}.}
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{BPTT, truncated BPTT and RTRL: compare them.}
+\ans BPTT: forward through the whole sequence, then backward; exact gradient; memory grows
+linearly with the length $T$; cost $O(T\cdot W)$. Truncated BPTT: backprop only $k$ steps into
+the past; cheaper, but the gradient is an approximation and long dependencies are cut. RTRL:
+carries the derivative of the state with respect to all weights forward in time, so it is online
+and memory does not grow with $T$, but it is very expensive: $O(N^3)$ numbers stored and $O(N^4)$
+operations per step for $N$ hidden units.
+\formula RTRL recursion:
+$\dfrac{\partial\mathbf{s}(t)}{\partial w}=\dfrac{\partial\mathbf{s}(t)}{\partial w}\Big|_{\text{direct}}
++\dfrac{\partial\mathbf{s}(t)}{\partial\mathbf{s}(t-1)}\dfrac{\partial\mathbf{s}(t-1)}{\partial w}$.
+\pic{BPTT is watching the whole match recording afterwards. RTRL is a coach who updates his
+notes live during the match: no recording needed, but he must write very fast.}
+\src{LSTM lecture WS24, BPTT/RTRL exam questions.}
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{Why can a plain RNN not learn long-term dependencies?}
+\ans The delta is multiplied at every time step by the recurrent Jacobian
+$R^\top\mathrm{diag}(f'(\mathbf{s}))$. Over $k$ steps this is a product of $k$ factors, so it
+decays (or explodes) exponentially in $k$. After 10--20 steps the error from the past is
+practically zero.
+\formula
+$\Bigl\lVert\dfrac{\partial\mathbf{a}(t)}{\partial\mathbf{a}(t-k)}\Bigr\rVert
+=\Bigl\lVert\prod_{\tau=t-k+1}^{t}\mathrm{diag}\bigl(f'(\mathbf{s}(\tau))\bigr)R\Bigr\rVert
+\le\bigl(\max|f'|\,\lVert R\rVert\bigr)^{k}.$
+\follow ``Gradient clipping?'' Only fixes \emph{exploding}: it rescales the gradient norm to a
+threshold, keeps the direction. It does nothing for vanishing.
+\end{qabox}
+
+\subsection{LSTM}
+
+\begin{summary}{LSTM in two minutes}
+\textsf{One idea.} Give the network a \emph{memory cell} that is updated by \emph{adding}, not by
+multiplying through a squashing function. Then the error can flow back through time unchanged:
+the \emph{constant error carousel} (CEC). Gates, small sigmoid switches between 0 and 1, decide
+what to write (input gate), what to keep (forget gate) and what to show (output gate).
+\[
+\begin{aligned}
+\mathbf{z}(t)&=\tanh\bigl(W_z\mathbf{x}(t)+R_z\mathbf{h}(t-1)+\mathbf{b}_z\bigr)&&\text{cell input}\\
+\mathbf{i}(t)&=\sigma\bigl(W_i\mathbf{x}(t)+R_i\mathbf{h}(t-1)+\mathbf{b}_i\bigr)&&\text{input gate}\\
+\mathbf{f}(t)&=\sigma\bigl(W_f\mathbf{x}(t)+R_f\mathbf{h}(t-1)+\mathbf{b}_f\bigr)&&\text{forget gate}\\
+\mathbf{o}(t)&=\sigma\bigl(W_o\mathbf{x}(t)+R_o\mathbf{h}(t-1)+\mathbf{b}_o\bigr)&&\text{output gate}\\
+\mathbf{c}(t)&=\mathbf{f}(t)\odot\mathbf{c}(t-1)+\mathbf{i}(t)\odot\mathbf{z}(t)&&\text{memory update}\\
+\mathbf{h}(t)&=\mathbf{o}(t)\odot\tanh\bigl(\mathbf{c}(t)\bigr)&&\text{output}
+\end{aligned}
+\]
+\textsf{Why it works:} $\dfrac{\partial\mathbf{c}(t)}{\partial\mathbf{c}(t-1)}=\mathrm{diag}(\mathbf{f}(t))$,
+which is $\approx I$ when the forget gate is open. The original 1997 LSTM had no forget gate:
+$\mathbf{c}(t)=\mathbf{c}(t-1)+\mathbf{i}\odot\mathbf{z}$, derivative exactly $I$. The forget gate
+was added by Gers, Schmidhuber and Cummins (2000).
+\end{summary}
+
+\pic{A conveyor belt (the cell state) running through a factory. Things ride on it without being
+changed. Three workers stand next to it: one decides what to put \emph{on} the belt (input gate),
+one decides what to throw \emph{off} (forget gate), one decides what to \emph{show} to the next
+department (output gate). Because the belt does not squash anything, an item put on at the
+beginning is still there at the end: long-term memory.}
+
+\board{$\mathbf{c}(t)=\mathbf{f}\odot\mathbf{c}(t-1)+\mathbf{i}\odot\mathbf{z}$ \quad
+$\mathbf{h}(t)=\mathbf{o}\odot\tanh(\mathbf{c}(t))$ \quad
+gates $=\sigma(W\mathbf{x}(t)+R\mathbf{h}(t-1)+\mathbf{b})$, cell input $=\tanh(\cdot)$ \quad
+$\partial\mathbf{c}(t)/\partial\mathbf{c}(t-1)=\mathrm{diag}(\mathbf{f}(t))\approx I$.\
+Draw the cell: belt on top, three $\sigma$ gates, one $\tanh$ in, one $\tanh$ out.}
+
+\begin{qabox}[Hochreiter]{Explain the constant error carousel.}
+\ans In the original LSTM the cell connects to itself with weight 1 and a linear activation. So
+the local error in the cell is multiplied by exactly 1 at every step: it neither vanishes nor
+explodes. The gates protect this carousel: the input gate protects the cell from irrelevant
+inputs, the output gate protects other units from irrelevant cell content.
+\formula $\mathbf{c}(t)=\mathbf{c}(t-1)+\mathbf{i}(t)\odot\mathbf{z}(t)\ \Rightarrow\
+\partial\mathbf{c}(t)/\partial\mathbf{c}(t-1)=I$.
+\src{LSTM lecture WS24, CEC slides; Hochreiter \& Schmidhuber (1997).}
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{Why was the forget gate added? What about drift?}
+\ans Without a forget gate the cell can only accumulate; on long, continuous input streams the
+state grows without limit and the cell saturates. The forget gate lets the network reset its
+memory. Related: \emph{internal state drift}, when inputs are mostly of one sign the state drifts
+away; the remedy in the original paper is to bias the input gates towards zero at the start
+(negative bias), so the cell writes only when needed.
+\follow ``Ticker steps?'' Letting the LSTM run extra steps after the input has ended, so it can
+process what it has stored before it must answer.
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{LSTM variants: peepholes, CIFG, GRU.}
+\ans Peephole connections let the gates see the cell state $\mathbf{c}(t-1)$ directly.
+CIFG (coupled input and forget gate) sets $\mathbf{f}=1-\mathbf{i}$: write only as much as you
+forget. GRU (Cho et al.\ 2014) goes further: no separate cell, an update gate that acts as coupled
+input and forget gate, and a reset gate that decides how much the old state enters the candidate.
+\formula GRU:\ $\mathbf{u}=\sigma(\cdot)$,\ $\mathbf{r}=\sigma(\cdot)$,\
+$\tilde{\mathbf{h}}=\tanh\bigl(W\mathbf{x}(t)+R(\mathbf{r}\odot\mathbf{h}(t-1))\bigr)$,\
+$\mathbf{h}(t)=(1-\mathbf{u})\odot\mathbf{h}(t-1)+\mathbf{u}\odot\tilde{\mathbf{h}}$.
+\follow Other variants from the lecture: multidimensional LSTM (e.g.\ 2D images, several time
+axes), ConvLSTM (convolutions inside the gates, for video).
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{Dropout in LSTMs: why is it special?}
+\ans Naive dropout on the recurrent state at every step multiplies survival probabilities over
+time, so a memory would survive with probability $(1-p)^T$: long-term memory is destroyed. So we
+use special forms: dropout only on the non-recurrent connections, variational dropout (the same
+mask at every time step), or zoneout (randomly \emph{keep} the previous state instead of zeroing
+units). Dropout is switched off at evaluation.
+\end{qabox}
+
+\begin{qabox}[Hochreiter, Schl\"uter]{Bidirectional LSTM, and one label for a whole sequence.}
+\ans A bidirectional LSTM runs one LSTM forward and one backward and concatenates the two hidden
+states, so each step sees past and future; it needs the full sequence, so not for real-time use.
+For one label per sequence use the last hidden state or global average pooling over all states,
+then a classifier. Seq2seq: an encoder LSTM reads the input, a decoder LSTM writes the output.
+\end{qabox}
+
+\subsection{Beyond LSTM: xLSTM, Mamba, Hopfield}
+
+\begin{summary}{Modern sequence models from Linz and elsewhere}
+\textsf{xLSTM} (Beck, Hochreiter et al.\ 2024): (1) \emph{exponential gating} with a normalizer
+state, so the model can revise a storage decision (a new, more important input can overwrite the
+old one); (2) \textsf{sLSTM}: scalar memory with memory mixing and a stabilizer against overflow;
+(3) \textsf{mLSTM}: a \emph{matrix} memory $C\in\mathbb{R}^{d\times d}$ updated by a covariance rule,
+fully parallelizable; its size does not grow with the sequence length.
+\[
+\text{mLSTM: }C_t=f_tC_{t-1}+i_t\,\mathbf{v}_t\mathbf{k}_t^\top,\quad
+\mathbf{n}_t=f_t\mathbf{n}_{t-1}+i_t\mathbf{k}_t,\quad
+\mathbf{h}_t=\mathbf{o}_t\odot\frac{C_t\mathbf{q}_t}{\max(|\mathbf{n}_t^\top\mathbf{q}_t|,1)},\quad i_t=\exp(\tilde i_t).
+\]
+\textsf{Mamba}: a \emph{selective} state space model, $\mathbf{h}_t=\bar A\mathbf{h}_{t-1}+\bar B\mathbf{x}_t$,
+$\mathbf{y}_t=C\mathbf{h}_t$, where $B$, $C$ and the step $\Delta$ depend on the input; linear in
+sequence length. \
+\textsf{Modern Hopfield networks} (Ramsauer, Hochreiter et al.\ 2020): the update
+$\bm\xi^{\text{new}}=X\,\mathrm{softmax}(\beta X^\top\bm\xi)$ is exactly Transformer attention.
+\end{summary}
+
+\pic{Old LSTM memory is a notebook where you write in pencil and can only fade old notes. xLSTM's
+exponential gate is a highlighter: a new, important note can outshine everything before it. The
+mLSTM matrix memory is a filing cabinet: store a value under a key ($\mathbf{v}\mathbf{k}^\top$),
+retrieve it later with a query ($C\mathbf{q}$).}
+
+\begin{qabox}[Hochreiter]{What is new in xLSTM, and why?}
+\ans LSTM has three limits: it cannot revise a storage decision, its memory is a small scalar
+cell, and it cannot be parallelized over time because of memory mixing. xLSTM answers each:
+exponential gating with normalization revises storage decisions; mLSTM gives a matrix memory
+with key--value storage; and mLSTM drops memory mixing, so it trains in parallel like a
+Transformer while inference stays linear in the sequence length.
+\formula $C_t=f_tC_{t-1}+i_t\mathbf{v}_t\mathbf{k}_t^\top$, retrieval $C_t\mathbf{q}_t$; normalizer
+$\mathbf{n}_t=f_t\mathbf{n}_{t-1}+i_t\mathbf{k}_t$.
+\src{LSTM lecture WS24, xLSTM exam questions.}
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{What connects Hopfield networks and attention?}
+\ans A modern Hopfield network stores patterns $X$ and retrieves the one closest to a query
+$\bm\xi$ with $\bm\xi^{\text{new}}=X\,\mathrm{softmax}(\beta X^\top\bm\xi)$. With $\beta=1/\sqrt{d_k}$
+and learned projections this is exactly the attention formula. So attention is associative
+memory retrieval, and the network can store exponentially many patterns.
+\end{qabox}

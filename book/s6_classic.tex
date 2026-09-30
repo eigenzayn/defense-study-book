@@ -1,0 +1,83 @@
+\section{Classical ML asked in the same slot}
+
+\begin{summary}{SVM, kernels, VC, likelihood, REINFORCE}
+\textsf{SVM:} largest-margin separating hyperplane; soft margin with slack $\xi_n$ and penalty $C$.
+\textsf{Kernel trick:} the dual needs only dot products, so replace them by $k(\mathbf{x},\mathbf{x}')$.
+\textsf{VC dimension:} the largest point set a model class can shatter; linear in $\mathbb{R}^d$: $d+1$.
+\textsf{MLE:} choose the parameters that make the data most likely; overfits with little data.
+\textsf{REINFORCE:} policy gradient by the log-derivative trick.
+\[
+\min_{\mathbf{w},b,\bm\xi}\tfrac12\lVert\mathbf{w}\rVert^2+C\sum_n\xi_n\ \text{ s.t. }\ y_n(\mathbf{w}^\top\mathbf{x}_n+b)\ge1-\xi_n,\ \xi_n\ge0;
+\qquad
+\nabla_\theta J=\mathbb{E}\Bigl[\sum_t\nabla_\theta\log\pi_\theta(a_t|s_t)\,G_t\Bigr].
+\]
+\end{summary}
+
+\pic{SVM: build the widest possible road between two villages; the houses standing right at the
+road's edge are the support vectors, they alone decide where the road goes. Kernel: lift the map
+into 3D, where a curved border becomes a flat wall, without ever drawing the 3D map.}
+
+\board{Primal SVM (above) \textbullet{} dual $\max_{\bm\alpha}\sum\alpha_n-\frac12\sum_{n,m}\alpha_n\alpha_my_ny_mk(\mathbf{x}_n,\mathbf{x}_m)$,
+$0\le\alpha_n\le C$, $\sum\alpha_ny_n=0$ \textbullet{}
+RBF $k=\exp(-\lVert\mathbf{x}-\mathbf{x}'\rVert^2/2\sigma^2)$ \textbullet{}
+$\mathcal{L}(\theta)=\prod_np(\mathbf{x}_n;\theta)$, $\hat\theta=\arg\max\sum_n\log p(\mathbf{x}_n;\theta)$ \textbullet{}
+REINFORCE loss $-\sum_t\log\pi_\theta(a_t|s_t)(G_t-b)$.}
+
+\begin{qabox}[Kofler, Hochreiter]{Explain the SVM and write the optimization problem with its constraints.}
+\ans The SVM separates two classes with the hyperplane of maximal margin $2/\lVert\mathbf{w}\rVert$.
+Maximizing the margin is minimizing $\frac12\lVert\mathbf{w}\rVert^2$. The soft margin allows
+violations with slack variables, paid for with $C$. Only points on or inside the margin get
+$\alpha_n>0$: the support vectors.
+\formula (primal and dual as in the board drill); decision $f(\mathbf{x})=\mathrm{sign}\bigl(\sum_n\alpha_ny_nk(\mathbf{x}_n,\mathbf{x})+b\bigr)$.
+\follow ``Large $C$?'' Few violations, narrow margin, risk of overfitting. ``Small $C$?'' Wide
+margin, more violations.
+\end{qabox}
+
+\begin{qabox}[Kofler]{What are kernels, why important, what is the kernel trick?}
+\ans A kernel is a dot product in a feature space, $k(\mathbf{x},\mathbf{x}')=\langle\phi(\mathbf{x}),\phi(\mathbf{x}')\rangle$.
+Many algorithms (SVM dual, kernel ridge regression, kernel PCA) use data only through dot
+products, so we plug in the kernel and get a non-linear method at linear cost, without computing
+$\phi$, which may even be infinite-dimensional (RBF). A valid kernel gives a positive
+semi-definite Gram matrix (Mercer).
+\end{qabox}
+
+\begin{qabox}[Kofler]{VC dimension: what is it, what is it used for?}
+\ans The largest number of points that the model class can shatter, i.e.\ classify correctly under
+every possible labelling. Lines in 2D: 3. It measures capacity and appears in generalization
+bounds: with probability $1-\eta$,
+$\Rgen\le\Remp+\sqrt{\frac{h(\log(2N/h)+1)-\log(\eta/4)}{N}}$, with $h$ the VC dimension.
+Small $h$ or large $N$ $\to$ small gap.
+\end{qabox}
+
+\begin{qabox}[Widmer, Kofler]{Likelihood, maximum likelihood, expectation maximization.}
+\ans The likelihood is the probability of the observed data as a function of the parameters. MLE
+maximizes it (in practice the log). Problem: with little data it overfits, e.g.\ the sunrise
+problem, where an unseen event gets probability zero; a prior (MAP, Laplace smoothing) fixes it.
+EM is used when there are hidden variables (mixture models, HMMs): the E-step computes the
+posterior of the hidden variables with the current parameters, the M-step maximizes the expected
+complete-data log-likelihood; the likelihood never decreases.
+\formula $\hat\theta_{\mathrm{MLE}}=\arg\max_\theta\sum_n\log p(\mathbf{x}_n;\theta)$;\
+link to ERM: squared loss $\Leftrightarrow$ Gaussian MLE, cross-entropy $\Leftrightarrow$ categorical MLE.
+\end{qabox}
+
+\begin{qabox}[Hochreiter]{Derive the REINFORCE loss.}
+\ans We maximize the expected return over trajectories. The gradient of an expectation is turned
+into an expectation of a gradient with the log-derivative trick, $\nabla p=p\nabla\log p$. The
+environment dynamics do not depend on $\theta$, so only the policy terms remain.
+\formula
+$\nabla_\theta J=\nabla_\theta\!\int p_\theta(\tau)G(\tau)\,\mathrm{d}\tau
+=\int p_\theta(\tau)\nabla_\theta\log p_\theta(\tau)G(\tau)\,\mathrm{d}\tau$,\
+$\log p_\theta(\tau)=\log p(s_0)+\sum_t\bigl[\log\pi_\theta(a_t|s_t)+\log p(s_{t+1}|s_t,a_t)\bigr]$\
+$\Rightarrow\nabla_\theta J=\mathbb{E}_\tau\bigl[\sum_t\nabla_\theta\log\pi_\theta(a_t|s_t)\,G_t\bigr]$.
+\follow ``Why a baseline $b$?'' Subtracting $b(s_t)$ does not change the expected gradient but
+lowers its variance.
+\pic{Training a dog: after a good walk (high return), make every action of that walk a bit more
+likely; after a bad one, a bit less.}
+\end{qabox}
+
+\begin{qabox}[general]{Confusion matrix, precision, recall, AUC.}
+\ans Precision $=TP/(TP+FP)$: of what I called positive, how much is right. Recall
+$=TP/(TP+FN)$: of all positives, how many I found. The ROC curve plots true-positive rate against
+false-positive rate over all thresholds; AUC is the probability that a random positive scores
+higher than a random negative (0.5 chance, 1 perfect).
+\end{qabox}
