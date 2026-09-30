@@ -4,6 +4,7 @@ Study notes for the Master's examination in Artificial Intelligence:
 Machine Learning & Perception, LSTM and sequence models, and recurrence CFD.
 
 **Read online:** https://eigenzayn.github.io/defense-study-book/  
+**Presentation (slides):** https://eigenzayn.github.io/defense-study-book/presentation/ (keys: arrows, P presenter, O overview, F fullscreen; PDF backup in `presentation/`)  
 **Read the PDF:** [Defense_Study_Book.pdf](Defense_Study_Book.pdf)
 
 Each topic has four layers:
