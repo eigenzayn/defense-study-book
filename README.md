@@ -12,6 +12,8 @@ Each topic has four layers:
 3. **Board drill**: the formula to write by hand three times
 4. **Questions**: what to say, what to write, and the usual follow-up
 
+Extra chapters: **conversation chains** (each answer ends with a hook to the next topic) and **hot topics and the Linz school** (xLSTM, Hopfield, SELU, RUDDER, NeuralDEM, reasoning LLMs, flow matching).
+
 Sources are the JKU lecture scripts (Deep Learning and Neural Networks I/II, LSTM lecture)
 and the Numerical Methods in Fluid Mechanics lecture.
 

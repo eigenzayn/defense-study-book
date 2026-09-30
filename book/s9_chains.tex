@@ -1,0 +1,191 @@
+\section{Conversation chains}
+
+Past students all say it: the exam is a conversation. The examiner takes a word from your answer
+and asks about it. So every word you say is a door. This chapter turns that into a tool: each
+answer ends with a \emph{hook}, one sentence that names the next topic. You open the door you
+want, to a room you have prepared.
+
+\begin{summary}{How to use the chains}
+\textsf{Rule 1.} Answer in 2--3 sentences, then say the hook. Stop. Let the examiner walk through
+the door. \
+\textsf{Rule 2.} Only say words you can explain. ``Batch norm'' in your answer means a batch-norm
+question in two seconds. \
+\textsf{Rule 3.} If the examiner goes elsewhere, fine: jump to the matching step of another chain. \
+\textsf{Rule 4.} Learn a chain as a \emph{story}, not as a list: each step is the answer to the
+problem of the step before. \
+Symbols: \textsf{\color{qcol}Q} question \textbullet{} \textsf{\color{qcol}A} your short answer
+\textbullet{} \textsf{\color{piccol}$\to$ hook} the sentence that opens the next door.
+\end{summary}
+
+\newcommand{\cq}[1]{\par\smallskip\textsf{\color{qcol}Q.}\ #1}
+\newcommand{\ca}[1]{\par\textsf{\color{qcol}A.}\ #1}
+\newcommand{\hook}[1]{\par\textsf{\color{piccol}$\to$ hook:}\ \emph{#1}}
+
+\newtcolorbox{chain}[1]{enhanced,breakable,colback=white,colframe=qcol!55,boxrule=0.5pt,arc=2pt,
+  left=7pt,right=7pt,top=4pt,bottom=5pt,title={\sffamily #1},fonttitle=\small,coltitle=white,colbacktitle=qcol!85}
+
+\begin{chain}{Chain 1 -- From data to batch normalization (Klambauer, Hochreiter)}
+\pic{A story in one line: \emph{we want small risk} $\to$ \emph{we need gradients} $\to$
+\emph{gradients vanish} $\to$ \emph{we fix the signal size} $\to$ \emph{with activations, with
+initialization, with normalization}.}
+\cq{What is the goal of learning?}
+\ca{Small error on new data, the generalization error. We cannot measure it, so we minimize the
+empirical risk $\Remp=\frac1N\sum_nL(y_n,g(\mathbf{x}_n;\mathbf{w}))$ on the training data.}
+\hook{To minimize it we need a differentiable loss, so we use cross-entropy instead of the 0--1 loss.}
+
+\cq{Why cross-entropy?}
+\ca{It is differentiable, and minimizing it is maximum likelihood for a categorical output. With
+softmax at the output the delta becomes simply $\hat{\mathbf{y}}-\mathbf{y}$.}
+\hook{We then minimize it with gradient descent, in practice with mini-batches.}
+
+\cq{Gradient descent and mini-batches?}
+\ca{$\mathbf{w}\leftarrow\mathbf{w}-\eta\nabla\Remp$. A mini-batch gives a good, cheap gradient
+estimate, runs in parallel on a GPU, and its noise helps to find flat minima.}
+\hook{The gradient itself we get with backpropagation.}
+
+\cq{Backpropagation?}
+\ca{Forward pass, store $s$ and $a$. Delta at the output, then down:
+$\delta_j=f'(s_j)\sum_i\delta_iw_{ij}$. Gradient $\partial L/\partial w_{ij}=\delta_ia_j$.}
+\hook{Because the delta is multiplied by $f'$ and $W$ in every layer, it can vanish.}
+
+\cq{Vanishing gradients?}
+\ca{A product of many Jacobians shrinks or grows exponentially. With sigmoid $|f'|\le0.25$.
+Found by Hochreiter in 1991.}
+\hook{Three fixes: the activation function, the initialization, and normalization.}
+
+\cq{Which activation helps?}
+\ca{ReLU does not saturate for positive inputs. SELU, from Linz, even keeps mean 0 and variance 1
+by itself: self-normalizing, with a stable fixed point.}
+\hook{The same goal, a constant variance, is also the idea of good initialization.}
+
+\cq{Initialization?}
+\ca{Random, to break symmetry, with variance $1/n_{\mathrm{in}}$ (or $2/n_{\mathrm{in}}$ for ReLU)
+so the signal keeps its size forward and backward.}
+\hook{During training the statistics drift again, and batch normalization corrects that.}
+
+\cq{Batch normalization?}
+\ca{Standardize each pre-activation over the mini-batch,
+$\hat s=(s-\mu_B)/\sqrt{\sigma_B^2+\epsilon}$, then learn scale and shift, $\gamma\hat s+\beta$.
+Training is faster and more stable, and it regularizes a little. Layer norm does the same over the
+features instead of the batch, which suits RNNs and Transformers.}
+\hook{SELU reaches the same effect without any batch statistics, which is why it was developed here.}
+\end{chain}
+
+\begin{chain}{Chain 2 -- From RNN to xLSTM (Hochreiter)}
+\pic{\emph{RNNs forget} $\to$ \emph{LSTM remembers on a conveyor belt} $\to$ \emph{Transformers
+look at everything, but pay $N^2$} $\to$ \emph{xLSTM brings memory back at linear cost}.}
+\cq{What is an RNN?}
+\ca{A network with a hidden state that is fed back: $\mathbf{s}(t)=W\mathbf{x}(t)+R\mathbf{a}(t-1)$.
+Same weights at every step, any sequence length, Turing complete.}
+\hook{We train it with backpropagation through time.}
+
+\cq{BPTT?}
+\ca{Unroll in time and backprop: $\bm\delta(t)=\mathrm{diag}(f')(V^\top\partial L(t)/\partial\hat{\mathbf{y}}+R^\top\bm\delta(t+1))$.
+Memory grows with the sequence length; RTRL avoids that but costs $O(N^4)$ per step.}
+\hook{The problem is that the error from far in the past vanishes.}
+
+\cq{Why does it vanish?}
+\ca{At every step it is multiplied by $R^\top\mathrm{diag}(f')$; after $k$ steps by the $k$-th power.
+Clipping helps against exploding, not vanishing.}
+\hook{LSTM solves it with the constant error carousel.}
+
+\cq{The constant error carousel?}
+\ca{A memory cell updated by addition, $\mathbf{c}(t)=\mathbf{f}\odot\mathbf{c}(t-1)+\mathbf{i}\odot\mathbf{z}$,
+so $\partial\mathbf{c}(t)/\partial\mathbf{c}(t-1)=\mathrm{diag}(\mathbf{f})\approx I$. The error rides
+the belt unchanged. Gates decide what to write, keep and read.}
+\hook{The forget gate was added later, and GRU simplified the gates.}
+
+\cq{Forget gate and GRU?}
+\ca{Gers et al.\ 2000: the forget gate lets the cell reset on long streams. GRU couples input and
+forget into one update gate and adds a reset gate; fewer parameters, similar results.}
+\hook{LSTMs still read step by step; attention removed that bottleneck.}
+
+\cq{Attention and Transformers?}
+\ca{$\mathrm{softmax}(QK^\top/\sqrt{d_k})V$: every token looks at every token in one step, fully
+parallel. The price is $O(N^2)$ in the sequence length.}
+\hook{xLSTM tries to keep the parallel training but with linear cost.}
+
+\cq{xLSTM?}
+\ca{Exponential gating with a normalizer, so storage decisions can be revised; and mLSTM, a matrix
+memory $C_t=f_tC_{t-1}+i_t\mathbf{v}_t\mathbf{k}_t^\top$, parallel in training, linear in inference.}
+\hook{And the attention formula itself is the update rule of a modern Hopfield network.}
+\end{chain}
+
+\begin{chain}{Chain 3 -- Generalization and regularization (Klambauer)}
+\pic{\emph{Fit the data} $\to$ \emph{but not too well} $\to$ \emph{measure it honestly}
+$\to$ \emph{control it}.}
+\cq{What is overfitting?}
+\ca{Training error low, test error high: the model learned the noise. Too much capacity for the data.}
+\hook{Capacity can be measured, for example by the VC dimension.}
+\cq{VC dimension?}
+\ca{The largest point set the model class can shatter; lines in 2D: 3. Bounds say the gap between
+test and training error grows with it and shrinks with $N$.}
+\hook{In practice we do not use the bound, we estimate the test error directly.}
+\cq{How?}
+\ca{Held-out test set, or $L$-fold cross-validation, which is almost unbiased and uses all data.}
+\hook{If the estimate shows overfitting, we regularize.}
+\cq{Regularization?}
+\ca{Weight decay $\frac\lambda2\lVert\mathbf{w}\rVert^2$, dropout, early stopping, data augmentation,
+Flat Minimum Search. They all limit effective capacity.}
+\hook{Interestingly, very large networks can generalize even without it: double descent.}
+\cq{Double descent?}
+\ca{Past the interpolation point the test error falls again as the model grows; the classical
+U-curve is only the first half.}
+\end{chain}
+
+\begin{chain}{Chain 4 -- From your thesis into ML (Klambauer, chair)}
+\pic{\emph{rCFD is data reuse} $\to$ \emph{data reuse means generalization} $\to$ \emph{generalization
+fails outside the training regime} $\to$ \emph{a learned model would face the same limit}.}
+\cq{Why is your thesis AI?}
+\ca{The expensive solver produces data once, and a cheap model reuses it. Choosing the next frame
+is a nearest-neighbour search over recorded states.}
+\hook{So the key question is the same as in ML: how far does it generalize?}
+\cq{How far does it generalize?}
+\ca{Within its regime. The adiabatic recording fails under the cooled lid because cold plumes
+create a motion it never saw: out-of-distribution.}
+\hook{A learned surrogate would have the same limit, but it could learn the missing correction.}
+\cq{Which model would you use?}
+\ca{A graph neural network on the mesh: cells are nodes, faces are edges, message passing like the
+face exchange. Loss: distance to the reference plus an energy-balance penalty.}
+\hook{The penalty matters, because conservation is what rCFD guarantees by construction.}
+\cq{Why conservation?}
+\ca{My corrections are conservative: every face exchange appears twice with opposite signs, so the
+heat in the tank only moves. A learned model without that constraint can drift in energy.}
+\end{chain}
+
+\begin{chain}{Chain 5 -- From numerical diffusion to your limiter (Pirker)}
+\pic{\emph{Schemes smear} $\to$ \emph{explicit steps have limits} $\to$ \emph{my cap is such a limit}
+$\to$ \emph{un-smearing needs a limiter}.}
+\cq{What is numerical diffusion?}
+\ca{First-order upwind is stable but adds false diffusion that smears fronts, error $\propto\Delta x$.
+Central differencing is sharper but oscillates when the grid P\'eclet number exceeds 2.}
+\hook{In my replay the smearing comes from the face exchange, which is an explicit step.}
+\cq{Limits of explicit steps?}
+\ca{Convection needs $Co=u\Delta t/\Delta x<1$, diffusion $d=\Gamma\Delta t/\Delta x^2<0.5$.}
+\hook{This is exactly why the recorded diffusivity could not act.}
+\cq{Why not?}
+\ca{The exchange is capped at $\mathrm{Di}\le0.5$; the recorded field asked for about 4. Every face hit
+the cap, so it behaved like the constant $\fsd=0.5$.}
+\hook{To undo the smearing I needed anti-diffusion, and that needs a limiter.}
+\cq{Your limiter?}
+\ca{Negative diffusion is ill-posed and blows up at the grid scale. So I move heat up the gradient
+only as far as both cells' local bounds allow, $\Delta q_f=s\min(Q_h^+,Q_c^-)$, like flux-corrected
+transport: conservative, no new extremum.}
+\hook{And I weight it towards the vertical, because the front is horizontal.}
+\end{chain}
+
+\subsection*{Doors to open and doors to keep closed}
+
+\begin{center}\small
+\begin{tabularx}{\linewidth}{@{}XX@{}}
+\toprule
+Say it (you have a room behind it) & Avoid unless asked (deep rooms) \\ \midrule
+empirical risk, cross-entropy, mini-batch & natural gradient, Fisher information \\
+delta error, vanishing gradient, SELU & neural tangent kernel \\
+constant error carousel, forget gate, GRU & multidimensional LSTM details \\
+attention, $\sqrt{d_k}$, positional encoding & rotary embeddings in depth \\
+flux-corrected transport, limiter, conservative & Harten's TVD theory \\
+out-of-distribution, regime, nearest neighbour & Koopman operators, propagators in depth \\
+\bottomrule
+\end{tabularx}
+\end{center}
