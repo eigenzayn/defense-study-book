@@ -5,7 +5,8 @@ Machine Learning & Perception, LSTM and sequence models, and recurrence CFD.
 
 **Read online:** https://eigenzayn.github.io/defense-study-book/  
 **Presentation (slides):** https://eigenzayn.github.io/defense-study-book/presentation/ (keys: arrows, P presenter, O overview, F fullscreen; PDF backup in `presentation/`)  
-**Read the PDF:** [Defense_Study_Book.pdf](Defense_Study_Book.pdf)
+**Read the PDF:** [Defense_Study_Book.pdf](Defense_Study_Book.pdf)  
+**Spoken answers (oral exam):** [oral_exam_v2/oral_exam_v2.pdf](oral_exam_v2/oral_exam_v2.pdf): thesis, Machine Learning & Perception and AI for Simulation (rCFD). Each answer has a core sentence, a short explanation, the numbers to know, a line-by-line derivation with the reason for each step, and a summary. Build: `cd oral_exam_v2 && pdflatex oral_exam_v2.tex` (twice).
 
 Each topic has four layers:
 

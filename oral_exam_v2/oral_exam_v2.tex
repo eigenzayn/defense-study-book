@@ -1,0 +1,71 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[a4paper,margin=2.2cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb,bm}
+\usepackage{xcolor}
+\usepackage[most]{tcolorbox}
+\usepackage{enumitem}
+\usepackage{booktabs,tabularx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+
+\definecolor{qcol}{HTML}{1F4E79}
+\definecolor{remcol}{HTML}{7A3E00}
+\definecolor{srccol}{HTML}{666666}
+\definecolor{boxbg}{HTML}{F4F7FB}
+\definecolor{rembg}{HTML}{FFF6E8}
+
+\setlist{nosep,leftmargin=1.4em}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{4pt}
+\titleformat{\section}{\Large\sffamily\color{qcol}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\large\sffamily\color{qcol}}{\thesubsection}{0.6em}{}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\sffamily MSc AI -- Oral examination, spoken answers}
+\rhead{\small\sffamily M. B. Zainun}
+\cfoot{\small\thepage}
+
+% ---------- one question = core, explain, numbers, derivation, summary ----------
+\newcounter{qa}[section]
+\renewcommand{\theqa}{\thesection.\arabic{qa}}
+\newtcolorbox{qabox}[1]{enhanced,breakable,colback=boxbg,colframe=qcol!60,boxrule=0.4pt,
+  arc=1.5pt,left=6pt,right=6pt,top=4pt,bottom=4pt,
+  title={\refstepcounter{qa}\sffamily Q\theqa\quad #1},coltitle=white,colbacktitle=qcol!85,
+  fonttitle=\small}
+\newcommand{\core}[1]{\textsf{\color{qcol}Core.}\ \emph{#1}\par}
+\newcommand{\explain}{\textsf{\color{qcol}Explain.}\ }
+\newcommand{\nums}[1]{\par\textsf{\color{qcol}Numbers.}\ #1\par}
+\newcommand{\derive}{\par\textsf{\color{qcol}Derivation.}\par}
+\newcommand{\summary}[1]{\par\smallskip{\color{remcol}\textsf{Summary:} #1}\par}
+\newcommand{\src}[1]{\par{\footnotesize\color{srccol}Source: #1}}
+\newcommand{\why}[1]{&&\text{\small\color{srccol}(#1)}}
+\newtcolorbox{tipbox}{enhanced,breakable,colback=rembg,colframe=remcol!60,boxrule=0.4pt,arc=1.5pt,
+  left=6pt,right=6pt,top=4pt,bottom=4pt}
+
+\newcommand{\Remp}{R_{\mathrm{emp}}}
+\newcommand{\Rgen}{R_{\mathrm{gen}}}
+\newcommand{\fsd}{f_{\mathrm{sd}}}
+
+\begin{document}
+
+\begin{center}
+{\LARGE\sffamily\color{qcol} Oral Examination -- Spoken Answers}\\[6pt]
+{\large\sffamily Thesis \textbullet{} Machine Learning and Perception \textbullet{} AI for Simulation (rCFD)}\\[6pt]
+{\sffamily Mochamad Bukhori Zainun \quad 12438440 \quad UK 066 993}\\[2pt]
+{\small\sffamily Version of 10 October 2026, numbers from the thesis of the same date}
+\end{center}
+
+\input{part0_howto}
+\tableofcontents
+\clearpage
+\input{partA_thesis}
+\clearpage
+\input{partB_mlp}
+\clearpage
+\input{partC_aisim}
+
+\end{document}

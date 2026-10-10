@@ -1,0 +1,385 @@
+\section{AI for Simulation (Prof.\ Pirker)}
+
+Prof.\ Pirker is the supervisor and taught \emph{Numerical Methods in Fluid Mechanics}. Expect him
+to stay close to recurrence CFD and to the figures of the thesis: he points at a figure and asks
+what it shows and why. This part has three blocks: rCFD as taught in the lecture, the figures of the
+thesis, and the CFD basics that rCFD stands on.
+
+\subsection{Recurrence CFD as taught in the lecture}
+
+\begin{qabox}{Why rCFD at all? Connect it to how Navier--Stokes is solved.}
+\core{rCFD makes a bold prediction, reusing recorded flow, and then corrects it with physics, just as SIMPLE guesses a pressure and corrects it.}
+\explain Many industrial flows run for a long time and show recurring patterns: bubble columns,
+fluidized beds, turbulent vessels. Solving momentum and pressure for all that time is wasteful once
+the flow repeats itself. The correction then fixes what the reuse breaks, for example the mass
+balance.
+\summary{Bold prediction + physics-based correction.}
+\src{Pirker, rCFD lecture, slides 16--18.}
+\end{qabox}
+
+\begin{qabox}{Flow-based versus transport-based rCFD.}
+\core{Flow-based rCFD stitches recorded flows and still solves a transport equation; transport-based rCFD replaces the equation by cell shifts and face swaps.}
+\explain Flow-based rCFD (Lichtenegger and Pirker 2016) builds a long artificial flow from recorded
+sequences, about 100 times faster. Transport-based rCFD (Pirker and Lichtenegger 2018) solves no
+transport equation at all. My thesis uses the transport-based form, plus the correction hook and
+the conservation constraint.
+\nums{Steel ladle: 26~h of full CFD against 1.6~s of transport-based rCFD.}
+\summary{Flow-based: stitch flows, solve transport. Transport-based: shifts and swaps.}
+\src{Pirker, rCFD lecture, slides 19--34.}
+\end{qabox}
+
+\begin{qabox}{What are the recurrence norm, matrix, plateau and prominence?}
+\core{The norm measures how different two states are, and the prominence measures how deep the flow dips back towards earlier states.}
+\explain The norm for all pairs gives the matrix. One row of it starts at zero on the diagonal,
+rises and then oscillates about a plateau. Deep dips below the plateau mean the flow comes back to
+similar states, so the replay can jump there. In my tank the dips are shallow, so the replay plays
+the frames in order.
+\nums{The method asks for a prominence of 0.05 to 0.1. My tank: median 0.028.}
+\derive
+\begin{align*}
+R_{fg} &= \bigl\lVert\Phi^{(f)} - \Phi^{(g)}\bigr\rVert \why{norm between two frames} \\
+d(f,g) &= R_{fg}/\max R \why{normalised distance} \\
+P_{\mathrm{rel}} &= \bigl\langle d_{\max} - d_{\min}\bigr\rangle / \bar{d} \why{dip depth over the plateau}
+\end{align*}
+\summary{Norm, matrix, row, plateau, prominence. Mine: 0.028, frames in order.}
+\src{Pirker, rCFD lecture, slides 50--51; thesis, Section 2.4.}
+\end{qabox}
+
+\begin{qabox}{The three ``bold failures'' of rCFD and their corrections.}
+\core{Mass imbalance, unphysical diffusion and too little recurrence, fixed by a global balance, local swaps and recurrence islands.}
+\explain First, cell shifts do not conserve mass locally, so a global monitor corrects the total
+with mass-acting face swaps. Second, a fixed number of swaps gives the same mixing everywhere, so
+the swaps should follow the local mixing. Third, in large domains frames that match globally do not
+match locally, so the domain is split into islands with their own matrices. My thesis touches all
+three: the conservation constraint, the recorded diffusivity, and a flow with too little
+prominence.
+\summary{Imbalance $\to$ global balance. Diffusion $\to$ local swaps. Low recurrence $\to$ islands.}
+\src{Pirker, rCFD lecture, slides 35--54; thesis, Sections 2.6--2.8.}
+\end{qabox}
+
+\begin{qabox}{When does rCFD work, and when does it fail?}
+\core{It works when the motion repeats and the scalar does not change it, and it fails when the scalar drives the flow or the operating state changes.}
+\explain In a new state the recording does not contain the motion that this state would produce.
+That is my result: under the cooled lid the flow keeps renewing itself with cold plumes, a motion
+that the adiabatic recording never saw. The answer of the lecture is multi-state rCFD: one database
+per process state.
+\summary{A database belongs to a flow regime, not to a case.}
+\src{Pirker, rCFD lecture, slide 59; thesis, Section 6.4, Figure 6.6.}
+\end{qabox}
+
+\begin{qabox}{rCFD and digital twins. How would you use your work in a plant?}
+\core{rCFD can run alongside the process, if live data keep aligning it.}
+\explain A tank model with one mean value is instant but ignores the inside of the plant. Full CFD
+shows the inside but takes days. rCFD sits in between. Run blindly forward, it collects error, so
+live data should correct it. My thesis shows what such a twin must watch: a boundary condition can
+move the process into a regime the database does not cover.
+\nums{Lecture example: tank model under 1~s, experiment 750~s, CFD 2 days, rCFD 30~s.}
+\summary{Fast but blind, exact but slow, rCFD in between. Align with live data.}
+\src{Pirker, rCFD lecture, slides 59--72.}
+\end{qabox}
+
+\begin{qabox}{Is rCFD machine learning?}
+\core{It is data-based simulation: an expensive ground truth makes data, a cheap model reuses it, and the question is how far it generalizes.}
+\explain There is no gradient training. Choosing the next frame is a nearest-neighbour search. The
+replay is a sequence of sparse linear operators, close to a learned propagator (Lumetzberger et
+al.\ 2025). Possible AI steps: learn the map for unseen states, learn the missing flux as a
+function of the state, or train a neural operator on the database.
+\summary{Ground truth $\to$ data $\to$ cheap reuse. Generalization = which regime the database covers.}
+\src{Pirker, rCFD lecture, slide 69; thesis, Section 2.2.}
+\end{qabox}
+
+\subsection{The figures of the thesis}
+
+For every figure, have three sentences ready: what is plotted, what we see, and why.
+
+\begin{qabox}{Figure 1.1 -- passive and non-passive transport.}
+\core{A dye only rides the flow, but temperature makes the flow, and the replay cuts this feedback.}
+\explain (a) A dye in the stored velocity of the adiabatic tank is only stretched. (b) In the cooled
+tank, cold plumes from the lid create the motion. (c) The replay moves temperature with recorded
+maps and never solves the velocity.
+\summary{The whole thesis question in one figure.}
+\end{qabox}
+
+\begin{qabox}{Figure 2.2 -- recurrence of the database.}
+\core{The flow has two phases, filling and settling, and no state comes back.}
+\explain The distance matrix has two blocks split at frame 315. The rows rise to a plateau and none
+returns towards zero. The prominence stays below what the method needs, so the replay plays the
+frames in order.
+\nums{Median prominence 0.028. Nearest-neighbour distance 0.013, only because neighbouring frames are similar.}
+\summary{Two blocks, no return, frames in order.}
+\end{qabox}
+
+\begin{qabox}{Figure 3.3 -- vertical heat transport and plume scale.}
+\core{Under the cooled lid, the flow carries heat about 600 times more than conduction.}
+\explain The plane-mean vertical heat flux is split into the part carried by the flow and the part
+carried by conduction. The temperature departures under the lid have the size of whole plumes. So
+cooling is a transport process, and a diffusive step cannot copy it.
+\summary{Cooling is transport, not diffusion.}
+\end{qabox}
+
+\begin{qabox}{Figures 3.4 and 3.5 -- the two regimes.}
+\core{One boundary condition switches the flow from one regime to another.}
+\explain With the adiabatic lid the jet rises, spreads under the lid, and the warm layer then rests.
+With the cooled lid the layer above the front overturns in a row of cells driven by cold plumes.
+Same geometry, same inflow, two different flows.
+\summary{Same tank, same inflow, two flows.}
+\end{qabox}
+
+\begin{qabox}{Figure 5.1 -- the standard replay over the face-exchange sweep.}
+\core{More mixing heats the tank faster during the inflow and drains it faster afterwards.}
+\explain The mean temperature and the height of the heat are shown for seven strengths. The height
+is best at intermediate strengths, the mean temperature with little mixing. So no single strength is
+best for both.
+\summary{No single best $\fsd$.}
+\end{qabox}
+
+\begin{qabox}{Figure 5.2 -- the adiabatic tank through the run.}
+\core{The recorded maps keep the front thin, the face exchange smears it, and the correction makes it thin again.}
+\explain The mid-plane temperature is shown at four times, with the front width in each panel. The
+replay with maps only keeps the front as thin as the reference. So the smearing comes from the
+exchange, not from the maps.
+\summary{Maps: thin. Exchange: smeared. Correction: thin again.}
+\end{qabox}
+
+\begin{qabox}{Figure 5.3 -- space--time diagram.}
+\core{It shows the warm layer growing downwards and where the standard replay is too warm or too cold.}
+\explain The horizontal mean temperature is plotted against height and time. The difference panel
+shows the error of the standard replay, and the thickness panel shows that its front stays too
+thick. The corrected replay follows the reference.
+\summary{Height against time: the layer grows, the error is visible.}
+\end{qabox}
+
+\begin{qabox}{Figure 5.6 -- every correction run in one map.}
+\core{Only the vertically weighted form brings both errors down while the front reaches the reference width.}
+\explain Each marker is one replay: trace error and end-profile error against the front width. The
+other forms reach a thin front only with a large error. The working range of the vertical form is
+$s = 0.40$ to 0.50.
+\nums{Reference front 5.0~mm.}
+\summary{Direction matters more than strength.}
+\end{qabox}
+
+\begin{qabox}{Figure 5.7 -- buoyancy frequency across the front.}
+\core{A sharper front is a stronger barrier to vertical motion.}
+\explain The buoyancy frequency measures how strongly the stratification resists vertical motion.
+The standard replay holds a barrier about half as strong as the reference. The corrected replay
+reaches the reference value after the inflow.
+\derive
+\begin{align*}
+N^2 &= g\,\beta\,\frac{\partial T}{\partial y} \why{buoyancy frequency, Eq.~(3.3)}
+\end{align*}
+\summary{Steeper gradient, larger $N$, stronger barrier.}
+\end{qabox}
+
+\begin{qabox}{Figure 5.8 -- end profiles through the front.}
+\core{Read the width always together with the profile.}
+\explain Without correction the front is wide and too high. The unweighted correction makes it thin
+but puts it in the wrong place. The vertical weight follows the reference. A saw-toothed front can
+have the right width and the wrong shape.
+\summary{Right width is not enough: check the shape.}
+\end{qabox}
+
+\begin{qabox}{Figure 5.10 -- outlet temperature from the energy balance.}
+\core{The outlet sits just below the front, so a smeared front turns into a heat leak.}
+\explain While the inflow is warm the standard replay keeps heat in the tank, and afterwards it
+drains it. The vertical correction ends much closer. So a numerical error at the front becomes an
+error in the energy budget.
+\nums{Standard: $+2.7$~K kept at $t = 315$~s, ends at $-1.9$~K. Vertical correction ends at
+$-0.5$~K.}
+\derive
+\begin{align*}
+M\frac{\mathrm{d}\bar T}{\mathrm{d}t} &= \dot m\,(T_{\mathrm{in}} - T_{\mathrm{out}}) \why{energy in minus out, Eq.~(4.10)} \\
+T_{\mathrm{out}} &= T_{\mathrm{in}} - \tau\,\frac{\mathrm{d}\bar T}{\mathrm{d}t},\quad \tau = M/\dot m \why{solve for the outlet, Eq.~(4.11)}
+\end{align*}
+\summary{Smeared front + outlet below it = heat leak.}
+\end{qabox}
+
+\begin{qabox}{Figure 5.11 -- state space.}
+\core{The correction keeps the replay close to the states that the recording spans.}
+\explain The two leading POD modes of the reference field are shown, and the distance of each run
+from the space of the first ten modes. The standard replay leaves this space and does not return.
+The corrected replay returns after the inflow.
+\summary{Corrected replay stays on the recorded state space.}
+\end{qabox}
+
+\begin{qabox}{Figure 6.2 -- wall-cooled end profiles.}
+\core{The standard replay holds nearly the right heat, but in the wrong place.}
+\explain The bulk is too warm and the top layer too cold. The correction moves the heat back. This
+is why I report the mean temperature and the profile together.
+\nums{Standard replay: profile 2.79~K. Corrected at $s = 0.475$: 0.59~K.}
+\summary{Same heat, wrong place.}
+\end{qabox}
+
+\begin{qabox}{Figure 6.3 -- wall-cooled traces.}
+\core{The local correction follows the heat content but lags in layering while the tank fills.}
+\explain The red band shows how far the local correction lags in heterogeneity during the warm
+inflow. Only the recorded flux also follows the heterogeneity. A lag in layering is missing
+transport, not missing sharpness.
+\summary{Layering lag = missing transport.}
+\end{qabox}
+
+\begin{qabox}{Figures 6.4 and 6.5 -- end state and plumes.}
+\core{The departure is smallest at $s = 0.55$, and only the corrected replay has plumes that reach the front.}
+\explain Along the strength ladder the cold top and the warm bulk fade together. At $s = 0.8$ the
+top turns warm. In 3D, the plumes of the standard replay end halfway down, and with the correction
+they reach the front again. The plumes were in the recorded maps all along.
+\nums{Smallest mean departure 0.22~K at $s = 0.55$.}
+\summary{Right layering lets the recorded plumes show.}
+\end{qabox}
+
+\begin{qabox}{Figure 6.6 -- recurrence of the two recordings.}
+\core{After the inflow the cooled flow keeps renewing itself, and the adiabatic flow hardly changes.}
+\explain At short lags the cooled flow changes about ten times faster. So the cooled case is a
+different regime, and a database recorded without cooling cannot contain its motion.
+\summary{Different regime $\to$ different database.}
+\end{qabox}
+
+\subsection{CFD basics behind rCFD}
+
+\begin{qabox}{Reynolds number and other dimensionless numbers.}
+\core{The Reynolds number compares inertia with viscous forces.}
+\explain Pipe flow is laminar below about 2300 and turbulent above about 4000. Other numbers: the
+P\'eclet number compares convection with diffusion, the Prandtl number momentum diffusion with heat
+diffusion, the Froude number inertia with gravity, and the Richardson number buoyancy with inertia.
+\nums{My case: $Re \approx 99$, laminar. $Ri = 1.84$.}
+\derive
+\begin{align*}
+Re &= \frac{UL}{\nu},\quad Pe = \frac{UL}{\Gamma},\quad Pr = \frac{\nu}{\alpha},\quad Ri = \frac{g'L}{U^2} \why{ratios of effects}
+\end{align*}
+\summary{Re: inertia/viscosity. Pe: convection/diffusion. Ri: buoyancy/inertia.}
+\src{Pirker, introduction slides; thesis, Section 3.3.}
+\end{qabox}
+
+\begin{qabox}{Governing equations and the material derivative.}
+\core{Mass, momentum and energy are conserved, and the material derivative links the moving parcel with the fixed control volume.}
+\explain The Lagrangian view follows a fluid parcel. The Eulerian view looks at a fixed point. The
+material derivative is the rate of change seen by the moving parcel.
+\derive
+\begin{align*}
+\frac{\mathrm{d}}{\mathrm{d}t}\phi\bigl(\mathbf{x}(t),t\bigr) &= \frac{\partial\phi}{\partial t} + \sum_i\frac{\partial\phi}{\partial x_i}\frac{\mathrm{d}x_i}{\mathrm{d}t} \why{chain rule along the path} \\
+&= \frac{\partial\phi}{\partial t} + \mathbf{u}\cdot\nabla\phi = \frac{\mathrm{D}\phi}{\mathrm{D}t} \why{the parcel moves with $\mathrm{d}\mathbf{x}/\mathrm{d}t = \mathbf{u}$} \\
+\frac{\partial\rho}{\partial t} + \nabla\cdot(\rho\mathbf{u}) &= 0 \why{mass} \\
+\frac{\partial(\rho\mathbf{u})}{\partial t} + \nabla\cdot(\rho\mathbf{u}\mathbf{u}) &= -\nabla p + \nabla\cdot\bm\tau + \rho\mathbf{g} \why{momentum}
+\end{align*}
+\summary{Change in time + convection = pressure + viscous + body force.}
+\src{Pirker, governing-equation slides.}
+\end{qabox}
+
+\begin{qabox}{The finite-volume method.}
+\core{Integrate the equation over each cell, and the divergence theorem turns everything into fluxes through faces.}
+\explain What leaves one cell enters its neighbour, so the method is conservative. Each cell value
+is linked to its neighbours by one linear equation. If all coefficients are positive, the new value
+is a weighted mean, and no new extremum can appear. The same rule protects the face exchange in
+rCFD.
+\derive
+\begin{align*}
+\frac{\partial c}{\partial t} + \nabla\cdot(\mathbf{u}c) &= \nabla\cdot(\Gamma\nabla c) \why{transport equation} \\
+V\frac{\mathrm{d}c_P}{\mathrm{d}t} + \oint\mathbf{u}c\cdot\mathbf{n}\,\mathrm{d}A &= \oint\Gamma\,\nabla c\cdot\mathbf{n}\,\mathrm{d}A \why{integrate, divergence theorem} \\
+a_P\,c_P &= \sum_{NB} a_{NB}\,c_{NB} + b \why{fluxes per face: the computational molecule}
+\end{align*}
+\summary{Integrate, fluxes through faces, conservative, positive coefficients.}
+\src{Pirker, finite-volume slides.}
+\end{qabox}
+
+\begin{qabox}{Discretization schemes and numerical diffusion.}
+\core{First-order upwind is stable but adds false diffusion; central differencing is more accurate but can oscillate.}
+\explain Upwind takes the value from upstream. Its truncation error acts like an extra diffusivity
+that smears sharp gradients. Central differencing oscillates when the cell P\'eclet number is above
+2. Finer or flow-aligned grids and higher-order schemes reduce numerical diffusion. My thesis is a
+numerical-diffusion story: the face exchange smears the front, and the correction undoes it.
+\derive
+\begin{align*}
+c_{i-1} &= c_i - \Delta x\,\partial_x c + \tfrac12\Delta x^2\,\partial_{xx}c - \dots \why{Taylor series} \\
+\frac{c_i - c_{i-1}}{\Delta x} &= \partial_x c - \tfrac12\Delta x\,\partial_{xx}c + \dots \why{upwind difference, $u > 0$} \\
+\partial_t c + u\,\partial_x c &= \tfrac12 u\Delta x\,\partial_{xx}c + \dots \why{what upwind really solves} \\
+\Gamma_{\mathrm{num}} &= \tfrac12\,u\,\Delta x \why{numerical diffusivity}
+\end{align*}
+\summary{Upwind: stable, diffusive, $\Gamma_{\mathrm{num}} = u\Delta x/2$. Central: accurate, oscillates if $Pe > 2$.}
+\src{Pirker, finite-volume slides II.}
+\end{qabox}
+
+\begin{qabox}{Explicit versus implicit time stepping; Courant and diffusion numbers.}
+\core{Explicit steps are cheap but limited by stability; implicit steps solve a system but are unconditionally stable.}
+\explain Explicit convection needs a Courant number below one: information must not travel more
+than one cell per step. Explicit diffusion needs a diffusion number below one half. This is exactly
+the cap that stopped the recorded diffusivity in my replay.
+\derive
+\begin{align*}
+c_i^{n+1} &= c_i^n + d\,(c_{i+1}^n - 2c_i^n + c_{i-1}^n),\quad d = \frac{\Gamma\,\Delta t}{\Delta x^2} \why{explicit diffusion} \\
+G &= 1 - 4d\,\sin^2(k\Delta x/2) \why{insert a Fourier mode} \\
+\lvert G\rvert \le 1 &\iff 4d \le 2 \iff d \le \tfrac12 \why{stable for every mode}
+\end{align*}
+\nums{$Co = u\Delta t/\Delta x < 1$. $d < 0.5$.}
+\summary{$Co < 1$, $d < 0.5$. My cap is the explicit diffusion limit.}
+\src{Pirker, finite-volume slides; thesis, Section 5.2.1.}
+\end{qabox}
+
+\begin{qabox}{The SIMPLE algorithm.}
+\core{Guess the pressure, solve the velocity, correct the pressure from continuity, and repeat.}
+\explain SIMPLE stands for Semi-Implicit Method for Pressure-Linked Equations (Patankar). The
+velocity correction depends on the pressure correction. Putting it into continuity gives an
+equation for the pressure correction. Then both fields are corrected, with under-relaxation, until
+the residuals are small.
+\derive
+\begin{align*}
+&\mathbf{u}^{*} \leftarrow \text{momentum with } p^{*} \why{1: predict the velocity} \\
+&u' = d\,(p'_P - p'_E) \why{2: velocity correction from pressure correction} \\
+&\nabla\cdot(\mathbf{u}^{*} + \mathbf{u}') = 0 \Rightarrow p' \why{3: continuity gives $p'$} \\
+&p = p^{*} + \alpha_p\,p',\quad \mathbf{u} = \mathbf{u}^{*} + \mathbf{u}' \why{4: correct, then repeat}
+\end{align*}
+\summary{Guess $p$, solve $u$, correct from continuity, repeat.}
+\src{Pirker, finite-volume slides.}
+\end{qabox}
+
+\begin{qabox}{Turbulence: phenomena, Reynolds decomposition, models.}
+\core{Turbulence is chaotic and mixes strongly; RANS models all eddies, LES models only the small ones, DNS models none.}
+\explain Energy enters at the large eddies and cascades down to the Kolmogorov scale, where
+viscosity dissipates it. RANS splits the velocity into a mean and a fluctuation, and the Reynolds
+stresses need a model, usually an eddy viscosity. My case needs none of this, because it is
+laminar.
+\derive
+\begin{align*}
+u &= \bar u + u' \why{Reynolds decomposition} \\
+\nu_t &= C_\mu\,k^2/\varepsilon \why{$k$--$\varepsilon$ eddy viscosity} \\
+\eta &= \nu^{a}\varepsilon^{b}:\ \ \mathrm{m} = (\mathrm{m^2/s})^{a}(\mathrm{m^2/s^3})^{b} \why{Kolmogorov scale from $\nu$ and $\varepsilon$ only} \\
+&\Rightarrow\ 2a + 2b = 1,\ \ a + 3b = 0 \why{match metres and seconds} \\
+\eta &= (\nu^3/\varepsilon)^{1/4} \why{$a = 3/4$, $b = -1/4$}
+\end{align*}
+\summary{Cascade to $\eta$. RANS all, LES small, DNS none.}
+\src{Pirker, turbulence slides.}
+\end{qabox}
+
+\begin{qabox}{Wall boundary layers, $y^+$ and wall functions.}
+\core{Near a wall the velocity drops to zero, and $y^+$ says how far the first cell sits from the wall in viscous units.}
+\explain The viscous sublayer lies below $y^+ \approx 5$ and the log layer above about 30. Wall
+functions place the first cell in the log layer and model the rest, which is cheap. A wall-resolved
+simulation needs $y^+ \approx 1$ at the first cell.
+\derive
+\begin{align*}
+u_\tau &= \sqrt{\tau_w/\rho},\quad y^+ = \frac{u_\tau\,y}{\nu} \why{friction velocity, wall distance in viscous units}
+\end{align*}
+\summary{$y^+ < 5$ viscous, $> 30$ log layer. Wall functions: first cell in the log layer.}
+\src{Pirker, turbulence slides III.}
+\end{qabox}
+
+\begin{qabox}{Species and heat transport; the Boussinesq approximation.}
+\core{Temperature and species follow the same transport equation, and Boussinesq keeps the density constant except where gravity acts.}
+\explain If the density depends on temperature, flow and temperature are coupled. For small density
+changes we keep the density constant everywhere except in the gravity term. In my case the change
+is 1.5 per cent.
+\derive
+\begin{align*}
+\frac{\partial c}{\partial t} + \nabla\cdot(\mathbf{u}c) &= \nabla\cdot(\Gamma\nabla c) + S \why{scalar transport} \\
+\rho\,\mathbf{g} &\approx \rho_0\,\mathbf{g}\bigl(1 - \beta(T-T_0)\bigr) \why{Boussinesq: density only in the buoyancy term}
+\end{align*}
+\summary{Constant density, except where gravity sees it.}
+\src{Pirker, species and heat slides; thesis, Section 2.1.}
+\end{qabox}
+
+\begin{qabox}{Multiphase flows: Euler--Euler versus Euler--Lagrange.}
+\core{Euler--Euler treats each phase as a continuum; Euler--Lagrange tracks every particle.}
+\explain Euler--Euler uses volume fractions and suits dense systems at lower cost. Euler--Lagrange
+follows particles in the fluid, and with particle contacts it becomes CFD--DEM: accurate but
+expensive. rCFD was first used for bubble columns and fluidized beds.
+\summary{Continuum phases versus tracked particles.}
+\src{Pirker, multiphase slides.}
+\end{qabox}

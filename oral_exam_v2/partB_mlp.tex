@@ -1,0 +1,473 @@
+\section{Machine Learning and Perception}
+
+Likely examiners: Prof.\ Klambauer or Prof.\ Hochreiter. The same core comes back almost every
+time: empirical risk minimization, gradient descent, backpropagation and the delta error. Then
+short questions on activations, regularization, optimizers and one architecture. Notation of the
+JKU script: input $\mathbf{x}_n$, label $y_n$, model $g(\mathbf{x};\mathbf{w})$, loss $L$,
+pre-activation $s$, activation $a = f(s)$, layer $[l]$.
+
+\subsection{Empirical risk minimization and generalization}
+
+\begin{qabox}{Write down a supervised data set and the training framework.}
+\core{We have $N$ pairs of input and label, and learning means minimizing the average loss on them.}
+\explain The pairs are drawn independently from an unknown distribution. A model maps an input to a
+prediction, and a loss says how wrong one prediction is. The average loss on the training data is
+the empirical risk.
+\derive
+\begin{align*}
+Z &= \{(\mathbf{x}_n,y_n)\}_{n=1}^{N} \why{training data, i.i.d.\ from $p(\mathbf{x},y)$} \\
+\Remp(\mathbf{w}) &= \frac1N\sum_{n=1}^{N} L\bigl(y_n, g(\mathbf{x}_n;\mathbf{w})\bigr) \why{average loss} \\
+\hat{\mathbf{w}} &= \arg\min_{\mathbf{w}} \Remp(\mathbf{w}) \why{learning}
+\end{align*}
+\summary{Data, model, loss, average, minimize.}
+\src{DLNN script WS24, Ch.~3 and 5.1.}
+\end{qabox}
+
+\begin{qabox}{What is the generalization error? Why can we not minimize it directly?}
+\core{It is the expected loss on new data, and we cannot compute it because the true distribution is unknown.}
+\explain So we minimize the empirical risk instead and estimate the generalization error on data we
+did not train on: a test set or cross-validation. The training loss is not a fair estimate, because
+the weights were chosen on that data.
+\derive
+\begin{align*}
+\Rgen(\mathbf{w}) &= \mathbb{E}_{(\mathbf{x},y)\sim p}\bigl[L(y,g(\mathbf{x};\mathbf{w}))\bigr] \why{expected loss} \\
+&= \int L\bigl(y,g(\mathbf{x};\mathbf{w})\bigr)\,p(\mathbf{x},y)\,\mathrm{d}\mathbf{x}\,\mathrm{d}y \why{needs $p$, which is unknown} \\
+&\approx \frac{1}{M}\sum_{m=1}^{M} L\bigl(y_m,g(\mathbf{x}_m;\mathbf{w})\bigr) \why{test set, law of large numbers}
+\end{align*}
+\summary{Risk = loss on unseen data. Estimate it with a test set or cross-validation.}
+\src{DLNN script WS24, Ch.~5.2--5.3.}
+\end{qabox}
+
+\begin{qabox}{What is a loss function? Give examples.}
+\core{A loss compares a label with a prediction and is zero when the prediction is right.}
+\explain It is never negative. We choose it to fit the task. Not every loss can be trained with
+gradient descent: the 0--1 loss has no useful gradient, so we use cross-entropy instead.
+\explain Examples: squared loss $\tfrac12(y-\hat y)^2$ for regression; binary cross-entropy
+$-y\log\hat y - (1-y)\log(1-\hat y)$; categorical cross-entropy $-\sum_k y_k\log\hat y_k$; hinge
+loss $\max(0, 1 - y\,g(\mathbf{x}))$ for the SVM.
+\summary{Non-negative, zero when right. 0--1 loss $\to$ use cross-entropy.}
+\src{DLNN script WS24, Sec.~4.1--4.4.}
+\end{qabox}
+
+\begin{qabox}{Show ERM on linear regression.}
+\core{With a linear model and squared loss the risk is convex, so the minimum has a closed form.}
+\explain Set the gradient to zero and solve. Gradient descent reaches the same point step by step.
+For one sample the gradient is error times input, and the same pattern comes back in backprop.
+\derive
+\begin{align*}
+\Remp(\mathbf{w}) &= \tfrac12\lVert \mathbf{y} - X\mathbf{w}\rVert^2 \why{squared loss, all samples} \\
+\nabla_{\mathbf{w}}\Remp &= -X^{\mathsf{T}}(\mathbf{y} - X\mathbf{w}) \why{chain rule} \\
+0 &= X^{\mathsf{T}}\mathbf{y} - X^{\mathsf{T}}X\,\hat{\mathbf{w}} \why{gradient zero at the minimum} \\
+\hat{\mathbf{w}} &= (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\mathbf{y} \why{normal equations, pseudo-inverse}
+\end{align*}
+\summary{Convex $\to$ closed form. Gradient = error $\times$ input.}
+\src{DLNN script WS24, Sec.~4.1.3--4.1.4.}
+\end{qabox}
+
+\begin{qabox}{Overfitting, underfitting, bias and variance.}
+\core{Too simple a model has high bias, too complex a model has high variance.}
+\explain An underfitting model cannot follow the data. An overfitting model follows the noise, so the
+training error is low and the test error is high. Very large networks show double descent: after
+the point where they fit the training data exactly, the test error falls again.
+\derive
+\begin{align*}
+y &= f(\mathbf{x}) + \varepsilon,\quad \mathbb{E}[\varepsilon] = 0,\ \mathrm{Var}[\varepsilon] = \sigma^2 \why{data model} \\
+\mathbb{E}\bigl[(y-\hat g)^2\bigr] &= \mathbb{E}\bigl[(f + \varepsilon - \bar g + \bar g - \hat g)^2\bigr] \why{add and subtract $\bar g = \mathbb{E}[\hat g]$} \\
+&= \sigma^2 + (f - \bar g)^2 + \mathbb{E}\bigl[(\hat g - \bar g)^2\bigr] \why{cross terms have zero mean} \\
+&= \text{noise} + \text{bias}^2 + \text{variance}
+\end{align*}
+\summary{Simple $\to$ bias. Complex $\to$ variance. Large nets: double descent.}
+\src{DLNN script WS24, Sec.~5.4.}
+\end{qabox}
+
+\subsection{From one neuron to a deep network}
+
+\begin{qabox}{Write the formula of a neuron.}
+\core{A neuron takes a weighted sum of its inputs plus a bias, and passes it through a non-linear function.}
+\explain The weighted sum is the pre-activation, and the result is the activation. A layer does
+this for many neurons at once. The forward pass goes layer by layer from the input to the output.
+\derive
+\begin{align*}
+s_i &= \sum_j w_{ij}\,a_j + b_i \why{pre-activation} \\
+a_i &= f(s_i) \why{activation} \\
+\mathbf{a}^{[l]} &= f\bigl(W^{[l]}\mathbf{a}^{[l-1]} + \mathbf{b}^{[l]}\bigr),\quad \mathbf{a}^{[0]} = \mathbf{x} \why{one layer; output $\hat{\mathbf{y}} = \mathbf{a}^{[L]}$}
+\end{align*}
+\summary{Weighted sum, plus bias, through a non-linearity.}
+\src{DLNN script WS24, Eqs.~(3.2)--(3.3), (4.59)--(4.62).}
+\end{qabox}
+
+\begin{qabox}{A deep network with and without activation functions?}
+\core{Without non-linear activations the whole network collapses to one linear model.}
+\explain A product of linear maps is again linear. So depth adds nothing, and the network cannot
+even solve XOR. The non-linearity is what makes depth useful.
+\derive
+\begin{align*}
+\mathbf{a}^{[2]} &= W^{[2]}\bigl(W^{[1]}\mathbf{x} + \mathbf{b}^{[1]}\bigr) + \mathbf{b}^{[2]} \why{two layers, no activation} \\
+&= \bigl(W^{[2]}W^{[1]}\bigr)\mathbf{x} + \bigl(W^{[2]}\mathbf{b}^{[1]} + \mathbf{b}^{[2]}\bigr) \why{multiply out} \\
+&= W\mathbf{x} + \mathbf{b} \why{one linear layer}
+\end{align*}
+\summary{No activation $\to$ one linear model. No XOR.}
+\src{DLNN script WS24, Sec.~4.5.}
+\end{qabox}
+
+\begin{qabox}{Universal function approximation theorem.}
+\core{One hidden layer with enough units can approximate any continuous function on a compact set.}
+\explain The activation must be non-polynomial, for example a sigmoid. The theorem says the network
+can represent the function. It does not say how many units we need, and it does not say that
+gradient descent will find the weights.
+\summary{One hidden layer, any continuous function. Existence, not learnability.}
+\src{DLNN I+II script SS25, ``Deep Learning theory''.}
+\end{qabox}
+
+\subsection{Backpropagation and the delta error}
+
+This is the most asked topic. Practise writing it until it takes two minutes.
+
+\begin{qabox}{Explain backpropagation and define the delta error.}
+\core{Backprop gets all gradients with one forward and one backward pass, and the delta is the
+derivative of the loss with respect to a pre-activation.}
+\explain First the forward pass stores all $s$ and $a$. Then the deltas are computed from the
+output back to the input. The gradient of a weight is the delta of the unit above times the
+activation of the unit below. The cost is linear in the number of weights.
+\derive
+\begin{align*}
+\delta_i &:= \frac{\partial L}{\partial s_i} \why{definition} \\
+\frac{\partial L}{\partial w_{ij}} &= \frac{\partial L}{\partial s_i}\,\frac{\partial s_i}{\partial w_{ij}} \why{chain rule: $w_{ij}$ acts only through $s_i$} \\
+&= \delta_i\,a_j \why{$s_i = \sum_j w_{ij}a_j + b_i$} \\
+w_{ij} &\leftarrow w_{ij} - \eta\,\delta_i\,a_j \why{gradient step}
+\end{align*}
+\summary{$\delta$ = dLoss/d(pre-activation). Gradient = $\delta$ above $\times$ activation below.}
+\src{DLNN script WS24, Sec.~4.6.2, Eqs.~(4.63)--(4.68).}
+\end{qabox}
+
+\begin{qabox}{Write the recursive formula for the deltas.}
+\core{The delta of a hidden unit is the weighted sum of the deltas above, times the slope of its own activation.}
+\explain A hidden unit $j$ affects the loss only through the units $i$ of the next layer. So we sum
+over those paths. In matrix form we multiply by the weight matrix and then by the derivatives of
+the activations.
+\derive
+\begin{align*}
+\delta_j &= \frac{\partial L}{\partial s_j} = \sum_i \frac{\partial L}{\partial s_i}\,\frac{\partial s_i}{\partial a_j}\,\frac{\partial a_j}{\partial s_j} \why{chain rule over all units $i$ above} \\
+&= \sum_i \delta_i\,w_{ij}\,f'(s_j) \why{$\partial s_i/\partial a_j = w_{ij}$, $\partial a_j/\partial s_j = f'(s_j)$} \\
+\bm{\delta}^{[l-1]} &= \mathrm{diag}\bigl(f'(\mathbf{s}^{[l-1]})\bigr)\,W^{[l]\mathsf{T}}\,\bm{\delta}^{[l]} \why{layer form} \\
+\frac{\partial L}{\partial W^{[l]}} &= \bm{\delta}^{[l]}\,\mathbf{a}^{[l-1]\mathsf{T}} \why{outer product}
+\end{align*}
+\summary{Deltas flow down: multiply by $W^{\mathsf T}$, then by $f'$.}
+\src{DLNN script WS24, Eqs.~(4.71), (4.77)--(4.84).}
+\end{qabox}
+
+\begin{qabox}{What is the delta at the output with softmax and cross-entropy?}
+\core{It is simply prediction minus label.}
+\explain The same clean result holds for a linear output with squared loss and for a sigmoid with
+binary cross-entropy. That is why these pairs are used together.
+\derive
+\begin{align*}
+a_k &= \frac{e^{s_k}}{\sum_m e^{s_m}},\quad L = -\sum_k y_k\log a_k \why{softmax and cross-entropy} \\
+\frac{\partial a_k}{\partial s_i} &= a_k\,(\mathbb{1}[k=i] - a_i) \why{derivative of the softmax} \\
+\frac{\partial L}{\partial s_i} &= -\sum_k \frac{y_k}{a_k}\,a_k\,(\mathbb{1}[k=i] - a_i) \why{chain rule} \\
+&= -y_i + a_i\sum_k y_k = a_i - y_i \why{one-hot label: $\sum_k y_k = 1$}
+\end{align*}
+\summary{Matching pair $\to$ $\delta$ = prediction $-$ label.}
+\src{DLNN script WS24, Eq.~(4.70), Table~4.1.}
+\end{qabox}
+
+\begin{qabox}{Vanishing and exploding gradients. Who found it?}
+\core{The delta is multiplied by one Jacobian per layer, so over many layers it shrinks or grows exponentially.}
+\explain With the sigmoid the slope is at most 0.25, so the deltas vanish. Sepp Hochreiter analysed
+this in his diploma thesis in 1991, here in Linz. The fixes are ReLU or SELU, good initialization,
+normalization, residual connections and, for sequences, the LSTM.
+\derive
+\begin{align*}
+\bm{\delta}^{[1]} &= \Bigl(\prod_{l=2}^{L} \mathrm{diag}(f'(\mathbf{s}^{[l-1]}))\,W^{[l]\mathsf{T}}\Bigr)\bm{\delta}^{[L]} \why{apply the recursion $L-1$ times} \\
+\lVert\bm{\delta}^{[1]}\rVert &\le \bigl(\max\lvert f'\rvert\cdot\max_l\lVert W^{[l]}\rVert\bigr)^{L-1}\lVert\bm{\delta}^{[L]}\rVert \why{norm of a product} \\
+&\le \bigl(0.25\,\lVert W\rVert\bigr)^{L-1}\lVert\bm{\delta}^{[L]}\rVert \why{sigmoid: $f' \le 0.25$}
+\end{align*}
+If $0.25\lVert W\rVert < 1$, the delta vanishes exponentially with depth.
+\summary{Product of Jacobians. Hochreiter 1991. Fix: ReLU/SELU, init, ResNet, LSTM.}
+\src{DLNN script WS24, after Eq.~(4.84).}
+\end{qabox}
+
+\subsection{Gradient descent and optimizers}
+
+\begin{qabox}{Write gradient descent. Why mini-batches?}
+\core{We move the weights a small step against the gradient of the empirical risk.}
+\explain The full batch gives the exact gradient but is expensive. One sample is cheap but noisy.
+A mini-batch is the compromise: a good estimate, fast on a GPU, and its noise helps to leave sharp
+minima.
+\derive
+\begin{align*}
+\mathbf{w} &\leftarrow \mathbf{w} - \eta\,\nabla_{\mathbf{w}}\Remp(\mathbf{w}) \why{full-batch gradient descent} \\
+\nabla\Remp &\approx \frac{1}{\lvert B\rvert}\sum_{n\in B}\nabla L_n \why{mini-batch $B$: unbiased estimate}
+\end{align*}
+\summary{Step against the gradient. Mini-batch = cheap, parallel, useful noise.}
+\src{DLNN script WS24, Sec.~4.10 and Ch.~7.}
+\end{qabox}
+
+\begin{qabox}{Which optimizers do you know?}
+\core{Gradient descent, SGD, momentum, AdaGrad, RMSprop and Adam.}
+\explain Momentum keeps a running sum of past gradients. AdaGrad and RMSprop give each weight its own
+step size from the past squared gradients. Adam combines momentum and RMSprop with a bias
+correction, and it is the usual default.
+\derive
+\begin{align*}
+\mathbf{v} &\leftarrow \mu\,\mathbf{v} - \eta\,\nabla\Remp,\quad \mathbf{w} \leftarrow \mathbf{w} + \mathbf{v} \why{momentum} \\
+\mathbf{m} &\leftarrow \beta_1\mathbf{m} + (1-\beta_1)\nabla,\quad \mathbf{u} \leftarrow \beta_2\mathbf{u} + (1-\beta_2)\nabla^2 \why{Adam: first and second moment} \\
+\mathbf{w} &\leftarrow \mathbf{w} - \eta\,\frac{\hat{\mathbf{m}}}{\sqrt{\hat{\mathbf{u}}} + \epsilon} \why{bias-corrected step}
+\end{align*}
+\summary{GD, SGD, momentum, AdaGrad, RMSprop, Adam.}
+\src{DLNN script WS24, Ch.~7.}
+\end{qabox}
+
+\begin{qabox}{Are there training methods other than gradient descent?}
+\core{Yes: closed forms, second-order methods and gradient-free methods.}
+\explain Linear models have a closed form. Logistic regression can use iteratively reweighted least
+squares. RProp and Quickprop use only the sign or the curvature of the gradient. Newton,
+Gauss--Newton, Levenberg--Marquardt and conjugate gradients use second-order information.
+Evolutionary algorithms and random search need no gradient at all.
+\summary{Closed form, IRLS, RProp, Newton/LM/CG, evolutionary.}
+\src{DLNN script WS24, Sec.~4.2--4.3, 7.5--7.6.}
+\end{qabox}
+
+\subsection{Activation functions, regularization, initialization}
+
+\begin{qabox}{Which activation functions do you know? Which one is from Linz?}
+\core{Sigmoid, tanh, ReLU and its variants, and ELU and SELU, which were developed at JKU.}
+\explain Sigmoid and tanh are smooth but saturate. ReLU is cheap and does not saturate for positive
+input, but units can die. SELU (Klambauer et al.\ 2017) makes a network self-normalizing: the mean
+and variance of the activations are pulled to 0 and 1. For the output: linear for regression,
+sigmoid for two classes, softmax for many.
+\nums{SELU: $\lambda \approx 1.0507$, $\alpha \approx 1.6733$, fixed point $(0, 1)$.}
+\summary{Linz: ELU and SELU. SELU $\to$ self-normalizing.}
+\src{DLNN script WS24, Ch.~10.4 and 11.}
+\end{qabox}
+
+\begin{qabox}{Which regularization techniques do you know?}
+\core{Weight decay, dropout, early stopping, data augmentation and noise.}
+\explain Weight decay adds a penalty on large weights, which shrinks them in every step. Dropout
+switches units off at random during training, so the network cannot rely on single units. Early
+stopping ends training when the validation error starts to rise.
+\derive
+\begin{align*}
+\tilde{R}(\mathbf{w}) &= \Remp(\mathbf{w}) + \tfrac{\lambda}{2}\lVert\mathbf{w}\rVert^2 \why{weight decay} \\
+\nabla\tilde{R} &= \nabla\Remp + \lambda\,\mathbf{w} \why{gradient of the penalty} \\
+\mathbf{w} &\leftarrow (1 - \eta\lambda)\,\mathbf{w} - \eta\,\nabla\Remp \why{the weights shrink each step}
+\end{align*}
+\summary{Weight decay, dropout, early stopping, augmentation, noise.}
+\src{DLNN script WS24, Ch.~8.}
+\end{qabox}
+
+\begin{qabox}{Why does initialization matter? What is batch normalization?}
+\core{Random weights break the symmetry, and their scale must keep the variance constant through the layers.}
+\explain If all weights are equal, all units learn the same thing. If the scale is wrong, the
+signal and the deltas vanish or explode. Batch normalization standardizes each pre-activation over
+the mini-batch and then rescales it with learned parameters.
+\derive
+\begin{align*}
+s &= \sum_{j=1}^{n_{\mathrm{in}}} w_j\,a_j \why{one pre-activation} \\
+\mathrm{Var}(s) &= n_{\mathrm{in}}\,\mathrm{Var}(w)\,\mathbb{E}[a^2] \why{independent, zero-mean weights} \\
+\mathrm{Var}(w) &= \frac{1}{n_{\mathrm{in}}} \why{keep $\mathrm{Var}(s) = \mathbb{E}[a^2]$} \\
+\mathrm{Var}(w) &= \frac{2}{n_{\mathrm{in}}} \why{ReLU halves $\mathbb{E}[a^2]$ (He)}
+\end{align*}
+\summary{Break symmetry. Keep variance constant. BN = standardize, then learn scale and shift.}
+\src{DLNN script WS24, Ch.~9--10.}
+\end{qabox}
+
+\subsection{Convolutional networks}
+
+\begin{qabox}{What is a CNN and why does it work for images?}
+\core{Small filters with shared weights slide over the image, so a pattern is found wherever it appears.}
+\explain Images have local structure, and the same pattern can be anywhere. Shared weights give few
+parameters and translation equivariance. Pooling makes the map smaller and adds some invariance.
+Deeper layers see larger parts of the image.
+\nums{Output size $\lfloor (n + 2p - k)/s \rfloor + 1$ for input $n$, kernel $k$, padding $p$,
+stride $s$.}
+\summary{Local filters, shared weights, pooling.}
+\src{DLNN script WS24, Ch.~6.}
+\end{qabox}
+
+\begin{qabox}{ResNet, and U-Net for segmentation.}
+\core{ResNet adds the input of a block to its output, so gradients pass through very deep networks.}
+\explain The Jacobian of a residual block is the identity plus a small part, so it does not shrink
+the delta. U-Net is an encoder and a decoder with skip connections. It predicts one class per pixel
+and copies fine detail across the skips.
+\derive
+\begin{align*}
+\mathbf{a}^{[l+1]} &= \mathbf{a}^{[l]} + F(\mathbf{a}^{[l]}) \why{residual block} \\
+\frac{\partial\mathbf{a}^{[l+1]}}{\partial\mathbf{a}^{[l]}} &= I + \frac{\partial F}{\partial\mathbf{a}^{[l]}} \why{Jacobian stays close to $I$}
+\end{align*}
+\summary{ResNet: identity + residual. U-Net: encoder, decoder, skips.}
+\src{DLNN I+II script SS25, ResNet and semantic segmentation.}
+\end{qabox}
+
+\subsection{Recurrent networks and LSTM}
+
+\begin{qabox}{Explain the forward pass of a recurrent network. How is it trained?}
+\core{An RNN reads a sequence step by step and keeps a hidden state that carries the past.}
+\explain The same weights are used at every step. It is trained with backpropagation through time:
+unfold the network over the sequence and backpropagate as in a deep network with shared weights.
+The number of parameters does not grow with the length of the sequence.
+\derive
+\begin{align*}
+\mathbf{s}(t) &= W\mathbf{x}(t) + R\,\mathbf{a}(t-1),\quad \mathbf{a}(t) = f(\mathbf{s}(t)) \why{forward pass} \\
+\bm\delta(t) &= \mathrm{diag}\bigl(f'(\mathbf{s}(t))\bigr)\Bigl(V^{\mathsf{T}}\frac{\partial L(t)}{\partial\hat{\mathbf{y}}(t)} + R^{\mathsf{T}}\bm\delta(t+1)\Bigr) \why{delta from the output and from the next step} \\
+\frac{\partial L}{\partial R} &= \sum_t \bm\delta(t)\,\mathbf{a}(t-1)^{\mathsf{T}} \why{shared weights: sum over time}
+\end{align*}
+\summary{Same weights every step. Hidden state = memory. BPTT = backprop on the unfolded net.}
+\src{LSTM lecture WS24 (Hochreiter).}
+\end{qabox}
+
+\begin{qabox}{Why do plain RNNs fail on long sequences, and how does LSTM fix it?}
+\core{The delta is multiplied by the recurrent Jacobian at every step, so it vanishes; the LSTM cell is updated by addition instead.}
+\explain The LSTM (Hochreiter and Schmidhuber 1997) has a memory cell with a constant error
+carousel. Gates decide what to write, what to keep and what to read. With the forget gate near one,
+the error flows back through time without shrinking.
+\derive
+\begin{align*}
+\mathbf{c}(t) &= \mathbf{f}(t)\odot\mathbf{c}(t-1) + \mathbf{i}(t)\odot\mathbf{z}(t) \why{additive cell update} \\
+\mathbf{h}(t) &= \mathbf{o}(t)\odot\tanh\bigl(\mathbf{c}(t)\bigr) \why{output gate reads the cell} \\
+\frac{\partial\mathbf{c}(t)}{\partial\mathbf{c}(t-1)} &= \mathrm{diag}\bigl(\mathbf{f}(t)\bigr) \why{direct path through the cell} \\
+&\approx I \why{forget gate near one: error carried unchanged}
+\end{align*}
+\summary{Additive cell = constant error carousel. Gates: input, forget, output.}
+\src{LSTM lecture WS24, slides 6--10.}
+\end{qabox}
+
+\begin{qabox}{Bidirectional RNNs, and one label for a whole sequence.}
+\core{A bidirectional RNN runs one RNN forward and one backward and joins their states.}
+\explain So every step sees the past and the future. It needs the whole sequence, so it is not for
+real-time use. For one label per sequence we use the last hidden state, or we pool all hidden
+states and put a classifier on top.
+\summary{Forward + backward, concatenate. Sequence label: last state or pooling.}
+\src{LSTM lecture WS24.}
+\end{qabox}
+
+\subsection{Attention and Transformers}
+
+\begin{qabox}{Explain attention and the Transformer.}
+\core{Every token takes a weighted mean of all tokens, and the weights come from query times key.}
+\explain Each token makes a query, a key and a value by linear maps. The softmax of query times key
+gives the weights, and the output mixes the values with them. A Transformer block is multi-head
+self-attention plus an MLP, each with a residual connection and layer normalization.
+\derive
+\begin{align*}
+Q &= XW_Q,\ K = XW_K,\ V = XW_V \why{linear maps of the tokens} \\
+\mathrm{Att}(Q,K,V) &= \mathrm{softmax}\Bigl(\frac{QK^{\mathsf{T}}}{\sqrt{d_k}}\Bigr)V \why{weights per row sum to one} \\
+\mathrm{Var}(\mathbf{q}\cdot\mathbf{k}) &= \sum_{m=1}^{d_k}\mathrm{Var}(q_m k_m) = d_k \why{independent entries of variance 1} \\
+\mathrm{Var}\bigl(\mathbf{q}\cdot\mathbf{k}/\sqrt{d_k}\bigr) &= 1 \why{so the softmax does not saturate}
+\end{align*}
+\summary{Query meets key $\to$ softmax weights $\to$ mix the values.}
+\src{LSTM lecture WS24, slides 12--15.}
+\end{qabox}
+
+\begin{qabox}{Transformers are permutation-equivariant. Why is that a problem?}
+\core{Self-attention sees the tokens as a set, so the order of words is lost.}
+\explain If we shuffle the tokens, the outputs are shuffled the same way. So we add the position to
+each token: fixed sinusoids, learned vectors, or relative encodings such as RoPE.
+\summary{Attention sees a set. Add position information.}
+\src{Past-student report; LSTM lecture WS24.}
+\end{qabox}
+
+\begin{qabox}{Compare RNN and Transformer in cost.}
+\core{An RNN is linear in the sequence length but sequential; a Transformer is quadratic but parallel.}
+\explain In a Transformer every token attends to every token, so time and memory grow with $N^2$.
+But all tokens are processed at once, and long-range paths are one step long. LSTM-type models such
+as xLSTM are attractive again because inference is linear in $N$.
+\nums{RNN $O(N)$, Transformer $O(N^2)$.}
+\summary{RNN: linear, sequential. Transformer: quadratic, parallel.}
+\src{Past-student report; LSTM lecture WS24.}
+\end{qabox}
+
+\subsection{Classical machine learning in the same slot}
+
+\begin{qabox}{Explain the support vector machine.}
+\core{The SVM finds the separating hyperplane with the largest margin.}
+\explain The margin is $2/\lVert\mathbf{w}\rVert$, so maximizing it means minimizing
+$\lVert\mathbf{w}\rVert^2$. The soft margin allows some points inside the margin through slack
+variables and a penalty $C$. In the dual only dot products appear, and the points with
+$\alpha_n > 0$ are the support vectors.
+\derive
+\begin{align*}
+&\min_{\mathbf{w},b,\bm\xi}\ \tfrac12\lVert\mathbf{w}\rVert^2 + C\sum_n\xi_n \why{large margin, few violations} \\
+&\text{s.t.}\ \ y_n(\mathbf{w}^{\mathsf{T}}\mathbf{x}_n + b) \ge 1 - \xi_n,\ \ \xi_n \ge 0 \why{every point on the right side, up to slack} \\
+&\max_{\bm\alpha}\ \sum_n\alpha_n - \tfrac12\sum_{n,m}\alpha_n\alpha_m y_n y_m\,\mathbf{x}_n^{\mathsf{T}}\mathbf{x}_m \why{dual, $0 \le \alpha_n \le C$, $\sum_n\alpha_n y_n = 0$}
+\end{align*}
+\summary{Max margin. Dual has only dot products.}
+\src{ML: Supervised Techniques, SVM unit.}
+\end{qabox}
+
+\begin{qabox}{What is a kernel and the kernel trick?}
+\core{A kernel is a dot product in a feature space, computed without building the features.}
+\explain The SVM dual needs only dot products. We replace them by a kernel and get a non-linear
+classifier at the cost of a linear one. Examples are the polynomial kernel and the Gaussian kernel.
+\derive
+\begin{align*}
+k(\mathbf{x},\mathbf{x}') &= (\mathbf{x}^{\mathsf{T}}\mathbf{x}')^2 \why{polynomial kernel in 2D} \\
+&= x_1^2x_1'^2 + 2x_1x_2x_1'x_2' + x_2^2x_2'^2 \why{multiply out} \\
+&= \phi(\mathbf{x})^{\mathsf{T}}\phi(\mathbf{x}'),\quad \phi(\mathbf{x}) = (x_1^2, \sqrt2\,x_1x_2, x_2^2) \why{a dot product of features}
+\end{align*}
+\summary{Kernel = dot product in feature space, without computing the features.}
+\src{ML: Supervised Techniques, kernels unit.}
+\end{qabox}
+
+\begin{qabox}{What is the VC dimension?}
+\core{It is the largest number of points that a model class can label in every possible way.}
+\explain It measures capacity. Linear classifiers in $d$ dimensions have VC dimension $d+1$. In
+generalization bounds the gap between training and test error grows with the VC dimension and
+shrinks with the number of samples.
+\nums{Linear classifier in $\mathbb{R}^d$: $d+1$.}
+\summary{Largest set it can shatter. Linear: $d+1$.}
+\src{ML: Supervised Techniques; statistical learning theory.}
+\end{qabox}
+
+\begin{qabox}{Likelihood, maximum likelihood, and its problems.}
+\core{Maximum likelihood chooses the parameters that make the observed data most probable.}
+\explain We maximize the log-likelihood, because a sum is easier than a product. With little data
+it overfits: an event never seen gets probability zero. A prior (MAP) or regularization fixes
+this. Squared loss is maximum likelihood under Gaussian noise.
+\derive
+\begin{align*}
+p(y\mid\mathbf{x}) &= \mathcal{N}\bigl(y;\,g(\mathbf{x};\mathbf{w}),\,\sigma^2\bigr) \why{Gaussian noise model} \\
+-\log\prod_n p(y_n\mid\mathbf{x}_n) &= N\log\bigl(\sqrt{2\pi}\,\sigma\bigr) + \frac{1}{2\sigma^2}\sum_n\bigl(y_n - g(\mathbf{x}_n;\mathbf{w})\bigr)^2 \why{log of the Gaussian} \\
+\arg\max_{\mathbf{w}}\ \text{likelihood} &= \arg\min_{\mathbf{w}}\ \sum_n\bigl(y_n - g(\mathbf{x}_n;\mathbf{w})\bigr)^2 \why{first term has no $\mathbf{w}$}
+\end{align*}
+\summary{Most likely parameters. Overfits with little data $\to$ prior.}
+\src{DLNN script WS24, Eqs.~(4.8)--(4.11).}
+\end{qabox}
+
+\begin{qabox}{Derive the REINFORCE loss. (Asked by Prof.\ Hochreiter.)}
+\core{The log-derivative trick moves the gradient inside the expectation, so we can estimate it from sampled episodes.}
+\explain We want the largest expected return. The environment does not depend on the policy
+parameters, so only the policy terms survive. As a loss we minimize minus log-probability times
+return, with a baseline to reduce the variance.
+\derive
+\begin{align*}
+J(\theta) &= \int p_\theta(\tau)\,G(\tau)\,\mathrm{d}\tau \why{expected return over trajectories} \\
+\nabla_\theta J &= \int p_\theta(\tau)\,\nabla_\theta\log p_\theta(\tau)\,G(\tau)\,\mathrm{d}\tau \why{$\nabla p = p\,\nabla\log p$} \\
+\log p_\theta(\tau) &= \log p(s_0) + \sum_t\bigl[\log\pi_\theta(a_t\mid s_t) + \log p(s_{t+1}\mid s_t,a_t)\bigr] \why{trajectory probability} \\
+\nabla_\theta J &= \mathbb{E}_\tau\Bigl[\sum_t\nabla_\theta\log\pi_\theta(a_t\mid s_t)\,G_t\Bigr] \why{dynamics do not depend on $\theta$} \\
+L(\theta) &= -\sum_t\log\pi_\theta(a_t\mid s_t)\,(G_t - b) \why{loss with baseline $b$}
+\end{align*}
+\summary{Log-derivative trick. Loss = $-\log\pi(a\mid s)\times$ return.}
+\src{Deep Reinforcement Learning VL, policy gradient unit.}
+\end{qabox}
+
+\begin{qabox}{How do you evaluate a classifier?}
+\core{With the confusion matrix, precision, recall and the area under the ROC curve.}
+\explain Precision: of what I called positive, how much is right. Recall: of all positives, how
+many I found. The ROC curve plots the true-positive rate against the false-positive rate over all
+thresholds. The AUC is the probability that a random positive gets a higher score than a random
+negative.
+\nums{Precision $TP/(TP+FP)$. Recall $TP/(TP+FN)$. AUC 0.5 = chance, 1 = perfect.}
+\summary{Precision: how clean. Recall: how complete. AUC: ranking quality.}
+\src{ML: Supervised Techniques.}
+\end{qabox}
+
+\begin{qabox}{How else can you measure robustness, besides adversarial attacks?}
+\core{Test under distribution shift and check how sure the model is.}
+\explain Use corrupted inputs, new domains or data from another time. Check calibration and
+uncertainty with ensembles or MC dropout, and the sensitivity of the output to the input. My thesis
+has a direct example: a recording made under one boundary condition fails under another, because
+the regime changed.
+\summary{Corruptions, domain shift, calibration, sensitivity, out of distribution.}
+\src{DLNN script WS24, Sec.~4.8; thesis, Section 6.4.}
+\end{qabox}
