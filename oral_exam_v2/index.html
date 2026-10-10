@@ -1,0 +1,955 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Oral Exam Answers</title>
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$']],
+    macros: {
+      Remp: 'R_{\\mathrm{emp}}', Rgen: 'R_{\\mathrm{gen}}', fsd: 'f_{\\mathrm{sd}}',
+      why: ['&&\\text{(#1)}', 1], bm: ['\\boldsymbol{#1}', 1]
+    }
+  },
+  svg: { fontCache: 'global' }
+};
+</script>
+<script async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+<style>
+:root {
+  --bg: #fbfaf7; --card: #ffffff; --ink: #1d232b; --muted: #5f6b78; --line: #dde2e8;
+  --accent: #1f4e79; --ask: #2e7d32; --askbg: #e7f3e8; --pred: #6b7280; --predbg: #eef0f3;
+  --sum: #7a3e00; --sumbg: #fff6e8;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12171d; --card: #1a2129; --ink: #e6e9ed; --muted: #9aa5b1; --line: #2c3540;
+    --accent: #8ab4dd; --ask: #7cc683; --askbg: #1d3022; --pred: #a3aab3; --predbg: #262d36;
+    --sum: #f0b27a; --sumbg: #2e2418;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12171d; --card: #1a2129; --ink: #e6e9ed; --muted: #9aa5b1; --line: #2c3540;
+  --accent: #8ab4dd; --ask: #7cc683; --askbg: #1d3022; --pred: #a3aab3; --predbg: #262d36;
+  --sum: #f0b27a; --sumbg: #2e2418;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 "Segoe UI", system-ui, -apple-system, sans-serif; }
+header { position: sticky; top: 0; z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line);
+  padding: 10px 16px; }
+header h1 { font-size: 18px; margin: 0 0 6px; color: var(--accent); }
+.tools { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.tools button, .tools input { font: inherit; font-size: 14px; border: 1px solid var(--line);
+  background: var(--card); color: var(--ink); border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+.tools input { cursor: text; min-width: 180px; flex: 1; max-width: 320px; }
+.tools button.on { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.count { font-size: 13px; color: var(--muted); }
+.wrap { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 24px; max-width: 1180px;
+  margin: 0 auto; padding: 16px; }
+nav { position: sticky; top: 96px; align-self: start; max-height: calc(100vh - 110px); overflow: auto;
+  font-size: 14px; }
+nav ul { list-style: none; padding-left: 0; margin: 0; }
+nav ul ul { padding-left: 12px; margin: 2px 0 10px; }
+nav a { color: var(--ink); text-decoration: none; }
+nav a:hover { color: var(--accent); }
+nav .n { color: var(--muted); font-size: 12px; }
+h2 { color: var(--accent); font-size: 24px; margin: 28px 0 8px; }
+h3 { color: var(--accent); font-size: 18px; margin: 24px 0 8px; }
+.intro { color: var(--muted); }
+details.qa { background: var(--card); border: 1px solid var(--line); border-radius: 8px; margin: 10px 0;
+  padding: 0 14px; }
+details.qa > summary { cursor: pointer; padding: 10px 0; font-weight: 600; list-style: none;
+  display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+details.qa > summary::-webkit-details-marker { display: none; }
+.qid { color: var(--muted); font-weight: 500; font-size: 13px; min-width: 2.6em; }
+.badge { margin-left: auto; font-size: 11px; font-weight: 600; letter-spacing: .04em; border-radius: 4px;
+  padding: 1px 6px; }
+.badge.asked { color: var(--ask); background: var(--askbg); }
+.badge.predicted { color: var(--pred); background: var(--predbg); }
+.origin { font-size: 13px; color: var(--muted); margin: 0 0 6px; }
+.lab { color: var(--accent); font-weight: 600; }
+.core { font-style: italic; }
+.math { overflow-x: auto; overflow-y: hidden; }
+.summary { background: var(--sumbg); color: var(--sum); border-radius: 6px; padding: 6px 10px; }
+.summary span { font-weight: 600; }
+.src { font-size: 12px; color: var(--muted); }
+.tip { background: var(--sumbg); border-radius: 8px; padding: 10px 14px; margin: 10px 0; }
+table.talk { border-collapse: collapse; width: 100%; font-size: 14px; margin: 8px 0; }
+table.talk td { border-top: 1px solid var(--line); padding: 4px 6px; vertical-align: top; }
+table.talk tr:first-child td { font-weight: 600; }
+.reveal, .known { font-size: 13px; border: 1px solid var(--line); background: transparent; color: var(--accent);
+  border-radius: 6px; padding: 2px 8px; cursor: pointer; margin: 0 6px 10px 0; }
+.known.on { color: var(--ask); border-color: var(--ask); }
+body.practice details.qa .rest { display: none; }
+body.practice details.qa.show .rest { display: block; }
+body:not(.practice) .reveal { display: none; }
+.hidden { display: none !important; }
+@media (max-width: 820px) {
+  .wrap { grid-template-columns: minmax(0, 1fr); }
+  nav { position: static; max-height: none; }
+}
+</style>
+</head>
+<body>
+<header>
+  <h1>Oral examination: spoken answers</h1>
+  <div class="tools">
+    <button data-f="all" class="on">All</button>
+    <button data-f="asked">Asked before</button>
+    <button data-f="predicted">Predicted</button>
+    <input id="q" type="search" placeholder="Search questions">
+    <button id="practice">Practice mode</button>
+    <button id="theme">Theme</button>
+    <span class="count" id="count"></span>
+  </div>
+</header>
+<div class="wrap">
+<nav><ul>
+<li><a href="#part-A">A. Thesis</a> <span class="n">(19)</span><ul><li><a href="#A-1">The talk in 15 minutes</a></li><li><a href="#A-2">Questions on the thesis</a></li></ul></li>
+<li><a href="#part-B">B. Machine Learning and Perception</a> <span class="n">(33)</span><ul><li><a href="#B-1">Empirical risk minimization and generalization</a></li><li><a href="#B-2">From one neuron to a deep network</a></li><li><a href="#B-3">Backpropagation and the delta error</a></li><li><a href="#B-4">Gradient descent and optimizers</a></li><li><a href="#B-5">Activation functions, regularization, initialization</a></li><li><a href="#B-6">Convolutional networks</a></li><li><a href="#B-7">Recurrent networks and LSTM</a></li><li><a href="#B-8">Attention and Transformers</a></li><li><a href="#B-9">Classical machine learning in the same slot</a></li></ul></li>
+<li><a href="#part-C">C. AI for Simulation (rCFD)</a> <span class="n">(33)</span><ul><li><a href="#C-1">Recurrence CFD as taught in the lecture</a></li><li><a href="#C-2">The figures of the thesis</a></li><li><a href="#C-3">CFD basics behind rCFD</a></li></ul></li>
+</ul>
+<p class="intro" style="font-size:13px">Asked before: in the list of past defenses, with the examiner. Predicted: not in that list. PDF version: <a href="oral_exam_v2.pdf">oral_exam_v2.pdf</a>.</p>
+</nav>
+<main>
+<section id="part-A"><h2>A. Thesis</h2><p class="intro">Thesis: <em>Data-based Numerical Simulation of Buoyant Jet Flow</em>. Supervisor: Prof. Stefan
+Pirker. Every number here is taken from the thesis of 10 October 2026. Equation and figure numbers
+refer to that version; the derivations follow Appendix&nbsp;D of the thesis.</p>
+<h3 id="A-1">The talk in 15 minutes</h3>
+<p class="intro">Build the talk on three claims, not on the chapters. One slide is about one minute.</p>
+<table class="talk"><tr><td>Min</td><td>Slide</td><td>What you say</td></tr><tr><td>0&ndash;1</td><td>Title</td><td>Recurrence CFD records a flow once and replays it many times. I test it on a scalar
+  that pushes back on the flow: temperature.</td></tr><tr><td>1&ndash;3</td><td>Problem</td><td>rCFD was built for passive scalars. Temperature drives the flow by buoyancy. What
+  does the replay lose, and how much can I repair without solving the flow again?</td></tr><tr><td>3&ndash;4</td><td>Case</td><td>Closed tank, $75\times75\times15$&nbsp;mm, 1&nbsp;mm cells. Warm jet, 333&nbsp;K at 0.02&nbsp;m/s, for
+  315&nbsp;s. $Re \approx 99$, laminar. Two lids: adiabatic and cooled.</td></tr><tr><td>4&ndash;6</td><td>Method</td><td>The preparation writes 600 frames. One replay step: recorded advection, face
+  exchange, correction, conservation constraint. About 260 times cheaper.</td></tr><tr><td>6&ndash;8</td><td>Claim 1</td><td>No single mixing constant is best. The outlet sits just below the front, so a
+  smeared front drains heat.</td></tr><tr><td>8&ndash;11</td><td>Claim 2</td><td>A bounded anti-diffusive correction, weighted to the vertical. Front 15.7&nbsp;mm
+  $\to$ 5.3 to 4.5&nbsp;mm, reference 5.0&nbsp;mm. Error of the mean temperature more than halved.</td></tr><tr><td>11&ndash;13</td><td>Claim 3</td><td>Under the cooled lid, on the fluid of the reference, the correction at
+  $s \approx 0.55$ ends 0.06&nbsp;K off on 9.62&nbsp;K of cooling.</td></tr><tr><td>13&ndash;14</td><td>What remains</td><td>While the tank fills, the layers separate too slowly. A flux read from the
+  recording reduces this error from 2.25 to 0.45&nbsp;K, but the tank then ends 0.86&nbsp;K too cold.</td></tr><tr><td>14&ndash;15</td><td>Take-home</td><td>A database belongs to a flow regime, not to a case. A numerical error at a
+  front becomes an energy error near an outlet.</td></tr></table>
+<div class="tip"><strong>The thesis in one sentence.</strong> &ldquo;I tested recurrence CFD on temperature, a scalar that drives
+its own flow. A bounded anti-diffusive correction removes the smearing of the front. The one defect
+that is left is missing transport, and a flux read from the recording can supply it.&rdquo;</div>
+<h3 id="A-2">Questions on the thesis</h3>
+<details class="qa asked" open data-text="what problem did you solve? thesis part, committee küng/klambauer: ``what problem was solved?&#x27;&#x27;"><summary><span class="qid">A1</span> What problem did you solve?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, committee Küng/Klambauer: &ldquo;What problem was solved?&rdquo;</p><p class="core"><span class="lab">Core.</span> I tested recurrence CFD on temperature, a scalar that drives its own flow.</p><div class="rest"><p><span class="lab">Explain.</span> rCFD replays a recorded flow and moves a scalar with it. It was built for passive scalars,
+which do not change the flow. Temperature does change the flow. So I measured what the replay loses
+and how much I can repair without solving the flow again.</p>
+<p><span class="lab">Numbers.</span> Reference 569&nbsp;min. One replay 2.16&nbsp;min on average. About 260 times faster.</p>
+<p class="summary"><span>Summary:</span> Passive scalar $\to$ active scalar. What is lost, what can be repaired.</p>
+<p class="src">Source: Thesis, Abstract and Chapter 1.</p></div></details>
+<details class="qa asked" open data-text="why should anybody care? thesis part, mara (``what benefit does your thesis bring to the world?&#x27;&#x27;) and küng (``why should i care?&#x27;&#x27;)"><summary><span class="qid">A2</span> Why should anybody care?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Mara (&ldquo;What benefit does your thesis bring to the world?&rdquo;) and Küng (&ldquo;why should I care?&rdquo;)</p><p class="core"><span class="lab">Core.</span> Thermal processes run for hours, and full CFD of that time is too slow for daily use.</p><div class="rest"><p><span class="lab">Explain.</span> rCFD is 260 times faster in my case. But a fast model is only useful if we know its error.
+My thesis measures this error for a case where temperature matters, and it shows which part can be
+repaired.</p>
+<p class="summary"><span>Summary:</span> Fast is useful only with a known error.</p>
+<p class="src">Source: Thesis, Chapter 1.</p></div></details>
+<details class="qa predicted" open data-text="explain recurrence cfd in simple words. your thesis: everything you used can be asked"><summary><span class="qid">A3</span> Explain recurrence CFD in simple words.<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> A normal CFD run is recorded once, and the replay reuses the recorded motion again and again.</p><div class="rest"><p><span class="lab">Explain.</span> The preparation solves the full equations and stores, frame by frame, which share of each
+cell moves to which cell. The replay applies these stored maps to the temperature. Velocity and
+pressure are never solved again, so it is cheap. One replay step has four stages.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\mathbf{T}^{*} &amp;= \mathbf{M}^{(f_n)}\,\mathbf{T}^{n} \why{recorded map: move the heat} \\
+\mathbf{T}^{**} &amp;= \mathcal{S}(\mathbf{T}^{*}) \why{face exchange: add mixing} \\
+\mathbf{T}^{***} &amp;= \mathcal{C}(\mathbf{T}^{**}) \why{correction: my work} \\
+\mathbf{T}^{n+1} &amp;= \mathcal{B}(\mathbf{T}^{***}) \why{conservation constraint: fix the total}
+\end{align*}\]</div>
+<p>Together this is Eq.&nbsp;(2.10), $\mathbf{T}^{n+1} = \mathcal{B}(\mathcal{C}(\mathcal{S}(\mathbf{M}\mathbf{T}^n)))$.
+Standard rCFD has $\mathcal{C} = \text{identity}$.</p>
+<p class="summary"><span>Summary:</span> Record once, replay many times. Map, swap, correct, balance.</p>
+<p class="src">Source: Thesis, Sections 2.2&ndash;2.7, Eq.&nbsp;(2.10).</p></div></details>
+<details class="qa asked" open data-text="why is this ai, and not only cfd? thesis part, küng committee (``why and how does ml solve this problem?&#x27;&#x27;)"><summary><span class="qid">A4</span> Why is this AI, and not only CFD?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Küng committee (&ldquo;Why and how does ML solve this problem?&rdquo;)</p><p class="core"><span class="lab">Core.</span> It is a data-based simulation: an expensive solver produces data, and a cheap model reuses it.</p><div class="rest"><p><span class="lab">Explain.</span> The database plays the role of training data. Choosing the next frame is a
+nearest-neighbour search in a database of states, the method of analogues. My main finding is about
+generalization: a database belongs to a flow regime. A boundary condition that changes the regime
+makes the database out of distribution.</p>
+<p class="summary"><span>Summary:</span> Database = training data. New regime = out of distribution.</p>
+<p class="src">Source: Thesis, Section 2.2 and Section 6.4.</p></div></details>
+<details class="qa predicted" open data-text="what is the recurrence matrix, and is your flow recurrent? your thesis: everything you used can be asked"><summary><span class="qid">A5</span> What is the recurrence matrix, and is your flow recurrent?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The matrix compares every pair of recorded states, and my flow is not recurrent.</p><div class="rest"><p><span class="lab">Explain.</span> A small distance means two states are similar, so the replay could jump between them. In
+my tank the matrix has two blocks, filling and settling, and no state comes back. So the replay
+plays the frames in order. It is still rCFD, but the saving comes only from not solving velocity
+and pressure.</p>
+<p><span class="lab">Numbers.</span> Median prominence 0.028. The method asks for 0.05 to 0.1.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+R_{fg} &amp;= \bigl\lVert \Phi^{(f)} - \Phi^{(g)} \bigr\rVert \why{distance between frames $f$ and $g$, Eq.~(2.5)} \\
+d(f,g) &amp;= R_{fg}/\max R \why{normalise to $[0,1]$, Eq.~(2.6)} \\
+P_{\mathrm{rel}} &amp;= \bigl\langle d_{\max} - d_{\min} \bigr\rangle / \bar{d} \why{depth of the dips over the plateau, Eq.~(2.7)}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Two blocks, no return, 0.028 $\to$ frames in order.</p>
+<p class="src">Source: Thesis, Section 2.4, Figure 2.2.</p></div></details>
+<details class="qa predicted" open data-text="what is the face exchange, and what is fsd? your thesis: everything you used can be asked"><summary><span class="qid">A6</span> What is the face exchange, and what is $\fsd$?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> After each advection the library moves a share of heat across every face, from warm to cold.</p><div class="rest"><p><span class="lab">Explain.</span> A pure displacement does not mix, so this step adds mixing. $\fsd$ is its strength per
+step. It has no unit, so it is not a diffusion coefficient, but it can be translated into one. The
+exchange can only reduce differences. It can never rebuild a smeared front.</p>
+<p><span class="lab">Numbers.</span> $\fsd = 0.5$ gives $2.5\times10^{-7}$&nbsp;m$^2$/s, ten times the molecular value.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\Delta_{\mathrm{swap}} &amp;= \fsd\,V\,\frac{T_{c_1}-T_{c_0}}{2} \why{exchange of Eq.~(2.11)} \\
+Q_{\mathrm{swap}} &amp;= \rho c_p\,\fsd\,c_s^{3}\,\frac{T_{c_1}-T_{c_0}}{2} \why{heat of that amount, $V = c_s^3$} \\
+Q_{\mathrm{Fick}} &amp;= \rho c_p\,D\,\frac{T_{c_1}-T_{c_0}}{c_s}\,c_s^{2}\,\Delta t \why{Fick's law over one face and one step} \\
+D_{\mathrm{eq}} &amp;= \frac{\fsd\,c_s^{2}}{2\,\Delta t} \why{set $Q_{\mathrm{Fick}} = Q_{\mathrm{swap}}$, Eq.~(2.13)}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Swap = one-way mixing. Converts to $D_{\mathrm{eq}} = \fsd c_s^2/2\Delta t$.</p>
+<p class="src">Source: Thesis, Section 2.6, Eqs.&nbsp;(2.11)&ndash;(2.13); Appendix D.1.</p></div></details>
+<details class="qa predicted" open data-text="why is there no single best mixing constant? your thesis: everything you used can be asked"><summary><span class="qid">A7</span> Why is there no single best mixing constant?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The two measures want different amounts of mixing, because the outlet sits just below the front.</p><div class="rest"><p><span class="lab">Explain.</span> The mean temperature is best with little mixing. The height of the heat is best near
+$\fsd = 0.5$. The more the replay smears the front, the more warm fluid reaches the outlet and
+leaves the tank.</p>
+<p><span class="lab">Numbers.</span> Mean-temperature error 1.07&nbsp;K at little mixing. At $\fsd = 3$ the tank ends 5.08&nbsp;K too cold.</p>
+<p class="summary"><span>Summary:</span> Outlet below the front $\to$ smearing drains heat.</p>
+<p class="src">Source: Thesis, Section 5.1.</p></div></details>
+<details class="qa predicted" open data-text="why not simply use negative diffusion to sharpen the front? your thesis: everything you used can be asked"><summary><span class="qid">A8</span> Why not simply use negative diffusion to sharpen the front?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> Negative diffusion is ill posed: small wiggles grow fastest.</p><div class="rest"><p><span class="lab">Explain.</span> It does steepen the front, but it also amplifies every disturbance at the grid scale. In my
+1D test a disturbance of 1&nbsp;mK left the range of the data by more than 1&nbsp;K after 21 steps. So I keep
+the useful part and stop the dangerous part with a limiter.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+T_i^{n+1} &amp;= T_i^n + \nu\,(T_{i+1}^n - 2T_i^n + T_{i-1}^n) \why{explicit diffusion step} \\
+T_i^n &amp;= G^n e^{\mathrm{i}k i\Delta x} \why{one Fourier mode} \\
+G &amp;= 1 + \nu\,(2\cos k\Delta x - 2) = 1 - 4\nu\sin^2(k\Delta x/2) \why{insert the mode} \\
+G &amp;= 1 + 4\lvert\nu\rvert \why{shortest mode $k\Delta x = \pi$, $\nu&lt;0$}
+\end{align*}\]</div>
+<p>$\lvert G\rvert &gt; 1$, so the shortest mode grows in every step.</p>
+<p class="summary"><span>Summary:</span> Negative diffusion grows wiggles. Keep the steepening, limit the rest.</p>
+<p class="src">Source: Thesis, Section 4.2.2, Eq.&nbsp;(4.13), Figure 4.1.</p></div></details>
+<details class="qa predicted" open data-text="explain your limiter. your thesis: everything you used can be asked"><summary><span class="qid">A9</span> Explain your limiter.<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> Each face may move heat up the gradient only as far as both cells stay inside their local bounds.</p><div class="rest"><p><span class="lab">Explain.</span> For every cell I take the smallest and the largest value of the cell and its neighbours.
+Across a face, heat moves from the colder to the warmer cell. The amount is the smaller of the two
+headrooms, times a strength $s$. This is the limiter idea of flux-corrected transport, by Zalesak.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+Q_h^{+} &amp;= C_h\,(T_h^{\max} - T_h),\quad Q_c^{-} = C_c\,(T_c - T_c^{\min}) \why{headrooms, Eq.~(4.15)} \\
+\Delta q_f &amp;= s\,\min(Q_h^{+},Q_c^{-}) \why{limited exchange, Eq.~(4.16)} \\
+C_i\,\Delta T_i &amp;\le n_f\,s\,Q_i^{+} \why{at most $n_f$ faces bring heat} \\
+T_i + \Delta T_i &amp;\le T_i^{\max} \quad\text{if}\quad s \le 1/n_f = 1/6 \why{Eq.~(4.17)}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Smaller headroom times $s$. Conservative, no new extremum, safe for $s \le 1/6$.</p>
+<p class="src">Source: Thesis, Section 4.2.3; Appendix D.4.</p></div></details>
+<details class="qa predicted" open data-text="why the direction weight? your thesis: everything you used can be asked"><summary><span class="qid">A10</span> Why the direction weight?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The front is horizontal, so the correction should act across it and not along it.</p><div class="rest"><p><span class="lab">Explain.</span> Each face gets the weight $\cos^2$ of the angle between its link and the vertical. Faces
+across the front get one, faces along it get zero. Without the weight the correction roughens the
+front sideways. This weight is exactly the face coefficient of a diffusion that acts in one
+direction only.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+K_f &amp;= \hat{\mathbf{e}}^{\mathsf{T}}\mathbf{K}\,\hat{\mathbf{e}} \why{two-point face coefficient} \\
+    &amp;= K\,(\hat{\mathbf{e}}\cdot\hat{\mathbf{n}})^2 \why{rank-one tensor $\mathbf{K} = K\hat{\mathbf{n}}\hat{\mathbf{n}}^{\mathsf{T}}$} \\
+    &amp;= K\,w^{\mathrm{dir}}_f \why{Eq.~(4.21)}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Act across the front: $\cos^2$ weight = one-direction diffusion.</p>
+<p class="src">Source: Thesis, Section 4.2.4, Eqs.&nbsp;(4.19), (4.21).</p></div></details>
+<details class="qa predicted" open data-text="the recorded diffusivity did not help. why? your thesis: everything you used can be asked"><summary><span class="qid">A11</span> The recorded diffusivity did not help. Why?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The recorded values are larger than the explicit exchange can apply, so every face hits the cap.</p><div class="rest"><p><span class="lab">Explain.</span> The library exchanges at most half a cell volume per face and step. The recorded
+diffusivity asks for about nine times more. So every face exchanges the maximum, and the field acts
+exactly like the constant $\fsd = 0.5$. The replays are bit-identical, which proves it. A shorter
+step or an implicit exchange would let the field act.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+4 \times \tfrac18 &amp;= \tfrac12 \why{at most four loops of 1/8 of a cell} \\
+\mathrm{Di} &amp;= D\,\Delta t/c_s^{2} \le 0.5 \why{the cap as a diffusion number, Eq.~(2.16)}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Recorded $D$ above the cap $\to$ acts like a constant.</p>
+<p class="src">Source: Thesis, Section 5.2.1, Figure 5.4.</p></div></details>
+<details class="qa predicted" open data-text="what happened under the cooled lid? your thesis: everything you used can be asked"><summary><span class="qid">A12</span> What happened under the cooled lid?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> On the fluid of the reference, the corrected replay ends 0.06&nbsp;K from the reference.</p><div class="rest"><p><span class="lab">Explain.</span> The reference fluid has the specific heat 1006.43&nbsp;J/(kg&thinsp;K). A replay given the specific
+heat of water cools four times less for the same wall power, and ends 4.34&nbsp;K too warm. On the right
+fluid the replay is close, and the correction puts the heat back in the right layer.</p>
+<p><span class="lab">Numbers.</span> Cooling depth 9.62&nbsp;K. Without correction $-0.66$&nbsp;K. With correction at $s\approx0.55$:
+$+0.06$&nbsp;K, end profile 0.41&nbsp;K.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\Delta T_{\mathrm{cell}} &amp;= -\frac{q\,\Delta t}{\rho\,c_p\,V} \why{wall loss of one cell, Eq.~(4.25)} \\
+\frac{\Delta T_{\mathrm{rep}}}{\Delta T_{\mathrm{case}}} &amp;= \frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} = \frac{1006.43}{4182} = \frac{1}{4.155} \why{same power, two specific heats} \\
+h_{\mathrm{eff}} &amp;= G\,h\,\frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} \why{Eq.~(4.26)}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Same fluid on both sides first. Then the correction does the rest.</p>
+<p class="src">Source: Thesis, Sections 6.1&ndash;6.2; Appendix D.5.</p></div></details>
+<details class="qa predicted" open data-text="what could not be repaired, and why? your thesis: everything you used can be asked"><summary><span class="qid">A13</span> What could not be repaired, and why?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> While the tank fills, the layers separate too slowly, and no local rule can fix that.</p><div class="rest"><p><span class="lab">Explain.</span> A local correction only moves heat between neighbours, so it can change the shape of the
+front but not carry heat from one layer to another. This is missing transport. A vertical flux read
+from the recording supplies that transport. It reduces the error, but the tank then ends too cold.</p>
+<p><span class="lab">Numbers.</span> Heterogeneity error over the warm inflow 2.25&nbsp;K $\to$ 0.45&nbsp;K. End 0.86&nbsp;K too cold.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\rho c_p v T &amp;= \rho c_p v\,\bar{T}_{\mathrm{b}} + \rho c_p v\,(T - \bar{T}_{\mathrm{b}}) \why{split $T$ at the band mean} \\
+F &amp;= \rho c_p v\,(T - \bar{T}_{\mathrm{b}}) \why{the recorded flux, Eq.~(2.18)} \\
+\langle F\rangle_{\mathrm{b}} &amp;= \rho c_p \langle v' T'\rangle_{\mathrm{b}} \why{band mean: the eddy heat flux}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Local repair fixes shape. Missing transport needs recorded transport.</p>
+<p class="src">Source: Thesis, Sections 6.5&ndash;6.6; Appendix D.2.</p></div></details>
+<details class="qa asked" open data-text="how do you know your results are correct? thesis part, ulrich (``statistical methods employed, why other methods were not chosen&#x27;&#x27;)"><summary><span class="qid">A14</span> How do you know your results are correct?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Ulrich (&ldquo;statistical methods employed, why other methods were not chosen&rdquo;)</p><p class="core"><span class="lab">Core.</span> Every replay is deterministic, and every run changes one setting against a control.</p><div class="rest"><p><span class="lab">Explain.</span> A rerun gives the same trace, bit for bit. Replay and reference are compared at the same
+instants and over the same end window. The energy budget of each case is closed term by term.</p>
+<p><span class="lab">Numbers.</span> End window 580 to 599&nbsp;s on both sides.</p>
+<p class="summary"><span>Summary:</span> Deterministic, one change per run, same clock, closed budget.</p>
+<p class="src">Source: Thesis, Section 3.9 and Appendix B.5.</p></div></details>
+<details class="qa predicted" open data-text="why these error measures? bias and rmse? your thesis: everything you used can be asked"><summary><span class="qid">A15</span> Why these error measures? Bias and RMSE?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The mean temperature says how much heat there is; the profile and the front width say where it is.</p><div class="rest"><p><span class="lab">Explain.</span> A replay can be right on one and wrong on the other, so I report both. On a trace, the
+bias gives the side and the RMSE gives the size. Their identity separates an offset from a wrong
+shape.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\mathrm{RMSE}^2 &amp;= \frac1N\sum_k e_k^2 \why{definition, Eq.~(4.3)} \\
+ &amp;= \frac1N\sum_k \bigl[(e_k-\mathrm{bias}) + \mathrm{bias}\bigr]^2 \why{add and subtract the bias} \\
+ &amp;= \sigma_e^2 + 2\,\mathrm{bias}\cdot 0 + \mathrm{bias}^2 \why{$\sum_k (e_k - \mathrm{bias}) = 0$} \\
+ &amp;= \mathrm{bias}^2 + \sigma_e^2
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> How much heat versus where it is. RMSE$^2$ = bias$^2$ + spread$^2$.</p>
+<p class="src">Source: Thesis, Section 4.1.2, Eq.&nbsp;(4.3).</p></div></details>
+<details class="qa predicted" open data-text="why is the flow laminar? your thesis: everything you used can be asked"><summary><span class="qid">A16</span> Why is the flow laminar?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The jet enters at a Reynolds number of about 99, far below transition.</p><div class="rest"><p><span class="lab">Explain.</span> So the equations are solved as they stand, with no turbulence model. The case file
+confirms that the turbulence model is off. Buoyancy is slightly stronger than inertia, so the jet
+bends up within a few inlet widths.</p>
+<p><span class="lab">Numbers.</span> $Re = UD/\nu \approx 99$ with $U = 0.02$&nbsp;m/s, $D = 5$&nbsp;mm. $Ri = 1.84$.</p>
+<p class="summary"><span>Summary:</span> $Re \approx 99$: laminar. $Ri = 1.84$: the jet bends up.</p>
+<p class="src">Source: Thesis, Section 3.3, Table 3.2.</p></div></details>
+<details class="qa predicted" open data-text="why the boussinesq approximation? your thesis: everything you used can be asked"><summary><span class="qid">A17</span> Why the Boussinesq approximation?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The density changes by only 1.5 per cent, so it matters only where gravity acts.</p><div class="rest"><p><span class="lab">Explain.</span> Density is kept constant except in the buoyancy term. This buoyancy term is exactly the
+link that the replay cuts: the replay keeps the recorded motion, so the temperature can no longer
+change the velocity.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\rho\,\mathbf{g} &amp;\approx \rho_0\,\mathbf{g}\bigl(1 - \beta(T - T_0)\bigr) \why{linear in $T$ for small changes} \\
+&amp;= \rho_0\,\mathbf{g} - \rho_0\,\beta\,(T-T_0)\,\mathbf{g} \why{second term = buoyancy}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Constant density, except where gravity sees it. The replay cuts this term.</p>
+<p class="src">Source: Thesis, Section 2.1, Eqs.&nbsp;(2.1)&ndash;(2.3).</p></div></details>
+<details class="qa asked" open data-text="what is future work? thesis part, küng committee (``what would you do differently?&#x27;&#x27;), mara (``how could i extend my work?&#x27;&#x27;)"><summary><span class="qid">A18</span> What is future work?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Küng committee (&ldquo;What would you do differently?&rdquo;), Mara (&ldquo;How could I extend my work?&rdquo;)</p><p class="core"><span class="lab">Core.</span> Let the recorded diffusivity act, split the conservation constraint, and switch databases by state.</p><div class="rest"><p><span class="lab">Explain.</span> An implicit exchange or a shorter step would let the recorded diffusivity work. A balance
+per compartment would stop the constraint from putting heat back at the front. Several recordings,
+chosen by the replayed temperature, could cover more than one regime.</p>
+<p class="summary"><span>Summary:</span> Implicit exchange, compartments, several databases.</p>
+<p class="src">Source: Thesis, Section 9.3.</p></div></details>
+<details class="qa asked" open data-text="which papers influenced you most? thesis part, mara (``which was the paper your thesis was most influenced by?&#x27;&#x27;)"><summary><span class="qid">A19</span> Which papers influenced you most?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Mara (&ldquo;Which was the paper your thesis was most influenced by?&rdquo;)</p><p class="core"><span class="lab">Core.</span> Lichtenegger and Pirker (2016) and Pirker et al. (2018) for rCFD, and Zalesak (1979) for the limiter.</p><div class="rest"><p><span class="lab">Explain.</span> The first introduced recurrence CFD and the recurrence matrix. The second describes the
+face exchange and the conservation constraint. Zalesak gives the local bounds of flux-corrected
+transport that my limiter uses.</p>
+<p class="summary"><span>Summary:</span> rCFD: Lichtenegger, Pirker. Limiter: Zalesak.</p>
+<p class="src">Source: Thesis, Chapter 2 and Section 4.2.</p></div></details></section>
+<section id="part-B"><h2>B. Machine Learning and Perception</h2><p class="intro">Likely examiners: Prof. Klambauer or Prof. Hochreiter. The same core comes back almost every
+time: empirical risk minimization, gradient descent, backpropagation and the delta error. Then
+short questions on activations, regularization, optimizers and one architecture. Notation of the
+JKU script: input $\mathbf{x}_n$, label $y_n$, model $g(\mathbf{x};\mathbf{w})$, loss $L$,
+pre-activation $s$, activation $a = f(s)$, layer $[l]$.</p>
+<h3 id="B-1">Empirical risk minimization and generalization</h3>
+<details class="qa asked" open data-text="write down a supervised data set and the training framework. klambauer (several students), berger-weber committee"><summary><span class="qid">B1</span> Write down a supervised data set and the training framework.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Klambauer (several students), Berger-Weber committee</p><p class="core"><span class="lab">Core.</span> We have $N$ pairs of input and label, and learning means minimizing the average loss on them.</p><div class="rest"><p><span class="lab">Explain.</span> The pairs are drawn independently from an unknown distribution. A model maps an input to a
+prediction, and a loss says how wrong one prediction is. The average loss on the training data is
+the empirical risk.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+Z &amp;= \{(\mathbf{x}_n,y_n)\}_{n=1}^{N} \why{training data, i.i.d. from $p(\mathbf{x},y)$} \\
+\Remp(\mathbf{w}) &amp;= \frac1N\sum_{n=1}^{N} L\bigl(y_n, g(\mathbf{x}_n;\mathbf{w})\bigr) \why{average loss} \\
+\hat{\mathbf{w}} &amp;= \arg\min_{\mathbf{w}} \Remp(\mathbf{w}) \why{learning}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Data, model, loss, average, minimize.</p>
+<p class="src">Source: DLNN script WS24, Ch.&nbsp;3 and 5.1.</p></div></details>
+<details class="qa asked" open data-text="what is the generalization error? why can we not minimize it directly? klambauer (fürnkranz committee), schedl committee"><summary><span class="qid">B2</span> What is the generalization error? Why can we not minimize it directly?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Klambauer (Fürnkranz committee), Schedl committee</p><p class="core"><span class="lab">Core.</span> It is the expected loss on new data, and we cannot compute it because the true distribution is unknown.</p><div class="rest"><p><span class="lab">Explain.</span> So we minimize the empirical risk instead and estimate the generalization error on data we
+did not train on: a test set or cross-validation. The training loss is not a fair estimate, because
+the weights were chosen on that data.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\Rgen(\mathbf{w}) &amp;= \mathbb{E}_{(\mathbf{x},y)\sim p}\bigl[L(y,g(\mathbf{x};\mathbf{w}))\bigr] \why{expected loss} \\
+&amp;= \int L\bigl(y,g(\mathbf{x};\mathbf{w})\bigr)\,p(\mathbf{x},y)\,\mathrm{d}\mathbf{x}\,\mathrm{d}y \why{needs $p$, which is unknown} \\
+&amp;\approx \frac{1}{M}\sum_{m=1}^{M} L\bigl(y_m,g(\mathbf{x}_m;\mathbf{w})\bigr) \why{test set, law of large numbers}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Risk = loss on unseen data. Estimate it with a test set or cross-validation.</p>
+<p class="src">Source: DLNN script WS24, Ch.&nbsp;5.2&ndash;5.3.</p></div></details>
+<details class="qa asked" open data-text="what is a loss function? give examples. klambauer, march 2026 (``not all losses are differentiable, 0--1 loss&#x27;&#x27;)"><summary><span class="qid">B3</span> What is a loss function? Give examples.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Klambauer, March 2026 (&ldquo;not all losses are differentiable, 0&ndash;1 loss&rdquo;)</p><p class="core"><span class="lab">Core.</span> A loss compares a label with a prediction and is zero when the prediction is right.</p><div class="rest"><p><span class="lab">Explain.</span> It is never negative. We choose it to fit the task. Not every loss can be trained with
+gradient descent: the 0&ndash;1 loss has no useful gradient, so we use cross-entropy instead.</p>
+<p><span class="lab">Explain.</span> Examples: squared loss $\tfrac12(y-\hat y)^2$ for regression; binary cross-entropy
+$-y\log\hat y - (1-y)\log(1-\hat y)$; categorical cross-entropy $-\sum_k y_k\log\hat y_k$; hinge
+loss $\max(0, 1 - y\,g(\mathbf{x}))$ for the SVM.</p>
+<p class="summary"><span>Summary:</span> Non-negative, zero when right. 0&ndash;1 loss $\to$ use cross-entropy.</p>
+<p class="src">Source: DLNN script WS24, Sec.&nbsp;4.1&ndash;4.4.</p></div></details>
+<details class="qa asked" open data-text="show erm on linear regression. klambauer (küng committee), schedl committee"><summary><span class="qid">B4</span> Show ERM on linear regression.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Klambauer (Küng committee), Schedl committee</p><p class="core"><span class="lab">Core.</span> With a linear model and squared loss the risk is convex, so the minimum has a closed form.</p><div class="rest"><p><span class="lab">Explain.</span> Set the gradient to zero and solve. Gradient descent reaches the same point step by step.
+For one sample the gradient is error times input, and the same pattern comes back in backprop.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\Remp(\mathbf{w}) &amp;= \tfrac12\lVert \mathbf{y} - X\mathbf{w}\rVert^2 \why{squared loss, all samples} \\
+\nabla_{\mathbf{w}}\Remp &amp;= -X^{\mathsf{T}}(\mathbf{y} - X\mathbf{w}) \why{chain rule} \\
+0 &amp;= X^{\mathsf{T}}\mathbf{y} - X^{\mathsf{T}}X\,\hat{\mathbf{w}} \why{gradient zero at the minimum} \\
+\hat{\mathbf{w}} &amp;= (X^{\mathsf{T}}X)^{-1}X^{\mathsf{T}}\mathbf{y} \why{normal equations, pseudo-inverse}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Convex $\to$ closed form. Gradient = error $\times$ input.</p>
+<p class="src">Source: DLNN script WS24, Sec.&nbsp;4.1.3&ndash;4.1.4.</p></div></details>
+<details class="qa predicted" open data-text="overfitting, underfitting, bias and variance. dlnn script sec.~5.4; bias and mse were asked only in signal processing (huemer)"><summary><span class="qid">B5</span> Overfitting, underfitting, bias and variance.<span class="badge predicted">PREDICTED</span></summary><p class="origin">DLNN script Sec.&nbsp;5.4; bias and MSE were asked only in signal processing (Huemer)</p><p class="core"><span class="lab">Core.</span> Too simple a model has high bias, too complex a model has high variance.</p><div class="rest"><p><span class="lab">Explain.</span> An underfitting model cannot follow the data. An overfitting model follows the noise, so the
+training error is low and the test error is high. Very large networks show double descent: after
+the point where they fit the training data exactly, the test error falls again.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+y &amp;= f(\mathbf{x}) + \varepsilon,\quad \mathbb{E}[\varepsilon] = 0,\ \mathrm{Var}[\varepsilon] = \sigma^2 \why{data model} \\
+\mathbb{E}\bigl[(y-\hat g)^2\bigr] &amp;= \mathbb{E}\bigl[(f + \varepsilon - \bar g + \bar g - \hat g)^2\bigr] \why{add and subtract $\bar g = \mathbb{E}[\hat g]$} \\
+&amp;= \sigma^2 + (f - \bar g)^2 + \mathbb{E}\bigl[(\hat g - \bar g)^2\bigr] \why{cross terms have zero mean} \\
+&amp;= \text{noise} + \text{bias}^2 + \text{variance}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Simple $\to$ bias. Complex $\to$ variance. Large nets: double descent.</p>
+<p class="src">Source: DLNN script WS24, Sec.&nbsp;5.4.</p></div></details>
+<h3 id="B-2">From one neuron to a deep network</h3>
+<details class="qa asked" open data-text="write the formula of a neuron. schlüter"><summary><span class="qid">B6</span> Write the formula of a neuron.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Schlüter</p><p class="core"><span class="lab">Core.</span> A neuron takes a weighted sum of its inputs plus a bias, and passes it through a non-linear function.</p><div class="rest"><p><span class="lab">Explain.</span> The weighted sum is the pre-activation, and the result is the activation. A layer does
+this for many neurons at once. The forward pass goes layer by layer from the input to the output.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+s_i &amp;= \sum_j w_{ij}\,a_j + b_i \why{pre-activation} \\
+a_i &amp;= f(s_i) \why{activation} \\
+\mathbf{a}^{[l]} &amp;= f\bigl(W^{[l]}\mathbf{a}^{[l-1]} + \mathbf{b}^{[l]}\bigr),\quad \mathbf{a}^{[0]} = \mathbf{x} \why{one layer; output $\hat{\mathbf{y}} = \mathbf{a}^{[L]}$}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Weighted sum, plus bias, through a non-linearity.</p>
+<p class="src">Source: DLNN script WS24, Eqs.&nbsp;(3.2)&ndash;(3.3), (4.59)&ndash;(4.62).</p></div></details>
+<details class="qa asked" open data-text="a deep network with and without activation functions? schlüter"><summary><span class="qid">B7</span> A deep network with and without activation functions?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Schlüter</p><p class="core"><span class="lab">Core.</span> Without non-linear activations the whole network collapses to one linear model.</p><div class="rest"><p><span class="lab">Explain.</span> A product of linear maps is again linear. So depth adds nothing, and the network cannot
+even solve XOR. The non-linearity is what makes depth useful.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\mathbf{a}^{[2]} &amp;= W^{[2]}\bigl(W^{[1]}\mathbf{x} + \mathbf{b}^{[1]}\bigr) + \mathbf{b}^{[2]} \why{two layers, no activation} \\
+&amp;= \bigl(W^{[2]}W^{[1]}\bigr)\mathbf{x} + \bigl(W^{[2]}\mathbf{b}^{[1]} + \mathbf{b}^{[2]}\bigr) \why{multiply out} \\
+&amp;= W\mathbf{x} + \mathbf{b} \why{one linear layer}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> No activation $\to$ one linear model. No XOR.</p>
+<p class="src">Source: DLNN script WS24, Sec.&nbsp;4.5.</p></div></details>
+<details class="qa asked" open data-text="universal function approximation theorem. lehner"><summary><span class="qid">B8</span> Universal function approximation theorem.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Lehner</p><p class="core"><span class="lab">Core.</span> One hidden layer with enough units can approximate any continuous function on a compact set.</p><div class="rest"><p><span class="lab">Explain.</span> The activation must be non-polynomial, for example a sigmoid. The theorem says the network
+can represent the function. It does not say how many units we need, and it does not say that
+gradient descent will find the weights.</p>
+<p class="summary"><span>Summary:</span> One hidden layer, any continuous function. Existence, not learnability.</p>
+<p class="src">Source: DLNN I+II script SS25, &ldquo;Deep Learning theory&rdquo;.</p></div></details>
+<h3 id="B-3">Backpropagation and the delta error</h3>
+<p class="intro">This is the most asked topic. Practise writing it until it takes two minutes.</p>
+<details class="qa asked" open data-text="explain backpropagation and define the delta error. hochreiter, klambauer, kofler (several students)"><summary><span class="qid">B9</span> Explain backpropagation and define the delta error.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Hochreiter, Klambauer, Kofler (several students)</p><p class="core"><span class="lab">Core.</span> Backprop gets all gradients with one forward and one backward pass, and the delta is the
+derivative of the loss with respect to a pre-activation.</p><div class="rest"><p><span class="lab">Explain.</span> First the forward pass stores all $s$ and $a$. Then the deltas are computed from the
+output back to the input. The gradient of a weight is the delta of the unit above times the
+activation of the unit below. The cost is linear in the number of weights.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\delta_i &amp;:= \frac{\partial L}{\partial s_i} \why{definition} \\
+\frac{\partial L}{\partial w_{ij}} &amp;= \frac{\partial L}{\partial s_i}\,\frac{\partial s_i}{\partial w_{ij}} \why{chain rule: $w_{ij}$ acts only through $s_i$} \\
+&amp;= \delta_i\,a_j \why{$s_i = \sum_j w_{ij}a_j + b_i$} \\
+w_{ij} &amp;\leftarrow w_{ij} - \eta\,\delta_i\,a_j \why{gradient step}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> $\delta$ = dLoss/d(pre-activation). Gradient = $\delta$ above $\times$ activation below.</p>
+<p class="src">Source: DLNN script WS24, Sec.&nbsp;4.6.2, Eqs.&nbsp;(4.63)&ndash;(4.68).</p></div></details>
+<details class="qa asked" open data-text="write the recursive formula for the deltas. klambauer, kofler (``delta error of the l-th layer&#x27;&#x27;)"><summary><span class="qid">B10</span> Write the recursive formula for the deltas.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Klambauer, Kofler (&ldquo;delta error of the $l$-th layer&rdquo;)</p><p class="core"><span class="lab">Core.</span> The delta of a hidden unit is the weighted sum of the deltas above, times the slope of its own activation.</p><div class="rest"><p><span class="lab">Explain.</span> A hidden unit $j$ affects the loss only through the units $i$ of the next layer. So we sum
+over those paths. In matrix form we multiply by the weight matrix and then by the derivatives of
+the activations.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\delta_j &amp;= \frac{\partial L}{\partial s_j} = \sum_i \frac{\partial L}{\partial s_i}\,\frac{\partial s_i}{\partial a_j}\,\frac{\partial a_j}{\partial s_j} \why{chain rule over all units $i$ above} \\
+&amp;= \sum_i \delta_i\,w_{ij}\,f'(s_j) \why{$\partial s_i/\partial a_j = w_{ij}$, $\partial a_j/\partial s_j = f'(s_j)$} \\
+\bm{\delta}^{[l-1]} &amp;= \mathrm{diag}\bigl(f'(\mathbf{s}^{[l-1]})\bigr)\,W^{[l]\mathsf{T}}\,\bm{\delta}^{[l]} \why{layer form} \\
+\frac{\partial L}{\partial W^{[l]}} &amp;= \bm{\delta}^{[l]}\,\mathbf{a}^{[l-1]\mathsf{T}} \why{outer product}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Deltas flow down: multiply by $W^{\mathsf T}$, then by $f'$.</p>
+<p class="src">Source: DLNN script WS24, Eqs.&nbsp;(4.71), (4.77)&ndash;(4.84).</p></div></details>
+<details class="qa asked" open data-text="what is the delta at the output with softmax and cross-entropy? hochreiter (softmax + cross-entropy)"><summary><span class="qid">B11</span> What is the delta at the output with softmax and cross-entropy?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Hochreiter (softmax + cross-entropy)</p><p class="core"><span class="lab">Core.</span> It is simply prediction minus label.</p><div class="rest"><p><span class="lab">Explain.</span> The same clean result holds for a linear output with squared loss and for a sigmoid with
+binary cross-entropy. That is why these pairs are used together.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+a_k &amp;= \frac{e^{s_k}}{\sum_m e^{s_m}},\quad L = -\sum_k y_k\log a_k \why{softmax and cross-entropy} \\
+\frac{\partial a_k}{\partial s_i} &amp;= a_k\,(\mathbb{1}[k=i] - a_i) \why{derivative of the softmax} \\
+\frac{\partial L}{\partial s_i} &amp;= -\sum_k \frac{y_k}{a_k}\,a_k\,(\mathbb{1}[k=i] - a_i) \why{chain rule} \\
+&amp;= -y_i + a_i\sum_k y_k = a_i - y_i \why{one-hot label: $\sum_k y_k = 1$}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Matching pair $\to$ $\delta$ = prediction $-$ label.</p>
+<p class="src">Source: DLNN script WS24, Eq.&nbsp;(4.70), Table&nbsp;4.1.</p></div></details>
+<details class="qa asked" open data-text="vanishing and exploding gradients. who found it? schedl committee (``backpropagation, vanishing gradients&#x27;&#x27;)"><summary><span class="qid">B12</span> Vanishing and exploding gradients. Who found it?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Schedl committee (&ldquo;backpropagation, vanishing gradients&rdquo;)</p><p class="core"><span class="lab">Core.</span> The delta is multiplied by one Jacobian per layer, so over many layers it shrinks or grows exponentially.</p><div class="rest"><p><span class="lab">Explain.</span> With the sigmoid the slope is at most 0.25, so the deltas vanish. Sepp Hochreiter analysed
+this in his diploma thesis in 1991, here in Linz. The fixes are ReLU or SELU, good initialization,
+normalization, residual connections and, for sequences, the LSTM.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\bm{\delta}^{[1]} &amp;= \Bigl(\prod_{l=2}^{L} \mathrm{diag}(f'(\mathbf{s}^{[l-1]}))\,W^{[l]\mathsf{T}}\Bigr)\bm{\delta}^{[L]} \why{apply the recursion $L-1$ times} \\
+\lVert\bm{\delta}^{[1]}\rVert &amp;\le \bigl(\max\lvert f'\rvert\cdot\max_l\lVert W^{[l]}\rVert\bigr)^{L-1}\lVert\bm{\delta}^{[L]}\rVert \why{norm of a product} \\
+&amp;\le \bigl(0.25\,\lVert W\rVert\bigr)^{L-1}\lVert\bm{\delta}^{[L]}\rVert \why{sigmoid: $f' \le 0.25$}
+\end{align*}\]</div>
+<p>If $0.25\lVert W\rVert &lt; 1$, the delta vanishes exponentially with depth.</p>
+<p class="summary"><span>Summary:</span> Product of Jacobians. Hochreiter 1991. Fix: ReLU/SELU, init, ResNet, LSTM.</p>
+<p class="src">Source: DLNN script WS24, after Eq.&nbsp;(4.84).</p></div></details>
+<h3 id="B-4">Gradient descent and optimizers</h3>
+<details class="qa asked" open data-text="write gradient descent. why mini-batches? schlüter, klambauer"><summary><span class="qid">B13</span> Write gradient descent. Why mini-batches?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Schlüter, Klambauer</p><p class="core"><span class="lab">Core.</span> We move the weights a small step against the gradient of the empirical risk.</p><div class="rest"><p><span class="lab">Explain.</span> The full batch gives the exact gradient but is expensive. One sample is cheap but noisy.
+A mini-batch is the compromise: a good estimate, fast on a GPU, and its noise helps to leave sharp
+minima.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\mathbf{w} &amp;\leftarrow \mathbf{w} - \eta\,\nabla_{\mathbf{w}}\Remp(\mathbf{w}) \why{full-batch gradient descent} \\
+\nabla\Remp &amp;\approx \frac{1}{\lvert B\rvert}\sum_{n\in B}\nabla L_n \why{mini-batch $B$: unbiased estimate}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Step against the gradient. Mini-batch = cheap, parallel, useful noise.</p>
+<p class="src">Source: DLNN script WS24, Sec.&nbsp;4.10 and Ch.&nbsp;7.</p></div></details>
+<details class="qa asked" open data-text="which optimizers do you know? hochreiter"><summary><span class="qid">B14</span> Which optimizers do you know?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Hochreiter</p><p class="core"><span class="lab">Core.</span> Gradient descent, SGD, momentum, AdaGrad, RMSprop and Adam.</p><div class="rest"><p><span class="lab">Explain.</span> Momentum keeps a running sum of past gradients. AdaGrad and RMSprop give each weight its own
+step size from the past squared gradients. Adam combines momentum and RMSprop with a bias
+correction, and it is the usual default.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\mathbf{v} &amp;\leftarrow \mu\,\mathbf{v} - \eta\,\nabla\Remp,\quad \mathbf{w} \leftarrow \mathbf{w} + \mathbf{v} \why{momentum} \\
+\mathbf{m} &amp;\leftarrow \beta_1\mathbf{m} + (1-\beta_1)\nabla,\quad \mathbf{u} \leftarrow \beta_2\mathbf{u} + (1-\beta_2)\nabla^2 \why{Adam: first and second moment} \\
+\mathbf{w} &amp;\leftarrow \mathbf{w} - \eta\,\frac{\hat{\mathbf{m}}}{\sqrt{\hat{\mathbf{u}}} + \epsilon} \why{bias-corrected step}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> GD, SGD, momentum, AdaGrad, RMSprop, Adam.</p>
+<p class="src">Source: DLNN script WS24, Ch.&nbsp;7.</p></div></details>
+<details class="qa asked" open data-text="are there training methods other than gradient descent? klambauer"><summary><span class="qid">B15</span> Are there training methods other than gradient descent?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Klambauer</p><p class="core"><span class="lab">Core.</span> Yes: closed forms, second-order methods and gradient-free methods.</p><div class="rest"><p><span class="lab">Explain.</span> Linear models have a closed form. Logistic regression can use iteratively reweighted least
+squares. RProp and Quickprop use only the sign or the curvature of the gradient. Newton,
+Gauss&ndash;Newton, Levenberg&ndash;Marquardt and conjugate gradients use second-order information.
+Evolutionary algorithms and random search need no gradient at all.</p>
+<p class="summary"><span>Summary:</span> Closed form, IRLS, RProp, Newton/LM/CG, evolutionary.</p>
+<p class="src">Source: DLNN script WS24, Sec.&nbsp;4.2&ndash;4.3, 7.5&ndash;7.6.</p></div></details>
+<h3 id="B-5">Activation functions, regularization, initialization</h3>
+<details class="qa asked" open data-text="which activation functions do you know? which one is from linz? hochreiter (``which one is from linz?&#x27;&#x27;)"><summary><span class="qid">B16</span> Which activation functions do you know? Which one is from Linz?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Hochreiter (&ldquo;which one is from Linz?&rdquo;)</p><p class="core"><span class="lab">Core.</span> Sigmoid, tanh, ReLU and its variants, and ELU and SELU, which were developed at JKU.</p><div class="rest"><p><span class="lab">Explain.</span> Sigmoid and tanh are smooth but saturate. ReLU is cheap and does not saturate for positive
+input, but units can die. SELU (Klambauer et al. 2017) makes a network self-normalizing: the mean
+and variance of the activations are pulled to 0 and 1. For the output: linear for regression,
+sigmoid for two classes, softmax for many.</p>
+<p><span class="lab">Numbers.</span> SELU: $\lambda \approx 1.0507$, $\alpha \approx 1.6733$, fixed point $(0, 1)$.</p>
+<p class="summary"><span>Summary:</span> Linz: ELU and SELU. SELU $\to$ self-normalizing.</p>
+<p class="src">Source: DLNN script WS24, Ch.&nbsp;10.4 and 11.</p></div></details>
+<details class="qa asked" open data-text="which regularization techniques do you know? hochreiter"><summary><span class="qid">B17</span> Which regularization techniques do you know?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Hochreiter</p><p class="core"><span class="lab">Core.</span> Weight decay, dropout, early stopping, data augmentation and noise.</p><div class="rest"><p><span class="lab">Explain.</span> Weight decay adds a penalty on large weights, which shrinks them in every step. Dropout
+switches units off at random during training, so the network cannot rely on single units. Early
+stopping ends training when the validation error starts to rise.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\tilde{R}(\mathbf{w}) &amp;= \Remp(\mathbf{w}) + \tfrac{\lambda}{2}\lVert\mathbf{w}\rVert^2 \why{weight decay} \\
+\nabla\tilde{R} &amp;= \nabla\Remp + \lambda\,\mathbf{w} \why{gradient of the penalty} \\
+\mathbf{w} &amp;\leftarrow (1 - \eta\lambda)\,\mathbf{w} - \eta\,\nabla\Remp \why{the weights shrink each step}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Weight decay, dropout, early stopping, augmentation, noise.</p>
+<p class="src">Source: DLNN script WS24, Ch.&nbsp;8.</p></div></details>
+<details class="qa predicted" open data-text="why does initialization matter? what is batch normalization? dlnn script ch.~9--10"><summary><span class="qid">B18</span> Why does initialization matter? What is batch normalization?<span class="badge predicted">PREDICTED</span></summary><p class="origin">DLNN script Ch.&nbsp;9&ndash;10</p><p class="core"><span class="lab">Core.</span> Random weights break the symmetry, and their scale must keep the variance constant through the layers.</p><div class="rest"><p><span class="lab">Explain.</span> If all weights are equal, all units learn the same thing. If the scale is wrong, the
+signal and the deltas vanish or explode. Batch normalization standardizes each pre-activation over
+the mini-batch and then rescales it with learned parameters.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+s &amp;= \sum_{j=1}^{n_{\mathrm{in}}} w_j\,a_j \why{one pre-activation} \\
+\mathrm{Var}(s) &amp;= n_{\mathrm{in}}\,\mathrm{Var}(w)\,\mathbb{E}[a^2] \why{independent, zero-mean weights} \\
+\mathrm{Var}(w) &amp;= \frac{1}{n_{\mathrm{in}}} \why{keep $\mathrm{Var}(s) = \mathbb{E}[a^2]$} \\
+\mathrm{Var}(w) &amp;= \frac{2}{n_{\mathrm{in}}} \why{ReLU halves $\mathbb{E}[a^2]$ (He)}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Break symmetry. Keep variance constant. BN = standardize, then learn scale and shift.</p>
+<p class="src">Source: DLNN script WS24, Ch.&nbsp;9&ndash;10.</p></div></details>
+<h3 id="B-6">Convolutional networks</h3>
+<details class="qa predicted" open data-text="what is a cnn and why does it work for images? dlnn script ch.~6"><summary><span class="qid">B19</span> What is a CNN and why does it work for images?<span class="badge predicted">PREDICTED</span></summary><p class="origin">DLNN script Ch.&nbsp;6</p><p class="core"><span class="lab">Core.</span> Small filters with shared weights slide over the image, so a pattern is found wherever it appears.</p><div class="rest"><p><span class="lab">Explain.</span> Images have local structure, and the same pattern can be anywhere. Shared weights give few
+parameters and translation equivariance. Pooling makes the map smaller and adds some invariance.
+Deeper layers see larger parts of the image.</p>
+<p><span class="lab">Numbers.</span> Output size $\lfloor (n + 2p - k)/s \rfloor + 1$ for input $n$, kernel $k$, padding $p$,
+stride $s$.</p>
+<p class="summary"><span>Summary:</span> Local filters, shared weights, pooling.</p>
+<p class="src">Source: DLNN script WS24, Ch.&nbsp;6.</p></div></details>
+<details class="qa asked" open data-text="resnet, and u-net for segmentation. u-net asked by klambauer in life science; resnet predicted from the ss25 script"><summary><span class="qid">B20</span> ResNet, and U-Net for segmentation.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">U-Net asked by Klambauer in Life Science; ResNet predicted from the SS25 script</p><p class="core"><span class="lab">Core.</span> ResNet adds the input of a block to its output, so gradients pass through very deep networks.</p><div class="rest"><p><span class="lab">Explain.</span> The Jacobian of a residual block is the identity plus a small part, so it does not shrink
+the delta. U-Net is an encoder and a decoder with skip connections. It predicts one class per pixel
+and copies fine detail across the skips.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\mathbf{a}^{[l+1]} &amp;= \mathbf{a}^{[l]} + F(\mathbf{a}^{[l]}) \why{residual block} \\
+\frac{\partial\mathbf{a}^{[l+1]}}{\partial\mathbf{a}^{[l]}} &amp;= I + \frac{\partial F}{\partial\mathbf{a}^{[l]}} \why{Jacobian stays close to $I$}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> ResNet: identity + residual. U-Net: encoder, decoder, skips.</p>
+<p class="src">Source: DLNN I+II script SS25, ResNet and semantic segmentation.</p></div></details>
+<h3 id="B-7">Recurrent networks and LSTM</h3>
+<details class="qa asked" open data-text="explain the forward pass of a recurrent network. how is it trained? j.~küng committee, lehner (``main idea of rnns&#x27;&#x27;)"><summary><span class="qid">B21</span> Explain the forward pass of a recurrent network. How is it trained?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">J.&nbsp;Küng committee, Lehner (&ldquo;main idea of RNNs&rdquo;)</p><p class="core"><span class="lab">Core.</span> An RNN reads a sequence step by step and keeps a hidden state that carries the past.</p><div class="rest"><p><span class="lab">Explain.</span> The same weights are used at every step. It is trained with backpropagation through time:
+unfold the network over the sequence and backpropagate as in a deep network with shared weights.
+The number of parameters does not grow with the length of the sequence.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\mathbf{s}(t) &amp;= W\mathbf{x}(t) + R\,\mathbf{a}(t-1),\quad \mathbf{a}(t) = f(\mathbf{s}(t)) \why{forward pass} \\
+\bm\delta(t) &amp;= \mathrm{diag}\bigl(f'(\mathbf{s}(t))\bigr)\Bigl(V^{\mathsf{T}}\frac{\partial L(t)}{\partial\hat{\mathbf{y}}(t)} + R^{\mathsf{T}}\bm\delta(t+1)\Bigr) \why{delta from the output and from the next step} \\
+\frac{\partial L}{\partial R} &amp;= \sum_t \bm\delta(t)\,\mathbf{a}(t-1)^{\mathsf{T}} \why{shared weights: sum over time}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Same weights every step. Hidden state = memory. BPTT = backprop on the unfolded net.</p>
+<p class="src">Source: LSTM lecture WS24 (Hochreiter).</p></div></details>
+<details class="qa predicted" open data-text="why do plain rnns fail on long sequences, and how does lstm fix it? lstm lecture (hochreiter); vanishing gradients were asked"><summary><span class="qid">B22</span> Why do plain RNNs fail on long sequences, and how does LSTM fix it?<span class="badge predicted">PREDICTED</span></summary><p class="origin">LSTM lecture (Hochreiter); vanishing gradients were asked</p><p class="core"><span class="lab">Core.</span> The delta is multiplied by the recurrent Jacobian at every step, so it vanishes; the LSTM cell is updated by addition instead.</p><div class="rest"><p><span class="lab">Explain.</span> The LSTM (Hochreiter and Schmidhuber 1997) has a memory cell with a constant error
+carousel. Gates decide what to write, what to keep and what to read. With the forget gate near one,
+the error flows back through time without shrinking.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\mathbf{c}(t) &amp;= \mathbf{f}(t)\odot\mathbf{c}(t-1) + \mathbf{i}(t)\odot\mathbf{z}(t) \why{additive cell update} \\
+\mathbf{h}(t) &amp;= \mathbf{o}(t)\odot\tanh\bigl(\mathbf{c}(t)\bigr) \why{output gate reads the cell} \\
+\frac{\partial\mathbf{c}(t)}{\partial\mathbf{c}(t-1)} &amp;= \mathrm{diag}\bigl(\mathbf{f}(t)\bigr) \why{direct path through the cell} \\
+&amp;\approx I \why{forget gate near one: error carried unchanged}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Additive cell = constant error carousel. Gates: input, forget, output.</p>
+<p class="src">Source: LSTM lecture WS24, slides 6&ndash;10.</p></div></details>
+<details class="qa asked" open data-text="bidirectional rnns, and one label for a whole sequence. schlüter (``rnn from the future&#x27;&#x27;)"><summary><span class="qid">B23</span> Bidirectional RNNs, and one label for a whole sequence.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Schlüter (&ldquo;RNN from the future&rdquo;)</p><p class="core"><span class="lab">Core.</span> A bidirectional RNN runs one RNN forward and one backward and joins their states.</p><div class="rest"><p><span class="lab">Explain.</span> So every step sees the past and the future. It needs the whole sequence, so it is not for
+real-time use. For one label per sequence we use the last hidden state, or we pool all hidden
+states and put a classifier on top.</p>
+<p class="summary"><span>Summary:</span> Forward + backward, concatenate. Sequence label: last state or pooling.</p>
+<p class="src">Source: LSTM lecture WS24.</p></div></details>
+<h3 id="B-8">Attention and Transformers</h3>
+<details class="qa asked" open data-text="explain attention and the transformer. rekabsaz, lehner, klambauer (self-attention matrices)"><summary><span class="qid">B24</span> Explain attention and the Transformer.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Rekabsaz, Lehner, Klambauer (self-attention matrices)</p><p class="core"><span class="lab">Core.</span> Every token takes a weighted mean of all tokens, and the weights come from query times key.</p><div class="rest"><p><span class="lab">Explain.</span> Each token makes a query, a key and a value by linear maps. The softmax of query times key
+gives the weights, and the output mixes the values with them. A Transformer block is multi-head
+self-attention plus an MLP, each with a residual connection and layer normalization.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+Q &amp;= XW_Q,\ K = XW_K,\ V = XW_V \why{linear maps of the tokens} \\
+\mathrm{Att}(Q,K,V) &amp;= \mathrm{softmax}\Bigl(\frac{QK^{\mathsf{T}}}{\sqrt{d_k}}\Bigr)V \why{weights per row sum to one} \\
+\mathrm{Var}(\mathbf{q}\cdot\mathbf{k}) &amp;= \sum_{m=1}^{d_k}\mathrm{Var}(q_m k_m) = d_k \why{independent entries of variance 1} \\
+\mathrm{Var}\bigl(\mathbf{q}\cdot\mathbf{k}/\sqrt{d_k}\bigr) &amp;= 1 \why{so the softmax does not saturate}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Query meets key $\to$ softmax weights $\to$ mix the values.</p>
+<p class="src">Source: LSTM lecture WS24, slides 12&ndash;15.</p></div></details>
+<details class="qa asked" open data-text="transformers are permutation-equivariant. why is that a problem? lehner"><summary><span class="qid">B25</span> Transformers are permutation-equivariant. Why is that a problem?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Lehner</p><p class="core"><span class="lab">Core.</span> Self-attention sees the tokens as a set, so the order of words is lost.</p><div class="rest"><p><span class="lab">Explain.</span> If we shuffle the tokens, the outputs are shuffled the same way. So we add the position to
+each token: fixed sinusoids, learned vectors, or relative encodings such as RoPE.</p>
+<p class="summary"><span>Summary:</span> Attention sees a set. Add position information.</p>
+<p class="src">Source: Past-student report; LSTM lecture WS24.</p></div></details>
+<details class="qa asked" open data-text="compare rnn and transformer in cost. lehner (o(n) against o(n^2))"><summary><span class="qid">B26</span> Compare RNN and Transformer in cost.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Lehner ($O(N)$ against $O(N^2)$)</p><p class="core"><span class="lab">Core.</span> An RNN is linear in the sequence length but sequential; a Transformer is quadratic but parallel.</p><div class="rest"><p><span class="lab">Explain.</span> In a Transformer every token attends to every token, so time and memory grow with $N^2$.
+But all tokens are processed at once, and long-range paths are one step long. LSTM-type models such
+as xLSTM are attractive again because inference is linear in $N$.</p>
+<p><span class="lab">Numbers.</span> RNN $O(N)$, Transformer $O(N^2)$.</p>
+<p class="summary"><span>Summary:</span> RNN: linear, sequential. Transformer: quadratic, parallel.</p>
+<p class="src">Source: Past-student report; LSTM lecture WS24.</p></div></details>
+<h3 id="B-9">Classical machine learning in the same slot</h3>
+<details class="qa asked" open data-text="explain the support vector machine. kofler, march 2026 committee"><summary><span class="qid">B27</span> Explain the support vector machine.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Kofler, March 2026 committee</p><p class="core"><span class="lab">Core.</span> The SVM finds the separating hyperplane with the largest margin.</p><div class="rest"><p><span class="lab">Explain.</span> The margin is $2/\lVert\mathbf{w}\rVert$, so maximizing it means minimizing
+$\lVert\mathbf{w}\rVert^2$. The soft margin allows some points inside the margin through slack
+variables and a penalty $C$. In the dual only dot products appear, and the points with
+$\alpha_n &gt; 0$ are the support vectors.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+&amp;\min_{\mathbf{w},b,\bm\xi}\ \tfrac12\lVert\mathbf{w}\rVert^2 + C\sum_n\xi_n \why{large margin, few violations} \\
+&amp;\text{s.t.}\ \ y_n(\mathbf{w}^{\mathsf{T}}\mathbf{x}_n + b) \ge 1 - \xi_n,\ \ \xi_n \ge 0 \why{every point on the right side, up to slack} \\
+&amp;\max_{\bm\alpha}\ \sum_n\alpha_n - \tfrac12\sum_{n,m}\alpha_n\alpha_m y_n y_m\,\mathbf{x}_n^{\mathsf{T}}\mathbf{x}_m \why{dual, $0 \le \alpha_n \le C$, $\sum_n\alpha_n y_n = 0$}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Max margin. Dual has only dot products.</p>
+<p class="src">Source: ML: Supervised Techniques, SVM unit.</p></div></details>
+<details class="qa asked" open data-text="what is a kernel and the kernel trick? kofler"><summary><span class="qid">B28</span> What is a kernel and the kernel trick?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Kofler</p><p class="core"><span class="lab">Core.</span> A kernel is a dot product in a feature space, computed without building the features.</p><div class="rest"><p><span class="lab">Explain.</span> The SVM dual needs only dot products. We replace them by a kernel and get a non-linear
+classifier at the cost of a linear one. Examples are the polynomial kernel and the Gaussian kernel.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+k(\mathbf{x},\mathbf{x}') &amp;= (\mathbf{x}^{\mathsf{T}}\mathbf{x}')^2 \why{polynomial kernel in 2D} \\
+&amp;= x_1^2x_1'^2 + 2x_1x_2x_1'x_2' + x_2^2x_2'^2 \why{multiply out} \\
+&amp;= \phi(\mathbf{x})^{\mathsf{T}}\phi(\mathbf{x}'),\quad \phi(\mathbf{x}) = (x_1^2, \sqrt2\,x_1x_2, x_2^2) \why{a dot product of features}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Kernel = dot product in feature space, without computing the features.</p>
+<p class="src">Source: ML: Supervised Techniques, kernels unit.</p></div></details>
+<details class="qa asked" open data-text="what is the vc dimension? kofler"><summary><span class="qid">B29</span> What is the VC dimension?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Kofler</p><p class="core"><span class="lab">Core.</span> It is the largest number of points that a model class can label in every possible way.</p><div class="rest"><p><span class="lab">Explain.</span> It measures capacity. Linear classifiers in $d$ dimensions have VC dimension $d+1$. In
+generalization bounds the gap between training and test error grows with the VC dimension and
+shrinks with the number of samples.</p>
+<p><span class="lab">Numbers.</span> Linear classifier in $\mathbb{R}^d$: $d+1$.</p>
+<p class="summary"><span>Summary:</span> Largest set it can shatter. Linear: $d+1$.</p>
+<p class="src">Source: ML: Supervised Techniques; statistical learning theory.</p></div></details>
+<details class="qa asked" open data-text="likelihood, maximum likelihood, and its problems. widmer (several students)"><summary><span class="qid">B30</span> Likelihood, maximum likelihood, and its problems.<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Widmer (several students)</p><p class="core"><span class="lab">Core.</span> Maximum likelihood chooses the parameters that make the observed data most probable.</p><div class="rest"><p><span class="lab">Explain.</span> We maximize the log-likelihood, because a sum is easier than a product. With little data
+it overfits: an event never seen gets probability zero. A prior (MAP) or regularization fixes
+this. Squared loss is maximum likelihood under Gaussian noise.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+p(y\mid\mathbf{x}) &amp;= \mathcal{N}\bigl(y;\,g(\mathbf{x};\mathbf{w}),\,\sigma^2\bigr) \why{Gaussian noise model} \\
+-\log\prod_n p(y_n\mid\mathbf{x}_n) &amp;= N\log\bigl(\sqrt{2\pi}\,\sigma\bigr) + \frac{1}{2\sigma^2}\sum_n\bigl(y_n - g(\mathbf{x}_n;\mathbf{w})\bigr)^2 \why{log of the Gaussian} \\
+\arg\max_{\mathbf{w}}\ \text{likelihood} &amp;= \arg\min_{\mathbf{w}}\ \sum_n\bigl(y_n - g(\mathbf{x}_n;\mathbf{w})\bigr)^2 \why{first term has no $\mathbf{w}$}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Most likely parameters. Overfits with little data $\to$ prior.</p>
+<p class="src">Source: DLNN script WS24, Eqs.&nbsp;(4.8)&ndash;(4.11).</p></div></details>
+<details class="qa asked" open data-text="derive the reinforce loss. (asked by prof. hochreiter.) hochreiter"><summary><span class="qid">B31</span> Derive the REINFORCE loss. (Asked by Prof. Hochreiter.)<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Hochreiter</p><p class="core"><span class="lab">Core.</span> The log-derivative trick moves the gradient inside the expectation, so we can estimate it from sampled episodes.</p><div class="rest"><p><span class="lab">Explain.</span> We want the largest expected return. The environment does not depend on the policy
+parameters, so only the policy terms survive. As a loss we minimize minus log-probability times
+return, with a baseline to reduce the variance.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+J(\theta) &amp;= \int p_\theta(\tau)\,G(\tau)\,\mathrm{d}\tau \why{expected return over trajectories} \\
+\nabla_\theta J &amp;= \int p_\theta(\tau)\,\nabla_\theta\log p_\theta(\tau)\,G(\tau)\,\mathrm{d}\tau \why{$\nabla p = p\,\nabla\log p$} \\
+\log p_\theta(\tau) &amp;= \log p(s_0) + \sum_t\bigl[\log\pi_\theta(a_t\mid s_t) + \log p(s_{t+1}\mid s_t,a_t)\bigr] \why{trajectory probability} \\
+\nabla_\theta J &amp;= \mathbb{E}_\tau\Bigl[\sum_t\nabla_\theta\log\pi_\theta(a_t\mid s_t)\,G_t\Bigr] \why{dynamics do not depend on $\theta$} \\
+L(\theta) &amp;= -\sum_t\log\pi_\theta(a_t\mid s_t)\,(G_t - b) \why{loss with baseline $b$}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Log-derivative trick. Loss = $-\log\pi(a\mid s)\times$ return.</p>
+<p class="src">Source: Deep Reinforcement Learning VL, policy gradient unit.</p></div></details>
+<details class="qa asked" open data-text="how do you evaluate a classifier? r.~küng committee (auc), mara committee (confusion matrix)"><summary><span class="qid">B32</span> How do you evaluate a classifier?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">R.&nbsp;Küng committee (AUC), Mara committee (confusion matrix)</p><p class="core"><span class="lab">Core.</span> With the confusion matrix, precision, recall and the area under the ROC curve.</p><div class="rest"><p><span class="lab">Explain.</span> Precision: of what I called positive, how much is right. Recall: of all positives, how
+many I found. The ROC curve plots the true-positive rate against the false-positive rate over all
+thresholds. The AUC is the probability that a random positive gets a higher score than a random
+negative.</p>
+<p><span class="lab">Numbers.</span> Precision $TP/(TP+FP)$. Recall $TP/(TP+FN)$. AUC 0.5 = chance, 1 = perfect.</p>
+<p class="summary"><span>Summary:</span> Precision: how clean. Recall: how complete. AUC: ranking quality.</p>
+<p class="src">Source: ML: Supervised Techniques.</p></div></details>
+<details class="qa asked" open data-text="how else can you measure robustness, besides adversarial attacks? klambauer"><summary><span class="qid">B33</span> How else can you measure robustness, besides adversarial attacks?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">Klambauer</p><p class="core"><span class="lab">Core.</span> Test under distribution shift and check how sure the model is.</p><div class="rest"><p><span class="lab">Explain.</span> Use corrupted inputs, new domains or data from another time. Check calibration and
+uncertainty with ensembles or MC dropout, and the sensitivity of the output to the input. My thesis
+has a direct example: a recording made under one boundary condition fails under another, because
+the regime changed.</p>
+<p class="summary"><span>Summary:</span> Corruptions, domain shift, calibration, sensitivity, out of distribution.</p>
+<p class="src">Source: DLNN script WS24, Sec.&nbsp;4.8; thesis, Section 6.4.</p></div></details></section>
+<section id="part-C"><h2>C. AI for Simulation (rCFD)</h2><p class="intro">Prof. Pirker is the supervisor and taught <em>Numerical Methods in Fluid Mechanics</em>. Expect him
+to stay close to recurrence CFD and to the figures of the thesis: he points at a figure and asks
+what it shows and why. This part has three blocks: rCFD as taught in the lecture, the figures of the
+thesis, and the CFD basics that rCFD stands on.</p>
+<h3 id="C-1">Recurrence CFD as taught in the lecture</h3>
+<details class="qa predicted" open data-text="why rcfd at all? connect it to how navier--stokes is solved. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C1</span> Why rCFD at all? Connect it to how Navier&ndash;Stokes is solved.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> rCFD makes a bold prediction, reusing recorded flow, and then corrects it with physics, just as SIMPLE guesses a pressure and corrects it.</p><div class="rest"><p><span class="lab">Explain.</span> Many industrial flows run for a long time and show recurring patterns: bubble columns,
+fluidized beds, turbulent vessels. Solving momentum and pressure for all that time is wasteful once
+the flow repeats itself. The correction then fixes what the reuse breaks, for example the mass
+balance.</p>
+<p class="summary"><span>Summary:</span> Bold prediction + physics-based correction.</p>
+<p class="src">Source: Pirker, rCFD lecture, slides 16&ndash;18.</p></div></details>
+<details class="qa predicted" open data-text="flow-based versus transport-based rcfd. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C2</span> Flow-based versus transport-based rCFD.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Flow-based rCFD stitches recorded flows and still solves a transport equation; transport-based rCFD replaces the equation by cell shifts and face swaps.</p><div class="rest"><p><span class="lab">Explain.</span> Flow-based rCFD (Lichtenegger and Pirker 2016) builds a long artificial flow from recorded
+sequences, about 100 times faster. Transport-based rCFD (Pirker and Lichtenegger 2018) solves no
+transport equation at all. My thesis uses the transport-based form, plus the correction hook and
+the conservation constraint.</p>
+<p><span class="lab">Numbers.</span> Steel ladle: 26&nbsp;h of full CFD against 1.6&nbsp;s of transport-based rCFD.</p>
+<p class="summary"><span>Summary:</span> Flow-based: stitch flows, solve transport. Transport-based: shifts and swaps.</p>
+<p class="src">Source: Pirker, rCFD lecture, slides 19&ndash;34.</p></div></details>
+<details class="qa predicted" open data-text="what are the recurrence norm, matrix, plateau and prominence? no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C3</span> What are the recurrence norm, matrix, plateau and prominence?<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The norm measures how different two states are, and the prominence measures how deep the flow dips back towards earlier states.</p><div class="rest"><p><span class="lab">Explain.</span> The norm for all pairs gives the matrix. One row of it starts at zero on the diagonal,
+rises and then oscillates about a plateau. Deep dips below the plateau mean the flow comes back to
+similar states, so the replay can jump there. In my tank the dips are shallow, so the replay plays
+the frames in order.</p>
+<p><span class="lab">Numbers.</span> The method asks for a prominence of 0.05 to 0.1. My tank: median 0.028.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+R_{fg} &amp;= \bigl\lVert\Phi^{(f)} - \Phi^{(g)}\bigr\rVert \why{norm between two frames} \\
+d(f,g) &amp;= R_{fg}/\max R \why{normalised distance} \\
+P_{\mathrm{rel}} &amp;= \bigl\langle d_{\max} - d_{\min}\bigr\rangle / \bar{d} \why{dip depth over the plateau}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Norm, matrix, row, plateau, prominence. Mine: 0.028, frames in order.</p>
+<p class="src">Source: Pirker, rCFD lecture, slides 50&ndash;51; thesis, Section 2.4.</p></div></details>
+<details class="qa predicted" open data-text="the three ``bold failures&#x27;&#x27; of rcfd and their corrections. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C4</span> The three &ldquo;bold failures&rdquo; of rCFD and their corrections.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Mass imbalance, unphysical diffusion and too little recurrence, fixed by a global balance, local swaps and recurrence islands.</p><div class="rest"><p><span class="lab">Explain.</span> First, cell shifts do not conserve mass locally, so a global monitor corrects the total
+with mass-acting face swaps. Second, a fixed number of swaps gives the same mixing everywhere, so
+the swaps should follow the local mixing. Third, in large domains frames that match globally do not
+match locally, so the domain is split into islands with their own matrices. My thesis touches all
+three: the conservation constraint, the recorded diffusivity, and a flow with too little
+prominence.</p>
+<p class="summary"><span>Summary:</span> Imbalance $\to$ global balance. Diffusion $\to$ local swaps. Low recurrence $\to$ islands.</p>
+<p class="src">Source: Pirker, rCFD lecture, slides 35&ndash;54; thesis, Sections 2.6&ndash;2.8.</p></div></details>
+<details class="qa predicted" open data-text="when does rcfd work, and when does it fail? no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C5</span> When does rCFD work, and when does it fail?<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> It works when the motion repeats and the scalar does not change it, and it fails when the scalar drives the flow or the operating state changes.</p><div class="rest"><p><span class="lab">Explain.</span> In a new state the recording does not contain the motion that this state would produce.
+That is my result: under the cooled lid the flow keeps renewing itself with cold plumes, a motion
+that the adiabatic recording never saw. The answer of the lecture is multi-state rCFD: one database
+per process state.</p>
+<p class="summary"><span>Summary:</span> A database belongs to a flow regime, not to a case.</p>
+<p class="src">Source: Pirker, rCFD lecture, slide 59; thesis, Section 6.4, Figure 6.6.</p></div></details>
+<details class="qa predicted" open data-text="rcfd and digital twins. how would you use your work in a plant? no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C6</span> rCFD and digital twins. How would you use your work in a plant?<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> rCFD can run alongside the process, if live data keep aligning it.</p><div class="rest"><p><span class="lab">Explain.</span> A tank model with one mean value is instant but ignores the inside of the plant. Full CFD
+shows the inside but takes days. rCFD sits in between. Run blindly forward, it collects error, so
+live data should correct it. My thesis shows what such a twin must watch: a boundary condition can
+move the process into a regime the database does not cover.</p>
+<p><span class="lab">Numbers.</span> Lecture example: tank model under 1&nbsp;s, experiment 750&nbsp;s, CFD 2 days, rCFD 30&nbsp;s.</p>
+<p class="summary"><span>Summary:</span> Fast but blind, exact but slow, rCFD in between. Align with live data.</p>
+<p class="src">Source: Pirker, rCFD lecture, slides 59&ndash;72.</p></div></details>
+<details class="qa predicted" open data-text="is rcfd machine learning? no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C7</span> Is rCFD machine learning?<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> It is data-based simulation: an expensive ground truth makes data, a cheap model reuses it, and the question is how far it generalizes.</p><div class="rest"><p><span class="lab">Explain.</span> There is no gradient training. Choosing the next frame is a nearest-neighbour search. The
+replay is a sequence of sparse linear operators, close to a learned propagator (Lumetzberger et
+al. 2025). Possible AI steps: learn the map for unseen states, learn the missing flux as a
+function of the state, or train a neural operator on the database.</p>
+<p class="summary"><span>Summary:</span> Ground truth $\to$ data $\to$ cheap reuse. Generalization = which regime the database covers.</p>
+<p class="src">Source: Pirker, rCFD lecture, slide 69; thesis, Section 2.2.</p></div></details>
+<h3 id="C-2">The figures of the thesis</h3>
+<p class="intro">For every figure, have three sentences ready: what is plotted, what we see, and why.</p>
+<details class="qa predicted" open data-text="figure 1.1 -- passive and non-passive transport. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C8</span> Figure 1.1 &ndash; passive and non-passive transport.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> A dye only rides the flow, but temperature makes the flow, and the replay cuts this feedback.</p><div class="rest"><p><span class="lab">Explain.</span> (a) A dye in the stored velocity of the adiabatic tank is only stretched. (b) In the cooled
+tank, cold plumes from the lid create the motion. (c) The replay moves temperature with recorded
+maps and never solves the velocity.</p>
+<p class="summary"><span>Summary:</span> The whole thesis question in one figure.</p></div></details>
+<details class="qa predicted" open data-text="figure 2.2 -- recurrence of the database. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C9</span> Figure 2.2 &ndash; recurrence of the database.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The flow has two phases, filling and settling, and no state comes back.</p><div class="rest"><p><span class="lab">Explain.</span> The distance matrix has two blocks split at frame 315. The rows rise to a plateau and none
+returns towards zero. The prominence stays below what the method needs, so the replay plays the
+frames in order.</p>
+<p><span class="lab">Numbers.</span> Median prominence 0.028. Nearest-neighbour distance 0.013, only because neighbouring frames are similar.</p>
+<p class="summary"><span>Summary:</span> Two blocks, no return, frames in order.</p></div></details>
+<details class="qa predicted" open data-text="figure 3.3 -- vertical heat transport and plume scale. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C10</span> Figure 3.3 &ndash; vertical heat transport and plume scale.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Under the cooled lid, the flow carries heat about 600 times more than conduction.</p><div class="rest"><p><span class="lab">Explain.</span> The plane-mean vertical heat flux is split into the part carried by the flow and the part
+carried by conduction. The temperature departures under the lid have the size of whole plumes. So
+cooling is a transport process, and a diffusive step cannot copy it.</p>
+<p class="summary"><span>Summary:</span> Cooling is transport, not diffusion.</p></div></details>
+<details class="qa predicted" open data-text="figures 3.4 and 3.5 -- the two regimes. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C11</span> Figures 3.4 and 3.5 &ndash; the two regimes.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> One boundary condition switches the flow from one regime to another.</p><div class="rest"><p><span class="lab">Explain.</span> With the adiabatic lid the jet rises, spreads under the lid, and the warm layer then rests.
+With the cooled lid the layer above the front overturns in a row of cells driven by cold plumes.
+Same geometry, same inflow, two different flows.</p>
+<p class="summary"><span>Summary:</span> Same tank, same inflow, two flows.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.1 -- the standard replay over the face-exchange sweep. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C12</span> Figure 5.1 &ndash; the standard replay over the face-exchange sweep.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> More mixing heats the tank faster during the inflow and drains it faster afterwards.</p><div class="rest"><p><span class="lab">Explain.</span> The mean temperature and the height of the heat are shown for seven strengths. The height
+is best at intermediate strengths, the mean temperature with little mixing. So no single strength is
+best for both.</p>
+<p class="summary"><span>Summary:</span> No single best $\fsd$.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.2 -- the adiabatic tank through the run. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C13</span> Figure 5.2 &ndash; the adiabatic tank through the run.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The recorded maps keep the front thin, the face exchange smears it, and the correction makes it thin again.</p><div class="rest"><p><span class="lab">Explain.</span> The mid-plane temperature is shown at four times, with the front width in each panel. The
+replay with maps only keeps the front as thin as the reference. So the smearing comes from the
+exchange, not from the maps.</p>
+<p class="summary"><span>Summary:</span> Maps: thin. Exchange: smeared. Correction: thin again.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.3 -- space--time diagram. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C14</span> Figure 5.3 &ndash; space&ndash;time diagram.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> It shows the warm layer growing downwards and where the standard replay is too warm or too cold.</p><div class="rest"><p><span class="lab">Explain.</span> The horizontal mean temperature is plotted against height and time. The difference panel
+shows the error of the standard replay, and the thickness panel shows that its front stays too
+thick. The corrected replay follows the reference.</p>
+<p class="summary"><span>Summary:</span> Height against time: the layer grows, the error is visible.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.6 -- every correction run in one map. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C15</span> Figure 5.6 &ndash; every correction run in one map.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Only the vertically weighted form brings both errors down while the front reaches the reference width.</p><div class="rest"><p><span class="lab">Explain.</span> Each marker is one replay: trace error and end-profile error against the front width. The
+other forms reach a thin front only with a large error. The working range of the vertical form is
+$s = 0.40$ to 0.50.</p>
+<p><span class="lab">Numbers.</span> Reference front 5.0&nbsp;mm.</p>
+<p class="summary"><span>Summary:</span> Direction matters more than strength.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.7 -- buoyancy frequency across the front. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C16</span> Figure 5.7 &ndash; buoyancy frequency across the front.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> A sharper front is a stronger barrier to vertical motion.</p><div class="rest"><p><span class="lab">Explain.</span> The buoyancy frequency measures how strongly the stratification resists vertical motion.
+The standard replay holds a barrier about half as strong as the reference. The corrected replay
+reaches the reference value after the inflow.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+N^2 &amp;= g\,\beta\,\frac{\partial T}{\partial y} \why{buoyancy frequency, Eq.~(3.3)}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Steeper gradient, larger $N$, stronger barrier.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.8 -- end profiles through the front. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C17</span> Figure 5.8 &ndash; end profiles through the front.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Read the width always together with the profile.</p><div class="rest"><p><span class="lab">Explain.</span> Without correction the front is wide and too high. The unweighted correction makes it thin
+but puts it in the wrong place. The vertical weight follows the reference. A saw-toothed front can
+have the right width and the wrong shape.</p>
+<p class="summary"><span>Summary:</span> Right width is not enough: check the shape.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.10 -- outlet temperature from the energy balance. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C18</span> Figure 5.10 &ndash; outlet temperature from the energy balance.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The outlet sits just below the front, so a smeared front turns into a heat leak.</p><div class="rest"><p><span class="lab">Explain.</span> While the inflow is warm the standard replay keeps heat in the tank, and afterwards it
+drains it. The vertical correction ends much closer. So a numerical error at the front becomes an
+error in the energy budget.</p>
+<p><span class="lab">Numbers.</span> Standard: $+2.7$&nbsp;K kept at $t = 315$&nbsp;s, ends at $-1.9$&nbsp;K. Vertical correction ends at
+$-0.5$&nbsp;K.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+M\frac{\mathrm{d}\bar T}{\mathrm{d}t} &amp;= \dot m\,(T_{\mathrm{in}} - T_{\mathrm{out}}) \why{energy in minus out, Eq.~(4.10)} \\
+T_{\mathrm{out}} &amp;= T_{\mathrm{in}} - \tau\,\frac{\mathrm{d}\bar T}{\mathrm{d}t},\quad \tau = M/\dot m \why{solve for the outlet, Eq.~(4.11)}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Smeared front + outlet below it = heat leak.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.11 -- state space. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C19</span> Figure 5.11 &ndash; state space.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The correction keeps the replay close to the states that the recording spans.</p><div class="rest"><p><span class="lab">Explain.</span> The two leading POD modes of the reference field are shown, and the distance of each run
+from the space of the first ten modes. The standard replay leaves this space and does not return.
+The corrected replay returns after the inflow.</p>
+<p class="summary"><span>Summary:</span> Corrected replay stays on the recorded state space.</p></div></details>
+<details class="qa predicted" open data-text="figure 6.2 -- wall-cooled end profiles. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C20</span> Figure 6.2 &ndash; wall-cooled end profiles.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The standard replay holds nearly the right heat, but in the wrong place.</p><div class="rest"><p><span class="lab">Explain.</span> The bulk is too warm and the top layer too cold. The correction moves the heat back. This
+is why I report the mean temperature and the profile together.</p>
+<p><span class="lab">Numbers.</span> Standard replay: profile 2.79&nbsp;K. Corrected at $s = 0.475$: 0.59&nbsp;K.</p>
+<p class="summary"><span>Summary:</span> Same heat, wrong place.</p></div></details>
+<details class="qa predicted" open data-text="figure 6.3 -- wall-cooled traces. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C21</span> Figure 6.3 &ndash; wall-cooled traces.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The local correction follows the heat content but lags in layering while the tank fills.</p><div class="rest"><p><span class="lab">Explain.</span> The red band shows how far the local correction lags in heterogeneity during the warm
+inflow. Only the recorded flux also follows the heterogeneity. A lag in layering is missing
+transport, not missing sharpness.</p>
+<p class="summary"><span>Summary:</span> Layering lag = missing transport.</p></div></details>
+<details class="qa predicted" open data-text="figures 6.4 and 6.5 -- end state and plumes. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C22</span> Figures 6.4 and 6.5 &ndash; end state and plumes.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The departure is smallest at $s = 0.55$, and only the corrected replay has plumes that reach the front.</p><div class="rest"><p><span class="lab">Explain.</span> Along the strength ladder the cold top and the warm bulk fade together. At $s = 0.8$ the
+top turns warm. In 3D, the plumes of the standard replay end halfway down, and with the correction
+they reach the front again. The plumes were in the recorded maps all along.</p>
+<p><span class="lab">Numbers.</span> Smallest mean departure 0.22&nbsp;K at $s = 0.55$.</p>
+<p class="summary"><span>Summary:</span> Right layering lets the recorded plumes show.</p></div></details>
+<details class="qa predicted" open data-text="figure 6.6 -- recurrence of the two recordings. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C23</span> Figure 6.6 &ndash; recurrence of the two recordings.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> After the inflow the cooled flow keeps renewing itself, and the adiabatic flow hardly changes.</p><div class="rest"><p><span class="lab">Explain.</span> At short lags the cooled flow changes about ten times faster. So the cooled case is a
+different regime, and a database recorded without cooling cannot contain its motion.</p>
+<p class="summary"><span>Summary:</span> Different regime $\to$ different database.</p></div></details>
+<h3 id="C-3">CFD basics behind rCFD</h3>
+<details class="qa predicted" open data-text="reynolds number and other dimensionless numbers. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C24</span> Reynolds number and other dimensionless numbers.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The Reynolds number compares inertia with viscous forces.</p><div class="rest"><p><span class="lab">Explain.</span> Pipe flow is laminar below about 2300 and turbulent above about 4000. Other numbers: the
+Péclet number compares convection with diffusion, the Prandtl number momentum diffusion with heat
+diffusion, the Froude number inertia with gravity, and the Richardson number buoyancy with inertia.</p>
+<p><span class="lab">Numbers.</span> My case: $Re \approx 99$, laminar. $Ri = 1.84$.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+Re &amp;= \frac{UL}{\nu},\quad Pe = \frac{UL}{\Gamma},\quad Pr = \frac{\nu}{\alpha},\quad Ri = \frac{g'L}{U^2} \why{ratios of effects}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Re: inertia/viscosity. Pe: convection/diffusion. Ri: buoyancy/inertia.</p>
+<p class="src">Source: Pirker, introduction slides; thesis, Section 3.3.</p></div></details>
+<details class="qa predicted" open data-text="governing equations and the material derivative. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C25</span> Governing equations and the material derivative.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Mass, momentum and energy are conserved, and the material derivative links the moving parcel with the fixed control volume.</p><div class="rest"><p><span class="lab">Explain.</span> The Lagrangian view follows a fluid parcel. The Eulerian view looks at a fixed point. The
+material derivative is the rate of change seen by the moving parcel.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\frac{\mathrm{d}}{\mathrm{d}t}\phi\bigl(\mathbf{x}(t),t\bigr) &amp;= \frac{\partial\phi}{\partial t} + \sum_i\frac{\partial\phi}{\partial x_i}\frac{\mathrm{d}x_i}{\mathrm{d}t} \why{chain rule along the path} \\
+&amp;= \frac{\partial\phi}{\partial t} + \mathbf{u}\cdot\nabla\phi = \frac{\mathrm{D}\phi}{\mathrm{D}t} \why{the parcel moves with $\mathrm{d}\mathbf{x}/\mathrm{d}t = \mathbf{u}$} \\
+\frac{\partial\rho}{\partial t} + \nabla\cdot(\rho\mathbf{u}) &amp;= 0 \why{mass} \\
+\frac{\partial(\rho\mathbf{u})}{\partial t} + \nabla\cdot(\rho\mathbf{u}\mathbf{u}) &amp;= -\nabla p + \nabla\cdot\bm\tau + \rho\mathbf{g} \why{momentum}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Change in time + convection = pressure + viscous + body force.</p>
+<p class="src">Source: Pirker, governing-equation slides.</p></div></details>
+<details class="qa predicted" open data-text="the finite-volume method. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C26</span> The finite-volume method.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Integrate the equation over each cell, and the divergence theorem turns everything into fluxes through faces.</p><div class="rest"><p><span class="lab">Explain.</span> What leaves one cell enters its neighbour, so the method is conservative. Each cell value
+is linked to its neighbours by one linear equation. If all coefficients are positive, the new value
+is a weighted mean, and no new extremum can appear. The same rule protects the face exchange in
+rCFD.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\frac{\partial c}{\partial t} + \nabla\cdot(\mathbf{u}c) &amp;= \nabla\cdot(\Gamma\nabla c) \why{transport equation} \\
+V\frac{\mathrm{d}c_P}{\mathrm{d}t} + \oint\mathbf{u}c\cdot\mathbf{n}\,\mathrm{d}A &amp;= \oint\Gamma\,\nabla c\cdot\mathbf{n}\,\mathrm{d}A \why{integrate, divergence theorem} \\
+a_P\,c_P &amp;= \sum_{NB} a_{NB}\,c_{NB} + b \why{fluxes per face: the computational molecule}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Integrate, fluxes through faces, conservative, positive coefficients.</p>
+<p class="src">Source: Pirker, finite-volume slides.</p></div></details>
+<details class="qa predicted" open data-text="discretization schemes and numerical diffusion. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C27</span> Discretization schemes and numerical diffusion.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> First-order upwind is stable but adds false diffusion; central differencing is more accurate but can oscillate.</p><div class="rest"><p><span class="lab">Explain.</span> Upwind takes the value from upstream. Its truncation error acts like an extra diffusivity
+that smears sharp gradients. Central differencing oscillates when the cell Péclet number is above
+2. Finer or flow-aligned grids and higher-order schemes reduce numerical diffusion. My thesis is a
+numerical-diffusion story: the face exchange smears the front, and the correction undoes it.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+c_{i-1} &amp;= c_i - \Delta x\,\partial_x c + \tfrac12\Delta x^2\,\partial_{xx}c - \dots \why{Taylor series} \\
+\frac{c_i - c_{i-1}}{\Delta x} &amp;= \partial_x c - \tfrac12\Delta x\,\partial_{xx}c + \dots \why{upwind difference, $u &gt; 0$} \\
+\partial_t c + u\,\partial_x c &amp;= \tfrac12 u\Delta x\,\partial_{xx}c + \dots \why{what upwind really solves} \\
+\Gamma_{\mathrm{num}} &amp;= \tfrac12\,u\,\Delta x \why{numerical diffusivity}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Upwind: stable, diffusive, $\Gamma_{\mathrm{num}} = u\Delta x/2$. Central: accurate, oscillates if $Pe &gt; 2$.</p>
+<p class="src">Source: Pirker, finite-volume slides II.</p></div></details>
+<details class="qa predicted" open data-text="explicit versus implicit time stepping; courant and diffusion numbers. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C28</span> Explicit versus implicit time stepping; Courant and diffusion numbers.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Explicit steps are cheap but limited by stability; implicit steps solve a system but are unconditionally stable.</p><div class="rest"><p><span class="lab">Explain.</span> Explicit convection needs a Courant number below one: information must not travel more
+than one cell per step. Explicit diffusion needs a diffusion number below one half. This is exactly
+the cap that stopped the recorded diffusivity in my replay.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+c_i^{n+1} &amp;= c_i^n + d\,(c_{i+1}^n - 2c_i^n + c_{i-1}^n),\quad d = \frac{\Gamma\,\Delta t}{\Delta x^2} \why{explicit diffusion} \\
+G &amp;= 1 - 4d\,\sin^2(k\Delta x/2) \why{insert a Fourier mode} \\
+\lvert G\rvert \le 1 &amp;\iff 4d \le 2 \iff d \le \tfrac12 \why{stable for every mode}
+\end{align*}\]</div>
+<p><span class="lab">Numbers.</span> $Co = u\Delta t/\Delta x &lt; 1$. $d &lt; 0.5$.</p>
+<p class="summary"><span>Summary:</span> $Co &lt; 1$, $d &lt; 0.5$. My cap is the explicit diffusion limit.</p>
+<p class="src">Source: Pirker, finite-volume slides; thesis, Section 5.2.1.</p></div></details>
+<details class="qa predicted" open data-text="the simple algorithm. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C29</span> The SIMPLE algorithm.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Guess the pressure, solve the velocity, correct the pressure from continuity, and repeat.</p><div class="rest"><p><span class="lab">Explain.</span> SIMPLE stands for Semi-Implicit Method for Pressure-Linked Equations (Patankar). The
+velocity correction depends on the pressure correction. Putting it into continuity gives an
+equation for the pressure correction. Then both fields are corrected, with under-relaxation, until
+the residuals are small.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+&amp;\mathbf{u}^{*} \leftarrow \text{momentum with } p^{*} \why{1: predict the velocity} \\
+&amp;u' = d\,(p'_P - p'_E) \why{2: velocity correction from pressure correction} \\
+&amp;\nabla\cdot(\mathbf{u}^{*} + \mathbf{u}') = 0 \Rightarrow p' \why{3: continuity gives $p'$} \\
+&amp;p = p^{*} + \alpha_p\,p',\quad \mathbf{u} = \mathbf{u}^{*} + \mathbf{u}' \why{4: correct, then repeat}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Guess $p$, solve $u$, correct from continuity, repeat.</p>
+<p class="src">Source: Pirker, finite-volume slides.</p></div></details>
+<details class="qa predicted" open data-text="turbulence: phenomena, reynolds decomposition, models. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C30</span> Turbulence: phenomena, Reynolds decomposition, models.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Turbulence is chaotic and mixes strongly; RANS models all eddies, LES models only the small ones, DNS models none.</p><div class="rest"><p><span class="lab">Explain.</span> Energy enters at the large eddies and cascades down to the Kolmogorov scale, where
+viscosity dissipates it. RANS splits the velocity into a mean and a fluctuation, and the Reynolds
+stresses need a model, usually an eddy viscosity. My case needs none of this, because it is
+laminar.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+u &amp;= \bar u + u' \why{Reynolds decomposition} \\
+\nu_t &amp;= C_\mu\,k^2/\varepsilon \why{$k$--$\varepsilon$ eddy viscosity} \\
+\eta &amp;= \nu^{a}\varepsilon^{b}:\ \ \mathrm{m} = (\mathrm{m^2/s})^{a}(\mathrm{m^2/s^3})^{b} \why{Kolmogorov scale from $\nu$ and $\varepsilon$ only} \\
+&amp;\Rightarrow\ 2a + 2b = 1,\ \ a + 3b = 0 \why{match metres and seconds} \\
+\eta &amp;= (\nu^3/\varepsilon)^{1/4} \why{$a = 3/4$, $b = -1/4$}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Cascade to $\eta$. RANS all, LES small, DNS none.</p>
+<p class="src">Source: Pirker, turbulence slides.</p></div></details>
+<details class="qa predicted" open data-text="wall boundary layers, y^+ and wall functions. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C31</span> Wall boundary layers, $y^+$ and wall functions.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Near a wall the velocity drops to zero, and $y^+$ says how far the first cell sits from the wall in viscous units.</p><div class="rest"><p><span class="lab">Explain.</span> The viscous sublayer lies below $y^+ \approx 5$ and the log layer above about 30. Wall
+functions place the first cell in the log layer and model the rest, which is cheap. A wall-resolved
+simulation needs $y^+ \approx 1$ at the first cell.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+u_\tau &amp;= \sqrt{\tau_w/\rho},\quad y^+ = \frac{u_\tau\,y}{\nu} \why{friction velocity, wall distance in viscous units}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> $y^+ &lt; 5$ viscous, $&gt; 30$ log layer. Wall functions: first cell in the log layer.</p>
+<p class="src">Source: Pirker, turbulence slides III.</p></div></details>
+<details class="qa predicted" open data-text="species and heat transport; the boussinesq approximation. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C32</span> Species and heat transport; the Boussinesq approximation.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Temperature and species follow the same transport equation, and Boussinesq keeps the density constant except where gravity acts.</p><div class="rest"><p><span class="lab">Explain.</span> If the density depends on temperature, flow and temperature are coupled. For small density
+changes we keep the density constant everywhere except in the gravity term. In my case the change
+is 1.5 per cent.</p>
+<div class="lab">Derivation</div>
+<div class="math">\[\begin{align*}
+\frac{\partial c}{\partial t} + \nabla\cdot(\mathbf{u}c) &amp;= \nabla\cdot(\Gamma\nabla c) + S \why{scalar transport} \\
+\rho\,\mathbf{g} &amp;\approx \rho_0\,\mathbf{g}\bigl(1 - \beta(T-T_0)\bigr) \why{Boussinesq: density only in the buoyancy term}
+\end{align*}\]</div>
+<p class="summary"><span>Summary:</span> Constant density, except where gravity sees it.</p>
+<p class="src">Source: Pirker, species and heat slides; thesis, Section 2.1.</p></div></details>
+<details class="qa predicted" open data-text="multiphase flows: euler--euler versus euler--lagrange. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C33</span> Multiphase flows: Euler&ndash;Euler versus Euler&ndash;Lagrange.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Euler&ndash;Euler treats each phase as a continuum; Euler&ndash;Lagrange tracks every particle.</p><div class="rest"><p><span class="lab">Explain.</span> Euler&ndash;Euler uses volume fractions and suits dense systems at lower cost. Euler&ndash;Lagrange
+follows particles in the fluid, and with particle contacts it becomes CFD&ndash;DEM: accurate but
+expensive. rCFD was first used for bubble columns and fluidized beds.</p>
+<p class="summary"><span>Summary:</span> Continuum phases versus tracked particles.</p>
+<p class="src">Source: Pirker, multiphase slides.</p></div></details></section>
+</main>
+</div>
+<script>
+(function () {
+  var store = {
+    get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+  var qs = Array.prototype.slice.call(document.querySelectorAll('details.qa'));
+  var filter = 'all', term = '';
+  qs.forEach(function (d) {
+    var id = d.querySelector('.qid').textContent.trim();
+    var core = d.querySelector('.core');
+    var reveal = document.createElement('button');
+    reveal.className = 'reveal'; reveal.textContent = 'Show answer';
+    reveal.addEventListener('click', function () {
+      d.classList.toggle('show');
+      reveal.textContent = d.classList.contains('show') ? 'Hide answer' : 'Show answer';
+    });
+    var known = document.createElement('button');
+    known.className = 'known'; known.textContent = 'I know this';
+    if (store.get('known-' + id) === '1') known.classList.add('on');
+    known.addEventListener('click', function () {
+      known.classList.toggle('on');
+      store.set('known-' + id, known.classList.contains('on') ? '1' : '0');
+    });
+    core.parentNode.insertBefore(reveal, core.nextSibling);
+    core.parentNode.insertBefore(known, reveal.nextSibling);
+  });
+  function apply() {
+    var n = 0;
+    qs.forEach(function (d) {
+      var ok = (filter === 'all' || d.classList.contains(filter)) &&
+               (!term || d.dataset.text.indexOf(term) >= 0 || d.textContent.toLowerCase().indexOf(term) >= 0);
+      d.classList.toggle('hidden', !ok);
+      if (ok) n++;
+    });
+    document.getElementById('count').textContent = n + ' of ' + qs.length + ' questions';
+  }
+  document.querySelectorAll('[data-f]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      document.querySelectorAll('[data-f]').forEach(function (x) { x.classList.remove('on'); });
+      b.classList.add('on'); filter = b.dataset.f; apply();
+    });
+  });
+  document.getElementById('q').addEventListener('input', function (e) { term = e.target.value.toLowerCase(); apply(); });
+  var pr = document.getElementById('practice');
+  pr.addEventListener('click', function () {
+    document.body.classList.toggle('practice'); pr.classList.toggle('on');
+  });
+  var th = document.getElementById('theme');
+  var saved = store.get('theme');
+  if (saved) document.documentElement.dataset.theme = saved;
+  th.addEventListener('click', function () {
+    var dark = document.documentElement.dataset.theme === 'dark' ||
+      (!document.documentElement.dataset.theme && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var next = dark ? 'light' : 'dark';
+    document.documentElement.dataset.theme = next; store.set('theme', next);
+  });
+  apply();
+})();
+</script>
+</body>
+</html>

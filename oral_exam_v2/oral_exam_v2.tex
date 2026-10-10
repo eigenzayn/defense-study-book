@@ -36,6 +36,10 @@
   arc=1.5pt,left=6pt,right=6pt,top=4pt,bottom=4pt,
   title={\refstepcounter{qa}\sffamily Q\theqa\quad #1},coltitle=white,colbacktitle=qcol!85,
   fonttitle=\small}
+\definecolor{askcol}{HTML}{2E7D32}
+\newcommand{\origin}[2]{{\footnotesize\sffamily\ifnum\pdfstrcmp{#1}{asked}=0
+  \colorbox{askcol!15}{\color{askcol}ASKED BEFORE}\else\colorbox{srccol!15}{\color{srccol}PREDICTED}\fi
+  \ {\color{srccol}#2}}\par}
 \newcommand{\core}[1]{\textsf{\color{qcol}Core.}\ \emph{#1}\par}
 \newcommand{\explain}{\textsf{\color{qcol}Explain.}\ }
 \newcommand{\nums}[1]{\par\textsf{\color{qcol}Numbers.}\ #1\par}

@@ -9,13 +9,14 @@ pre-activation $s$, activation $a = f(s)$, layer $[l]$.
 \subsection{Empirical risk minimization and generalization}
 
 \begin{qabox}{Write down a supervised data set and the training framework.}
+\origin{asked}{Klambauer (several students), Berger-Weber committee}
 \core{We have $N$ pairs of input and label, and learning means minimizing the average loss on them.}
 \explain The pairs are drawn independently from an unknown distribution. A model maps an input to a
 prediction, and a loss says how wrong one prediction is. The average loss on the training data is
 the empirical risk.
 \derive
 \begin{align*}
-Z &= \{(\mathbf{x}_n,y_n)\}_{n=1}^{N} \why{training data, i.i.d.\ from $p(\mathbf{x},y)$} \\
+Z &= \{(\mathbf{x}_n,y_n)\}_{n=1}^{N} \why{training data, i.i.d. from $p(\mathbf{x},y)$} \\
 \Remp(\mathbf{w}) &= \frac1N\sum_{n=1}^{N} L\bigl(y_n, g(\mathbf{x}_n;\mathbf{w})\bigr) \why{average loss} \\
 \hat{\mathbf{w}} &= \arg\min_{\mathbf{w}} \Remp(\mathbf{w}) \why{learning}
 \end{align*}
@@ -24,6 +25,7 @@ Z &= \{(\mathbf{x}_n,y_n)\}_{n=1}^{N} \why{training data, i.i.d.\ from $p(\mathb
 \end{qabox}
 
 \begin{qabox}{What is the generalization error? Why can we not minimize it directly?}
+\origin{asked}{Klambauer (Fürnkranz committee), Schedl committee}
 \core{It is the expected loss on new data, and we cannot compute it because the true distribution is unknown.}
 \explain So we minimize the empirical risk instead and estimate the generalization error on data we
 did not train on: a test set or cross-validation. The training loss is not a fair estimate, because
@@ -39,6 +41,7 @@ the weights were chosen on that data.
 \end{qabox}
 
 \begin{qabox}{What is a loss function? Give examples.}
+\origin{asked}{Klambauer, March 2026 (``not all losses are differentiable, 0--1 loss'')}
 \core{A loss compares a label with a prediction and is zero when the prediction is right.}
 \explain It is never negative. We choose it to fit the task. Not every loss can be trained with
 gradient descent: the 0--1 loss has no useful gradient, so we use cross-entropy instead.
@@ -50,6 +53,7 @@ loss $\max(0, 1 - y\,g(\mathbf{x}))$ for the SVM.
 \end{qabox}
 
 \begin{qabox}{Show ERM on linear regression.}
+\origin{asked}{Klambauer (Küng committee), Schedl committee}
 \core{With a linear model and squared loss the risk is convex, so the minimum has a closed form.}
 \explain Set the gradient to zero and solve. Gradient descent reaches the same point step by step.
 For one sample the gradient is error times input, and the same pattern comes back in backprop.
@@ -65,6 +69,7 @@ For one sample the gradient is error times input, and the same pattern comes bac
 \end{qabox}
 
 \begin{qabox}{Overfitting, underfitting, bias and variance.}
+\origin{predicted}{DLNN script Sec.~5.4; bias and MSE were asked only in signal processing (Huemer)}
 \core{Too simple a model has high bias, too complex a model has high variance.}
 \explain An underfitting model cannot follow the data. An overfitting model follows the noise, so the
 training error is low and the test error is high. Very large networks show double descent: after
@@ -83,6 +88,7 @@ y &= f(\mathbf{x}) + \varepsilon,\quad \mathbb{E}[\varepsilon] = 0,\ \mathrm{Var
 \subsection{From one neuron to a deep network}
 
 \begin{qabox}{Write the formula of a neuron.}
+\origin{asked}{Schlüter}
 \core{A neuron takes a weighted sum of its inputs plus a bias, and passes it through a non-linear function.}
 \explain The weighted sum is the pre-activation, and the result is the activation. A layer does
 this for many neurons at once. The forward pass goes layer by layer from the input to the output.
@@ -97,6 +103,7 @@ a_i &= f(s_i) \why{activation} \\
 \end{qabox}
 
 \begin{qabox}{A deep network with and without activation functions?}
+\origin{asked}{Schlüter}
 \core{Without non-linear activations the whole network collapses to one linear model.}
 \explain A product of linear maps is again linear. So depth adds nothing, and the network cannot
 even solve XOR. The non-linearity is what makes depth useful.
@@ -111,6 +118,7 @@ even solve XOR. The non-linearity is what makes depth useful.
 \end{qabox}
 
 \begin{qabox}{Universal function approximation theorem.}
+\origin{asked}{Lehner}
 \core{One hidden layer with enough units can approximate any continuous function on a compact set.}
 \explain The activation must be non-polynomial, for example a sigmoid. The theorem says the network
 can represent the function. It does not say how many units we need, and it does not say that
@@ -124,6 +132,7 @@ gradient descent will find the weights.
 This is the most asked topic. Practise writing it until it takes two minutes.
 
 \begin{qabox}{Explain backpropagation and define the delta error.}
+\origin{asked}{Hochreiter, Klambauer, Kofler (several students)}
 \core{Backprop gets all gradients with one forward and one backward pass, and the delta is the
 derivative of the loss with respect to a pre-activation.}
 \explain First the forward pass stores all $s$ and $a$. Then the deltas are computed from the
@@ -141,6 +150,7 @@ w_{ij} &\leftarrow w_{ij} - \eta\,\delta_i\,a_j \why{gradient step}
 \end{qabox}
 
 \begin{qabox}{Write the recursive formula for the deltas.}
+\origin{asked}{Klambauer, Kofler (``delta error of the $l$-th layer'')}
 \core{The delta of a hidden unit is the weighted sum of the deltas above, times the slope of its own activation.}
 \explain A hidden unit $j$ affects the loss only through the units $i$ of the next layer. So we sum
 over those paths. In matrix form we multiply by the weight matrix and then by the derivatives of
@@ -157,6 +167,7 @@ the activations.
 \end{qabox}
 
 \begin{qabox}{What is the delta at the output with softmax and cross-entropy?}
+\origin{asked}{Hochreiter (softmax + cross-entropy)}
 \core{It is simply prediction minus label.}
 \explain The same clean result holds for a linear output with squared loss and for a sigmoid with
 binary cross-entropy. That is why these pairs are used together.
@@ -172,6 +183,7 @@ a_k &= \frac{e^{s_k}}{\sum_m e^{s_m}},\quad L = -\sum_k y_k\log a_k \why{softmax
 \end{qabox}
 
 \begin{qabox}{Vanishing and exploding gradients. Who found it?}
+\origin{asked}{Schedl committee (``backpropagation, vanishing gradients'')}
 \core{The delta is multiplied by one Jacobian per layer, so over many layers it shrinks or grows exponentially.}
 \explain With the sigmoid the slope is at most 0.25, so the deltas vanish. Sepp Hochreiter analysed
 this in his diploma thesis in 1991, here in Linz. The fixes are ReLU or SELU, good initialization,
@@ -190,6 +202,7 @@ If $0.25\lVert W\rVert < 1$, the delta vanishes exponentially with depth.
 \subsection{Gradient descent and optimizers}
 
 \begin{qabox}{Write gradient descent. Why mini-batches?}
+\origin{asked}{Schlüter, Klambauer}
 \core{We move the weights a small step against the gradient of the empirical risk.}
 \explain The full batch gives the exact gradient but is expensive. One sample is cheap but noisy.
 A mini-batch is the compromise: a good estimate, fast on a GPU, and its noise helps to leave sharp
@@ -204,6 +217,7 @@ minima.
 \end{qabox}
 
 \begin{qabox}{Which optimizers do you know?}
+\origin{asked}{Hochreiter}
 \core{Gradient descent, SGD, momentum, AdaGrad, RMSprop and Adam.}
 \explain Momentum keeps a running sum of past gradients. AdaGrad and RMSprop give each weight its own
 step size from the past squared gradients. Adam combines momentum and RMSprop with a bias
@@ -219,6 +233,7 @@ correction, and it is the usual default.
 \end{qabox}
 
 \begin{qabox}{Are there training methods other than gradient descent?}
+\origin{asked}{Klambauer}
 \core{Yes: closed forms, second-order methods and gradient-free methods.}
 \explain Linear models have a closed form. Logistic regression can use iteratively reweighted least
 squares. RProp and Quickprop use only the sign or the curvature of the gradient. Newton,
@@ -231,6 +246,7 @@ Evolutionary algorithms and random search need no gradient at all.
 \subsection{Activation functions, regularization, initialization}
 
 \begin{qabox}{Which activation functions do you know? Which one is from Linz?}
+\origin{asked}{Hochreiter (``which one is from Linz?'')}
 \core{Sigmoid, tanh, ReLU and its variants, and ELU and SELU, which were developed at JKU.}
 \explain Sigmoid and tanh are smooth but saturate. ReLU is cheap and does not saturate for positive
 input, but units can die. SELU (Klambauer et al.\ 2017) makes a network self-normalizing: the mean
@@ -242,6 +258,7 @@ sigmoid for two classes, softmax for many.
 \end{qabox}
 
 \begin{qabox}{Which regularization techniques do you know?}
+\origin{asked}{Hochreiter}
 \core{Weight decay, dropout, early stopping, data augmentation and noise.}
 \explain Weight decay adds a penalty on large weights, which shrinks them in every step. Dropout
 switches units off at random during training, so the network cannot rely on single units. Early
@@ -257,6 +274,7 @@ stopping ends training when the validation error starts to rise.
 \end{qabox}
 
 \begin{qabox}{Why does initialization matter? What is batch normalization?}
+\origin{predicted}{DLNN script Ch.~9--10}
 \core{Random weights break the symmetry, and their scale must keep the variance constant through the layers.}
 \explain If all weights are equal, all units learn the same thing. If the scale is wrong, the
 signal and the deltas vanish or explode. Batch normalization standardizes each pre-activation over
@@ -275,6 +293,7 @@ s &= \sum_{j=1}^{n_{\mathrm{in}}} w_j\,a_j \why{one pre-activation} \\
 \subsection{Convolutional networks}
 
 \begin{qabox}{What is a CNN and why does it work for images?}
+\origin{predicted}{DLNN script Ch.~6}
 \core{Small filters with shared weights slide over the image, so a pattern is found wherever it appears.}
 \explain Images have local structure, and the same pattern can be anywhere. Shared weights give few
 parameters and translation equivariance. Pooling makes the map smaller and adds some invariance.
@@ -286,6 +305,7 @@ stride $s$.}
 \end{qabox}
 
 \begin{qabox}{ResNet, and U-Net for segmentation.}
+\origin{asked}{U-Net asked by Klambauer in Life Science; ResNet predicted from the SS25 script}
 \core{ResNet adds the input of a block to its output, so gradients pass through very deep networks.}
 \explain The Jacobian of a residual block is the identity plus a small part, so it does not shrink
 the delta. U-Net is an encoder and a decoder with skip connections. It predicts one class per pixel
@@ -302,6 +322,7 @@ and copies fine detail across the skips.
 \subsection{Recurrent networks and LSTM}
 
 \begin{qabox}{Explain the forward pass of a recurrent network. How is it trained?}
+\origin{asked}{J.~Küng committee, Lehner (``main idea of RNNs'')}
 \core{An RNN reads a sequence step by step and keeps a hidden state that carries the past.}
 \explain The same weights are used at every step. It is trained with backpropagation through time:
 unfold the network over the sequence and backpropagate as in a deep network with shared weights.
@@ -317,6 +338,7 @@ The number of parameters does not grow with the length of the sequence.
 \end{qabox}
 
 \begin{qabox}{Why do plain RNNs fail on long sequences, and how does LSTM fix it?}
+\origin{predicted}{LSTM lecture (Hochreiter); vanishing gradients were asked}
 \core{The delta is multiplied by the recurrent Jacobian at every step, so it vanishes; the LSTM cell is updated by addition instead.}
 \explain The LSTM (Hochreiter and Schmidhuber 1997) has a memory cell with a constant error
 carousel. Gates decide what to write, what to keep and what to read. With the forget gate near one,
@@ -333,6 +355,7 @@ the error flows back through time without shrinking.
 \end{qabox}
 
 \begin{qabox}{Bidirectional RNNs, and one label for a whole sequence.}
+\origin{asked}{Schlüter (``RNN from the future'')}
 \core{A bidirectional RNN runs one RNN forward and one backward and joins their states.}
 \explain So every step sees the past and the future. It needs the whole sequence, so it is not for
 real-time use. For one label per sequence we use the last hidden state, or we pool all hidden
@@ -344,6 +367,7 @@ states and put a classifier on top.
 \subsection{Attention and Transformers}
 
 \begin{qabox}{Explain attention and the Transformer.}
+\origin{asked}{Rekabsaz, Lehner, Klambauer (self-attention matrices)}
 \core{Every token takes a weighted mean of all tokens, and the weights come from query times key.}
 \explain Each token makes a query, a key and a value by linear maps. The softmax of query times key
 gives the weights, and the output mixes the values with them. A Transformer block is multi-head
@@ -360,6 +384,7 @@ Q &= XW_Q,\ K = XW_K,\ V = XW_V \why{linear maps of the tokens} \\
 \end{qabox}
 
 \begin{qabox}{Transformers are permutation-equivariant. Why is that a problem?}
+\origin{asked}{Lehner}
 \core{Self-attention sees the tokens as a set, so the order of words is lost.}
 \explain If we shuffle the tokens, the outputs are shuffled the same way. So we add the position to
 each token: fixed sinusoids, learned vectors, or relative encodings such as RoPE.
@@ -368,6 +393,7 @@ each token: fixed sinusoids, learned vectors, or relative encodings such as RoPE
 \end{qabox}
 
 \begin{qabox}{Compare RNN and Transformer in cost.}
+\origin{asked}{Lehner ($O(N)$ against $O(N^2)$)}
 \core{An RNN is linear in the sequence length but sequential; a Transformer is quadratic but parallel.}
 \explain In a Transformer every token attends to every token, so time and memory grow with $N^2$.
 But all tokens are processed at once, and long-range paths are one step long. LSTM-type models such
@@ -380,6 +406,7 @@ as xLSTM are attractive again because inference is linear in $N$.
 \subsection{Classical machine learning in the same slot}
 
 \begin{qabox}{Explain the support vector machine.}
+\origin{asked}{Kofler, March 2026 committee}
 \core{The SVM finds the separating hyperplane with the largest margin.}
 \explain The margin is $2/\lVert\mathbf{w}\rVert$, so maximizing it means minimizing
 $\lVert\mathbf{w}\rVert^2$. The soft margin allows some points inside the margin through slack
@@ -396,6 +423,7 @@ $\alpha_n > 0$ are the support vectors.
 \end{qabox}
 
 \begin{qabox}{What is a kernel and the kernel trick?}
+\origin{asked}{Kofler}
 \core{A kernel is a dot product in a feature space, computed without building the features.}
 \explain The SVM dual needs only dot products. We replace them by a kernel and get a non-linear
 classifier at the cost of a linear one. Examples are the polynomial kernel and the Gaussian kernel.
@@ -410,6 +438,7 @@ k(\mathbf{x},\mathbf{x}') &= (\mathbf{x}^{\mathsf{T}}\mathbf{x}')^2 \why{polynom
 \end{qabox}
 
 \begin{qabox}{What is the VC dimension?}
+\origin{asked}{Kofler}
 \core{It is the largest number of points that a model class can label in every possible way.}
 \explain It measures capacity. Linear classifiers in $d$ dimensions have VC dimension $d+1$. In
 generalization bounds the gap between training and test error grows with the VC dimension and
@@ -420,6 +449,7 @@ shrinks with the number of samples.
 \end{qabox}
 
 \begin{qabox}{Likelihood, maximum likelihood, and its problems.}
+\origin{asked}{Widmer (several students)}
 \core{Maximum likelihood chooses the parameters that make the observed data most probable.}
 \explain We maximize the log-likelihood, because a sum is easier than a product. With little data
 it overfits: an event never seen gets probability zero. A prior (MAP) or regularization fixes
@@ -435,6 +465,7 @@ p(y\mid\mathbf{x}) &= \mathcal{N}\bigl(y;\,g(\mathbf{x};\mathbf{w}),\,\sigma^2\b
 \end{qabox}
 
 \begin{qabox}{Derive the REINFORCE loss. (Asked by Prof.\ Hochreiter.)}
+\origin{asked}{Hochreiter}
 \core{The log-derivative trick moves the gradient inside the expectation, so we can estimate it from sampled episodes.}
 \explain We want the largest expected return. The environment does not depend on the policy
 parameters, so only the policy terms survive. As a loss we minimize minus log-probability times
@@ -452,6 +483,7 @@ L(\theta) &= -\sum_t\log\pi_\theta(a_t\mid s_t)\,(G_t - b) \why{loss with baseli
 \end{qabox}
 
 \begin{qabox}{How do you evaluate a classifier?}
+\origin{asked}{R.~Küng committee (AUC), Mara committee (confusion matrix)}
 \core{With the confusion matrix, precision, recall and the area under the ROC curve.}
 \explain Precision: of what I called positive, how much is right. Recall: of all positives, how
 many I found. The ROC curve plots the true-positive rate against the false-positive rate over all
@@ -463,6 +495,7 @@ negative.
 \end{qabox}
 
 \begin{qabox}{How else can you measure robustness, besides adversarial attacks?}
+\origin{asked}{Klambauer}
 \core{Test under distribution shift and check how sure the model is.}
 \explain Use corrupted inputs, new domains or data from another time. Check calibration and
 uncertainty with ensembles or MC dropout, and the sensitivity of the output to the input. My thesis

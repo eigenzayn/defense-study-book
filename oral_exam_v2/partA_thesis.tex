@@ -44,6 +44,7 @@ that is left is missing transport, and a flux read from the recording can supply
 \subsection{Questions on the thesis}
 
 \begin{qabox}{What problem did you solve?}
+\origin{asked}{thesis part, committee Küng/Klambauer: ``What problem was solved?''}
 \core{I tested recurrence CFD on temperature, a scalar that drives its own flow.}
 \explain rCFD replays a recorded flow and moves a scalar with it. It was built for passive scalars,
 which do not change the flow. Temperature does change the flow. So I measured what the replay loses
@@ -54,6 +55,7 @@ and how much I can repair without solving the flow again.
 \end{qabox}
 
 \begin{qabox}{Why should anybody care?}
+\origin{asked}{thesis part, Mara (``What benefit does your thesis bring to the world?'') and Küng (``why should I care?'')}
 \core{Thermal processes run for hours, and full CFD of that time is too slow for daily use.}
 \explain rCFD is 260 times faster in my case. But a fast model is only useful if we know its error.
 My thesis measures this error for a case where temperature matters, and it shows which part can be
@@ -63,6 +65,7 @@ repaired.
 \end{qabox}
 
 \begin{qabox}{Explain recurrence CFD in simple words.}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{A normal CFD run is recorded once, and the replay reuses the recorded motion again and again.}
 \explain The preparation solves the full equations and stores, frame by frame, which share of each
 cell moves to which cell. The replay applies these stored maps to the temperature. Velocity and
@@ -81,6 +84,7 @@ Standard rCFD has $\mathcal{C} = \text{identity}$.
 \end{qabox}
 
 \begin{qabox}{Why is this AI, and not only CFD?}
+\origin{asked}{thesis part, Küng committee (``Why and how does ML solve this problem?'')}
 \core{It is a data-based simulation: an expensive solver produces data, and a cheap model reuses it.}
 \explain The database plays the role of training data. Choosing the next frame is a
 nearest-neighbour search in a database of states, the method of analogues. My main finding is about
@@ -91,6 +95,7 @@ makes the database out of distribution.
 \end{qabox}
 
 \begin{qabox}{What is the recurrence matrix, and is your flow recurrent?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{The matrix compares every pair of recorded states, and my flow is not recurrent.}
 \explain A small distance means two states are similar, so the replay could jump between them. In
 my tank the matrix has two blocks, filling and settling, and no state comes back. So the replay
@@ -108,6 +113,7 @@ P_{\mathrm{rel}} &= \bigl\langle d_{\max} - d_{\min} \bigr\rangle / \bar{d} \why
 \end{qabox}
 
 \begin{qabox}{What is the face exchange, and what is $\fsd$?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{After each advection the library moves a share of heat across every face, from warm to cold.}
 \explain A pure displacement does not mix, so this step adds mixing. $\fsd$ is its strength per
 step. It has no unit, so it is not a diffusion coefficient, but it can be translated into one. The
@@ -125,6 +131,7 @@ D_{\mathrm{eq}} &= \frac{\fsd\,c_s^{2}}{2\,\Delta t} \why{set $Q_{\mathrm{Fick}}
 \end{qabox}
 
 \begin{qabox}{Why is there no single best mixing constant?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{The two measures want different amounts of mixing, because the outlet sits just below the front.}
 \explain The mean temperature is best with little mixing. The height of the heat is best near
 $\fsd = 0.5$. The more the replay smears the front, the more warm fluid reaches the outlet and
@@ -135,6 +142,7 @@ leaves the tank.
 \end{qabox}
 
 \begin{qabox}{Why not simply use negative diffusion to sharpen the front?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{Negative diffusion is ill posed: small wiggles grow fastest.}
 \explain It does steepen the front, but it also amplifies every disturbance at the grid scale. In my
 1D test a disturbance of 1~mK left the range of the data by more than 1~K after 21 steps. So I keep
@@ -152,6 +160,7 @@ $\lvert G\rvert > 1$, so the shortest mode grows in every step.
 \end{qabox}
 
 \begin{qabox}{Explain your limiter.}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{Each face may move heat up the gradient only as far as both cells stay inside their local bounds.}
 \explain For every cell I take the smallest and the largest value of the cell and its neighbours.
 Across a face, heat moves from the colder to the warmer cell. The amount is the smaller of the two
@@ -168,6 +177,7 @@ T_i + \Delta T_i &\le T_i^{\max} \quad\text{if}\quad s \le 1/n_f = 1/6 \why{Eq.~
 \end{qabox}
 
 \begin{qabox}{Why the direction weight?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{The front is horizontal, so the correction should act across it and not along it.}
 \explain Each face gets the weight $\cos^2$ of the angle between its link and the vertical. Faces
 across the front get one, faces along it get zero. Without the weight the correction roughens the
@@ -184,6 +194,7 @@ K_f &= \hat{\mathbf{e}}^{\mathsf{T}}\mathbf{K}\,\hat{\mathbf{e}} \why{two-point 
 \end{qabox}
 
 \begin{qabox}{The recorded diffusivity did not help. Why?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{The recorded values are larger than the explicit exchange can apply, so every face hits the cap.}
 \explain The library exchanges at most half a cell volume per face and step. The recorded
 diffusivity asks for about nine times more. So every face exchanges the maximum, and the field acts
@@ -199,6 +210,7 @@ step or an implicit exchange would let the field act.
 \end{qabox}
 
 \begin{qabox}{What happened under the cooled lid?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{On the fluid of the reference, the corrected replay ends 0.06~K from the reference.}
 \explain The reference fluid has the specific heat 1006.43~J/(kg\,K). A replay given the specific
 heat of water cools four times less for the same wall power, and ends 4.34~K too warm. On the right
@@ -216,6 +228,7 @@ h_{\mathrm{eff}} &= G\,h\,\frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} \why{Eq.~(4
 \end{qabox}
 
 \begin{qabox}{What could not be repaired, and why?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{While the tank fills, the layers separate too slowly, and no local rule can fix that.}
 \explain A local correction only moves heat between neighbours, so it can change the shape of the
 front but not carry heat from one layer to another. This is missing transport. A vertical flux read
@@ -232,6 +245,7 @@ F &= \rho c_p v\,(T - \bar{T}_{\mathrm{b}}) \why{the recorded flux, Eq.~(2.18)} 
 \end{qabox}
 
 \begin{qabox}{How do you know your results are correct?}
+\origin{asked}{thesis part, Ulrich (``statistical methods employed, why other methods were not chosen'')}
 \core{Every replay is deterministic, and every run changes one setting against a control.}
 \explain A rerun gives the same trace, bit for bit. Replay and reference are compared at the same
 instants and over the same end window. The energy budget of each case is closed term by term.
@@ -241,6 +255,7 @@ instants and over the same end window. The energy budget of each case is closed 
 \end{qabox}
 
 \begin{qabox}{Why these error measures? Bias and RMSE?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{The mean temperature says how much heat there is; the profile and the front width say where it is.}
 \explain A replay can be right on one and wrong on the other, so I report both. On a trace, the
 bias gives the side and the RMSE gives the size. Their identity separates an offset from a wrong
@@ -257,6 +272,7 @@ shape.
 \end{qabox}
 
 \begin{qabox}{Why is the flow laminar?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{The jet enters at a Reynolds number of about 99, far below transition.}
 \explain So the equations are solved as they stand, with no turbulence model. The case file
 confirms that the turbulence model is off. Buoyancy is slightly stronger than inertia, so the jet
@@ -267,6 +283,7 @@ bends up within a few inlet widths.
 \end{qabox}
 
 \begin{qabox}{Why the Boussinesq approximation?}
+\origin{predicted}{your thesis: everything you used can be asked}
 \core{The density changes by only 1.5 per cent, so it matters only where gravity acts.}
 \explain Density is kept constant except in the buoyancy term. This buoyancy term is exactly the
 link that the replay cuts: the replay keeps the recorded motion, so the temperature can no longer
@@ -281,6 +298,7 @@ change the velocity.
 \end{qabox}
 
 \begin{qabox}{What is future work?}
+\origin{asked}{thesis part, Küng committee (``What would you do differently?''), Mara (``How could I extend my work?'')}
 \core{Let the recorded diffusivity act, split the conservation constraint, and switch databases by state.}
 \explain An implicit exchange or a shorter step would let the recorded diffusivity work. A balance
 per compartment would stop the constraint from putting heat back at the front. Several recordings,
@@ -290,6 +308,7 @@ chosen by the replayed temperature, could cover more than one regime.
 \end{qabox}
 
 \begin{qabox}{Which papers influenced you most?}
+\origin{asked}{thesis part, Mara (``Which was the paper your thesis was most influenced by?'')}
 \core{Lichtenegger and Pirker (2016) and Pirker et al.\ (2018) for rCFD, and Zalesak (1979) for the limiter.}
 \explain The first introduced recurrence CFD and the recurrence matrix. The second describes the
 face exchange and the conservation constraint. Zalesak gives the local bounds of flux-corrected
