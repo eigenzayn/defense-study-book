@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Record Once, Replay</title>
+<link rel="stylesheet" href="../shared/deck.css">
+<style>
+  /* === PARTNER SIGNATURE: engineering notebook + process line ===
+     A faint 40 px grid and a process line across the top: the talk walks through the steps of an
+     investigation, from the question to what must be validated. */
+  .slide:not(.night) { background-color: var(--paper);
+    background-image: linear-gradient(rgba(85,101,122,.06) 1px, transparent 1px), linear-gradient(90deg, rgba(85,101,122,.06) 1px, transparent 1px);
+    background-size: 40px 40px; }
+  .slide { padding-left: 140px; padding-top: 130px; }
+  .footer { left: 140px; }
+  .process { position: absolute; left: 140px; right: 120px; top: 44px; display: flex; gap: 0; z-index: 5; font-size: 17px; letter-spacing: .08em; text-transform: uppercase; }
+  .process div { flex: 1; border-top: 3px solid var(--rule); padding-top: 8px; color: var(--mute); }
+  .process div.done { border-top-color: var(--ink-2); color: var(--ink-2); }
+  .process div.now { border-top-color: var(--accent); color: var(--accent); }
+  .hero { position: absolute; right: 60px; top: 160px; width: 820px; }
+  .hero video { width: 100%; display: block; }
+  .box { border: 1px solid var(--rule); background: rgba(255,255,255,.7); padding: 26px 30px; }
+  .box h3 { margin: 12px 0 14px; font-size: 40px; line-height: 1.15; }
+  .box p.small { font-size: 27px; line-height: 1.4; }
+  .box { padding: 28px 32px; box-sizing: border-box; }
+  #p9 ul.plain li { font-size: 32px; padding: 20px 0; }
+  .chain .arrow { padding-top: 150px; }
+  .grid3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 34px; }
+  .chain { display: grid; grid-template-columns: 1fr 60px 1fr 60px 1fr; align-items: start; gap: 0; }
+  .chain .arrow { text-align: center; padding-top: 80px; }
+</style>
+</head>
+<body data-deck="partner" data-base="../shared/">
+<div class="deck-viewport"><div class="deck-stage">
+
+<!-- ============================ 1 ============================ -->
+<section class="slide night" id="p1" data-step="0" data-title="Thermal processes are fast in flow and slow in temperature" data-time="45" data-cues="two time scales|CFD pays for both|my starting point">
+  <div class="kicker">Research talk for <span class="co">an industrial partner</span></div>
+  <h1 class="claim" style="max-width:760px;margin-top:150px">The flow settles in seconds. The temperature takes <em>hours</em>.</h1>
+  <p class="lead" style="color:#c9d3dc;max-width:700px">Record once, replay many times: data-based simulation of heat in a buoyant flow</p>
+  <p class="small author" style="color:#8f969e;margin-top:60px"></p>
+  <div class="hero"><video src="../shared/assets/demo/hero_HL100.mp4" autoplay muted loop playsinline></video>
+    <div class="small" style="color:#8f969e;text-align:right">cold plumes under a cooled lid, reference simulation, 3D render of stored solver states</div></div>
+</section>
+
+<!-- ============================ 2 ============================ -->
+<section class="slide" id="p2" data-step="0" data-title="Simulating hours of a process is the expensive part" data-time="75" data-cues="569 minutes|pressure solve dominates|temperature is cheap">
+  <h1 class="claim">Most of the cost goes into the <em>flow</em>, not into the temperature we want.</h1>
+  <div class="cols">
+    <div class="stack">
+      <div class="big"><span class="v num">569<small>min</small></span><span class="l">solver time of the reference simulation for about ten minutes of flow in a 75 mm tank</span></div>
+      <p class="small">In each time step the solver couples velocity and pressure again, even after the flow has settled into its pattern. The temperature it carries changes far more slowly.</p>
+    </div>
+    <div class="box"><div class="kicker">The engineering question</div>
+      <h3>Can we keep the temperature physics and stop paying for the flow every time?</h3>
+      <p class="small mute">The answer depends on whether the temperature changes the flow. That is what my thesis tests.</p></div>
+  </div>
+  <div class="plate fit" style="--h:280px;margin-top:24px"><img src="../shared/assets/fig/fig_geometry.svg" alt="geometry"><div class="src"><span>the test tank: 75 mm, inlet and outlet channels at mid-height, lid adiabatic or cooled</span><b>thesis Fig 3.2</b></div></div>
+</section>
+
+<!-- ============================ 3 ============================ -->
+<section class="slide" id="p3" data-step="1" data-title="Record the flow once, replay it for the temperature" data-time="90" data-cues="maps|260x after one recording|feedback cut">
+  <h1 class="claim">Record the flow once, replay it for the temperature, about <em>260 times</em> cheaper.</h1>
+  <div class="plate fit" style="--h:560px"><img src="../shared/assets/fig/fig_method.svg" alt="record and replay">
+    <div class="src"><span>solver time without image output, 569 min against 2.16 min on average; one full CFD run is needed first to record the maps</span><b>thesis Fig 2.1</b></div></div>
+</section>
+
+<!-- ============================ 4 ============================ -->
+<section class="slide" id="p4" data-step="2" data-title="A small tank where the temperature pushes back" data-time="90" data-cues="same flow|thick front|that is the defect">
+  <h1 class="claim">Same recorded flow, but the replay's front comes out <em>four times thicker</em>.</h1>
+  <div class="cols-62">
+    <div class="demo" id="demoP"></div>
+    <ul class="plain small">
+      <li>A warm jet enters a closed tank for 315 s and builds a warm layer over cold water</li>
+      <li>Laminar and closed: every joule in and out can be accounted for</li>
+      <li>The front is about 5 mm thick in the reference; the outlet sits just below it</li>
+      <li class="mute">Live playback of decoded rendered frames, one every 2 s</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 5 ============================ -->
+<section class="slide" id="p5" data-step="2" data-title="How I found the error: from the tank budget down to one face" data-time="105" data-cues="follow the heat|outlet under the front|the mixing step">
+  <h1 class="claim">I followed the heat: from the tank budget, to the outlet, to <em>one face</em> between two cells.</h1>
+  <div class="chain">
+    <div class="box"><div class="kicker">1 · tank budget</div><h3>No mixing strength fits both heat and layer height</h3><p class="small">best heat error 1.07 K with no mixing; best layer height near f<sub>sd</sub> = 0.5</p></div>
+    <div class="arrow">→</div>
+    <div class="box"><div class="kicker">2 · outlet</div><h3>A smeared front drains heat</h3><p class="small">from the energy balance: 4.6 K of mean temperature leaves after the inflow</p></div>
+    <div class="arrow">→</div>
+    <div class="box"><div class="kicker">3 · one face</div><h3>The mixing step, not the recording</h3><p class="small">recorded maps alone keep the front 2.5 mm; the exchange makes it 19.3 mm</p></div>
+  </div>
+  <div class="plate fit" style="--h:250px;margin-top:24px"><img src="../shared/assets/fig/fig_ad_outlet.svg" alt="outlet"><div class="src"><span>outlet temperature recovered from the energy balance; heat kept while the inflow is warm, drained afterwards</span><b>thesis Fig 5.10</b></div></div>
+</section>
+
+<!-- ============================ 6 ============================ -->
+<section class="slide" id="p6" data-step="2" data-title="A correction that respects physics" data-time="90" data-cues="up-gradient, bounded|conserves energy|honest about tuning">
+  <h1 class="claim">The fix moves heat <em>within physical bounds</em>: conservative, and no new extremes.</h1>
+  <div class="cols-26" style="grid-template-columns:420px 1fr">
+    <div class="stack">
+      <div class="big"><span class="v num slate">15.7<small>mm</small></span><span class="l">front, standard replay</span></div>
+      <div class="big"><span class="v num red">≈ 5<small>mm</small></span><span class="l">front, corrected (5.3–4.5 mm; reference 5.0 mm)</span></div>
+      <p class="small mute">The strength was chosen against the reference. Choosing it without one is the next step.</p>
+    </div>
+    <div class="plate fit" style="--h:560px"><img src="../shared/assets/fig/fig_ad_endstate.svg" alt="end state">
+      <div class="src"><span>adiabatic end state and strength ladder, departure from the reference</span><b>thesis Fig 5.9</b></div></div>
+  </div>
+</section>
+
+<!-- ============================ 7 ============================ -->
+<section class="slide" id="p7" data-step="3" data-title="Knowing the limit is part of the result" data-time="90" data-cues="heat right|transport missing|one regime per database">
+  <h1 class="claim">Knowing <em>where the method stops</em> is part of the result.</h1>
+  <div class="cols-62">
+    <div class="plate"><img src="../shared/assets/fig/fig_wall_traces.svg" alt="cooled lid traces">
+      <div class="src"><span>cooled lid: heat content right, layering late while the tank fills</span><b>thesis Fig 6.3</b></div></div>
+    <div class="stack">
+      <div class="big"><span class="v num">+0.06<small>K</small></span><span class="l">end error with the correction, on 9.62 K of cooling</span></div>
+      <div class="big"><span class="v num red">2.25 → 0.45<small>K</small></span><span class="l">layering lag, without and with a heat flux read from the recording; the tank then ends 0.86 K too cold</span></div>
+      <p class="small">What remains is missing transport, and a recording only serves the flow regime it was made in.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 8 ============================ -->
+<section class="slide" id="p8" data-step="4" data-title="Where scientific machine learning could fit" data-time="105" data-cues="learn the closure|regime-aware|physics as tests">
+  <h1 class="claim">Three research directions, each from a <em>measured weakness</em>.</h1>
+  <div class="grid3">
+    <div class="box"><span class="tag untested">untested</span><h3>Learn the mixing term</h3><p class="small">Replace the hand-set exchange strength by a closure learned from recorded data, checked against the reference.</p></div>
+    <div class="box"><span class="tag untested">untested</span><h3>Regime-aware replay</h3><p class="small">Select or blend recordings by the state of the flow, since one recording serves one regime.</p></div>
+    <div class="box"><span class="tag untested">untested</span><h3>Physics as acceptance tests</h3><p class="small">Conservation, boundedness and the energy budget as tests that any fast surrogate must pass.</p></div>
+  </div>
+  <p class="small mute" style="margin-top:34px">A hint of low-dimensional structure: in the reference, two POD modes hold 96 % of the mid-plane variance (thesis Fig 5.11).</p>
+  <div class="plate fit" style="--h:230px;margin-top:6px"><img src="../shared/assets/fig/fig_ad_statespace.svg" alt="POD"><div class="src"><span>runs projected on the modes of the reference; the residual tells how far a field lies from the recorded states</span><b>thesis Fig 5.11</b></div></div>
+</section>
+
+<!-- ============================ 9 ============================ -->
+<section class="slide" id="p9" data-step="5" data-title="What must be validated before an industrial use" data-time="105" data-cues="physics gap|regime coverage|measured validation">
+  <h1 class="claim">Before any industrial use, these points must be shown <em>on the process's own physics</em>.</h1>
+  <div class="cols">
+    <ul class="plain">
+      <li>Reference data per operating regime, and what it costs to produce</li>
+      <li>Coverage: does the recording contain the motions the process will see?</li>
+      <li>Conservation and boundedness of every correction</li>
+    </ul>
+    <ul class="plain">
+      <li>Error on the quantity the process cares about, not only on a test tank</li>
+      <li>Comparison with measurements (a lab-rig study is running)</li>
+      <li>Physics my tank does not have: turbulence, several phases, reaction heat</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 10 ============================ -->
+<section class="slide night" id="p10" data-step="5" data-title="How I work, and the next question" data-time="60" data-cues="follow the budget|fix within bounds|state the limit">
+  <div class="kicker">How I work</div>
+  <ol class="steps" style="margin-top:110px;font-size:40px;color:#f2eee6">
+    <li>Follow the energy budget until the error has a location.</li>
+    <li>Fix it within physical bounds: conservative, no new extremes.</li>
+    <li>State where the method stops, with numbers.</li>
+  </ol>
+  <p class="lead" style="color:#d98a63;margin-top:70px">Next question: can the replay choose its own correction strength?</p>
+</section>
+
+<!-- ============================ BACKUP ============================ -->
+<section class="slide backup" id="q1" data-step="5" data-title="Backup: cost basis" data-time="0">
+  <h1 class="claim" style="font-size:44px">The 260 times is solver time against solver time, without the recording.</h1>
+  <ul class="plain" style="font-size:30px">
+    <li>Reference: 569 min for 628 s of flow, image output removed</li>
+    <li>Replay: 0.81–4.73 min, mean 2.16 min for 600 s; range 120–700x across mixing strengths</li>
+    <li>The recording is one full CFD run; the saving starts with the second replay</li>
+  </ul>
+</section>
+<section class="slide backup" id="q2" data-step="5" data-title="Backup: the limiter in one equation" data-time="0">
+  <h1 class="claim" style="font-size:44px">Each face moves at most a share of what both cells can still take.</h1>
+  <div id="limiterP" style="width:1300px"></div>
+</section>
+<section class="slide backup" id="q3" data-step="5" data-title="Backup: snapshots under the cooled lid" data-time="0">
+  <h1 class="claim" style="font-size:44px">Stored snapshots: reference, standard, corrected, and with the recorded flux.</h1>
+  <div id="snapP" style="width:1500px" data-t="240"></div>
+</section>
+<section class="slide backup" id="q4" data-step="5" data-title="Backup: what I implemented" data-time="0">
+  <h1 class="claim" style="font-size:44px">What I built myself.</h1>
+  <ul class="plain" style="font-size:30px">
+    <li>The correction stage in the replay library's user hook: limiter, direction weight, stability criterion</li>
+    <li>A recorded convective-flux channel: written during the recording, applied during the replay</li>
+    <li>The analysis: energy balances, outlet temperature from the bulk balance, front width, field measures</li>
+    <li>Every figure from the solver files, with scripts that recompute the numbers</li>
+  </ul>
+</section>
+
+<div class="process noprint" id="process"><div>question</div><div>method</div><div>evidence</div><div>limits</div><div>directions</div><div>validation</div></div>
+</div></div>
+
+<script type="application/json" id="notes">
+{
+ "p1": {"say": "In many thermal processes the flow reaches its pattern within seconds, but the temperature it carries keeps changing for minutes or hours. Simulation has to resolve the fast part the whole time. That mismatch is where my research starts.", "key": "Two time scales; we pay for the fast one.", "next": "Here is what that costs.", "short": "Flow fast, temperature slow."},
+ "p2": {"say": "In my test case, about ten minutes of flow cost about nine and a half hours of solver time. Most of that goes into velocity and pressure, which the solver couples again in every step, even after the flow has settled. The temperature itself is cheap. So the question I asked was simple: can we keep the temperature physics and stop paying for the flow every time? The answer depends on whether the temperature changes the flow, and that is what I tested.", "key": "The cost is the flow, not the temperature.", "next": "There is a method that does exactly this.", "short": "569 minutes, mostly pressure."},
+ "p3": {"say": "Recurrence CFD records, once, how the fluid moves from cell to cell. After that, the replay only applies these stored maps to the temperature, with a mixing step and a conservation step. It is about 260 times cheaper in solver time, after one full recording run. The catch is that the replay cannot let the temperature change the flow, because the flow is fixed in the recording.", "key": "Record once, replay cheaply, feedback cut.", "next": "So I built a case where the temperature does push back.", "short": "Maps, 260 times, the catch."},
+ "p4": {"say": "This is that case. A warm jet fills a closed tank and builds a warm layer over cold water. On the left is the full simulation, on the right the replay with standard settings, from the same recorded flow. The front between the layers is about five millimetres in the reference, and about four times thicker in the replay. That thick front is the defect I had to explain.", "key": "Same flow, thick front.", "next": "How did I find out why?", "short": "Same flow, four times thicker front."},
+ "p5": {"say": "I did not tune my way out of it. I followed the heat. First the tank budget: no mixing strength gets both the heat content and the layer height right. Then the outlet, which I reconstructed from the energy balance: a smeared front puts warm fluid at the outlet height, and that heat leaves the tank. Finally one face between two cells: the recorded maps keep the front thin, the mixing step smears it.", "key": "Budget, outlet, face.", "next": "Once the cause is local, the fix can be local too.", "short": "Follow the heat to one face."},
+ "p6": {"say": "The fix moves heat back up the gradient, but each face only as far as both cells stay inside the range of their neighbours. So it conserves energy and cannot invent a new hot or cold spot. The front returns from almost sixteen millimetres to about five, close to the reference. I want to be clear: I chose its strength by comparing with the reference. Choosing it without one is the next research step.", "key": "Bounded and conservative; honest about tuning.", "next": "Then I made the problem harder.", "short": "Sixteen to five millimetres, within bounds."},
+ "p7": {"say": "With a cooled lid, the temperature creates its own motion. The correction gets the heat content right, within 0.06 kelvin. But while the tank fills, the layers separate too slowly, and no local fix changes that. Reading a heat flux from the recording removes most of the lag, but the tank then ends too cold. So what remains is missing transport, and a recording only serves the regime it was made in. For me that is a result, not a failure.", "key": "Heat right, transport missing.", "next": "This is where I see room for scientific machine learning.", "short": "Heat right, transport missing."},
+ "p8": {"say": "Three directions follow from what I measured, and none of them is tested yet. First, learn the mixing term from data instead of setting it by hand. Second, choose or blend recordings according to the state of the flow, because one recording serves one regime. Third, use conservation, boundedness and the energy budget as acceptance tests for any fast model. The reference flow also looks low-dimensional: two modes hold most of its variance.", "key": "Each direction comes from a measured weakness.", "next": "Before any of this touches a process, it must pass some tests.", "short": "Learn, regime-aware, physics tests."},
+ "p9": {"say": "My tank is laminar and single-phase. An industrial reactor is neither. So before anything like this is used on a process, it must be shown on that process's own physics: reference data per regime and its cost, recordings that cover the relevant motions, conservation, the error on the quantity that matters, and comparison with measurements. A lab-rig study of this kind is running now.", "key": "Validate on the process's own physics.", "next": "Let me close with how I work.", "short": "Physics gap, coverage, measurements."},
+ "p10": {"say": "That is how I work. I follow the energy budget until the error has a location. I fix it within physical bounds. And I say where the method stops, with numbers. The next question I would like to answer is whether the replay can choose its own correction strength. Thank you.", "key": "Budget, bounds, limits.", "next": "", "short": "Three habits, one question."}
+}
+</script>
+<script src="../shared/assets/data/limiter_model.js"></script>
+<script src="../shared/demo.js"></script>
+<script>
+  FramePlayer(document.getElementById("demoP"));
+  LimiterModel(document.getElementById("limiterP"), window.LIMITER);
+  SnapInspector(document.getElementById("snapP"), "HL100",
+    [["reference", "reference CFD", "#16191d"], ["standard", "standard replay", "#55657a"], ["corrected", "corrected, s = 0.475", "#c4502f"], ["flux", "+ recorded flux", "#6b4f8a"]],
+    "cooled lid, mid-plane temperature 293-333 K");
+  window.deckProgress = function (i, slides) {
+    const s = slides[i], bar = document.getElementById("process");
+    bar.style.display = s.classList.contains("night") || s.classList.contains("backup") ? "none" : "flex";
+    const k = +s.dataset.step;
+    Array.from(bar.children).forEach((d, j) => { d.className = j < k ? "done" : j === k ? "now" : ""; });
+  };
+</script>
+<script src="../shared/deck.js"></script>
+</body>
+</html>

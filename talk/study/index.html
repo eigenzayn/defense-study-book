@@ -1,0 +1,80 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Study Plan</title><style>
+@font-face{font-family:Charis;src:url(../shared/fonts/CharisSIL-Regular.ttf)}@font-face{font-family:Charis;font-weight:700;src:url(../shared/fonts/CharisSIL-Bold.ttf)}
+:root{--paper:#f6f3ec;--ink:#16191d;--mute:#7c838b;--rule:#cfc8bb;--accent:#c4502f}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--paper:#14181c;--ink:#ece7dd;--mute:#9aa3ad;--rule:#3a4048}}
+body{background:var(--paper);color:var(--ink);font:18px/1.55 Charis,Georgia,serif;margin:0;padding:48px 16px}
+main{max-width:980px;margin:0 auto}h1{font-size:38px;line-height:1.15}h2{font-size:26px;margin-top:42px;border-top:1px solid var(--rule);padding-top:18px}
+table{border-collapse:collapse;width:100%;font-size:16px;display:block;overflow-x:auto}th,td{border-bottom:1px solid var(--rule);padding:8px 10px;text-align:left;vertical-align:top}
+th{font-size:14px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}a{color:var(--accent);word-break:break-all}code{font-size:.9em}
+</style></head><body><main><h1>Rencana belajar satu bulan (17 Okt – 15 Nov 2026, cadangan sampai sidang)</h1>
+<p>Sidang terdiri dari: presentasi tesis 15 menit, tanya tesis 5 menit, Machine Learning &amp; Perception</p>
+<p>20 menit, track AI for Simulation 20 menit (format dari pengalaman mahasiswa sebelumnya). Bahan:</p>
+<p>deck sidang (<code>talk/defense</code>), buku ujian lisan v2 (<code>oral_exam_v2</code>), bank soal (<code>notes/</code>).</p>
+<h2>Prinsip belajar (agar mudah diingat)</h2>
+<ul>
+<li><b>Retrieval dulu, baca belakangan.</b> Jawab pertanyaan tanpa melihat, baru periksa. Ini cara paling</li>
+<p>efektif untuk mengingat (bukan membaca ulang).</p>
+<li><b>Satu topik, tiga kalimat.</b> Apa itu, mengapa, apa artinya. Jika bisa diucapkan dalam bahasa</li>
+<p>Inggris tanpa jeda panjang, topik itu siap.</p>
+<li><b>Turunan rumus ditulis tangan</b> dari kertas kosong (backprop, delta error, s ≤ 1/6, neraca energi).</li>
+<li><b>Jarak waktu.</b> Ulang topik pada hari ke-1, 3, 7, 14 (kartu yang salah kembali lebih cepat).</li>
+<li><b>Rekam diri sendiri.</b> Dengar ulang sekali; catat tiga hal yang diperbaiki, bukan semua.</li>
+</ul>
+<h2>Pola harian (sekitar 2,5 jam pada hari kerja)</h2>
+<table>
+<tr><th>Blok</th><th>Menit</th><th>Isi</th></tr>
+<tr><td>A</td><td>60</td><td>satu topik ML&amp;P atau AI for Simulation: retrieval + turunan tangan</td></tr>
+<tr><td>B</td><td>40</td><td>presentasi: satu bagian deck, ucapkan keras dengan tiga kata kunci (tombol R)</td></tr>
+<tr><td>C</td><td>25</td><td>bahasa Inggris lisan (lihat di bawah)</td></tr>
+<tr><td>D</td><td>15</td><td>kartu hafalan: pertanyaan tesis dan angka wajib</td></tr>
+</table>
+<p>Minggu: simulasi ujian 60–90 menit (talk + tanya), lalu istirahat.</p>
+<h2>Empat minggu</h2>
+<table>
+<tr><th>Minggu</th><th>Presentasi &amp; tesis</th><th>ML &amp; Perception</th><th>AI for Simulation</th><th>Bahasa Inggris</th></tr>
+<tr><td>1 · 17–23 Okt</td><td>alur 11 slide sidang; slide 1–5 lancar</td><td>ERM, loss, generalisasi; neuron → MLP</td><td>rCFD kuliah: ide, database, recurrence</td><td>shadowing 10 menit/hari; rekam slide 1–3</td></tr>
+<tr><td>2 · 24–30 Okt</td><td>slide 6–11; talk penuh pertama (rekam, ukur waktu); roster ke PAS bila komite pasti</td><td>backprop + delta error; GD, momentum, Adam</td><td>gambar tesis Bab 5; dasar CFD (NS, FVM, Boussinesq)</td><td>3 jawaban &quot;why&quot; per hari, masing-masing 3 kalimat</td></tr>
+<tr><td>3 · 31 Okt–6 Nov</td><td>talk partner; 2 talk penuh sidang; tanya-jawab dari <code>examiner_questions.md</code></td><td>aktivasi, regularisasi, init; CNN; RNN/LSTM</td><td>gambar tesis Bab 6 + Bab 2; limiter, s ≤ 1/6</td><td>mock Q&amp;A 2x dengan rekaman</td></tr>
+<tr><td>4 · 7–13 Nov</td><td>3 simulasi ujian penuh; versi darurat 12 menit</td><td>attention, Transformer; ML klasik</td><td>pertanyaan lanjutan Pirker (rezim, fluks, biaya)</td><td>latihan tanpa catatan; frasa jembatan otomatis</td></tr>
+<tr><td>cadangan</td><td>kartu hafalan, tidur cukup, tes laptop + proyektor</td><td>topik terlemah</td><td>topik terlemah</td><td>pemanasan 10 menit sebelum ujian</td></tr>
+</table>
+<h2>Bahasa Inggris lisan: 25 menit per hari</h2>
+<ul>
+<li>10 menit <b>shadowing</b>: putar 1 menit bicara (BBC 6 Minute English atau TED), ulangi kalimatnya</li>
+<p>bersamaan dengan pembicara, fokus pada ritme, bukan aksen.</p>
+<li>10 menit <b>jelaskan satu slide</b> tanpa naskah, rekam, dengar ulang sekali.</li>
+<li>5 menit <b>pelafalan istilah</b>: cek di YouGlish atau Cambridge Dictionary (contoh: *buoyancy,</li>
+<p>heterogeneity, anti-diffusive, recurrence, thermocline*).</p>
+</ul>
+<p>Frasa jembatan (hafalkan sampai otomatis):</p>
+<ul>
+<li><i>&quot;Let me think about that for a second.&quot;</i></li>
+<li><i>&quot;There are two parts to that. First ... Second ...&quot;</i></li>
+<li><i>&quot;The short answer is ..., and the reason is ...&quot;</i></li>
+<li><i>&quot;I have not tested that, but I would expect ... because ...&quot;</i></li>
+<li><i>&quot;Could you repeat the question? I want to make sure I answer the right thing.&quot;</i></li>
+</ul>
+<h2>Tautan (diperiksa aktif 16 Okt 2026)</h2>
+<p>Bahasa Inggris dan presentasi:</p>
+<ul>
+<li>BBC Learning English, 6 Minute English: <a href="https://www.bbc.co.uk/learningenglish/english/features/6-minute-english">https://www.bbc.co.uk/learningenglish/english/features/6-minute-english</a></li>
+<li>BBC Learning English, The English We Speak: <a href="https://www.bbc.co.uk/learningenglish/english/features/the-english-we-speak">https://www.bbc.co.uk/learningenglish/english/features/the-english-we-speak</a></li>
+<li>YouGlish (pelafalan dalam kalimat nyata): <a href="https://youglish.com/">https://youglish.com/</a></li>
+<li>Cambridge Dictionary (audio UK/US): <a href="https://dictionary.cambridge.org/">https://dictionary.cambridge.org/</a></li>
+<li>Academic Phrasebank, University of Manchester: <a href="https://www.phrasebank.manchester.ac.uk/">https://www.phrasebank.manchester.ac.uk/</a></li>
+<li>TED Talks (shadowing): <a href="https://www.ted.com/talks">https://www.ted.com/talks</a></li>
+<li>Penn State, struktur assertion–evidence untuk slide: <a href="https://writing.engr.psu.edu/research.html">https://writing.engr.psu.edu/research.html</a></li>
+</ul>
+<p>Machine learning (intuisi visual):</p>
+<ul>
+<li>3Blue1Brown, Neural networks: <a href="https://www.3blue1brown.com/topics/neural-networks">https://www.3blue1brown.com/topics/neural-networks</a></li>
+<li>StatQuest: <a href="https://statquest.org/">https://statquest.org/</a></li>
+<li>Karpathy, micrograd (backprop dari nol): <a href="https://github.com/karpathy/micrograd">https://github.com/karpathy/micrograd</a></li>
+<li>Colah, Understanding LSTM Networks: <a href="https://colah.github.io/posts/2015-08-Understanding-LSTMs/">https://colah.github.io/posts/2015-08-Understanding-LSTMs/</a></li>
+<li>Jay Alammar, The Illustrated Transformer: <a href="https://jalammar.github.io/illustrated-transformer/">https://jalammar.github.io/illustrated-transformer/</a></li>
+</ul>
+<h2>Angka wajib (kartu hafalan)</h2>
+<p>260x (569 vs 2,16 min; rekaman tidak termasuk) · f_sd: 1,07 K / 0,068 mm / 5,08 K · front 4,5 vs 19,3 mm</p>
+<p>(240 s), 2,5 mm peta saja · terkuras 4,6 K · 15,7 → 5,3–4,5 mm (ref 5,0) · 1,46 → 0,70–0,64 K ·</p>
+<p>s ≤ 1/6 · −0,66 → +0,06 K pada 9,62 K · 2,25 → 0,45 K, −0,86 K · prominence 0,028 / 0,027 (perlu 0,05–0,1).</p></main></body></html>

@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buoyant Jet Defense</title>
+<link rel="stylesheet" href="../shared/deck.css">
+<style>
+  /* === DEFENSE SIGNATURE: the experiment clock ===
+     The talk runs along the tank's own clock, 0-600 s: the inflow band is the first half of the
+     talk, and the marker shows where the story stands in the run. */
+  .clockbar { position: absolute; left: 82px; top: 120px; bottom: 120px; width: 2px; background: var(--rule); z-index: 5; }
+  .clockbar .inflow { position: absolute; left: -3px; width: 8px; top: 0; height: calc(315 / 600 * 100%); background: var(--accent-soft); }
+  .clockbar .tick { position: absolute; left: -7px; width: 16px; height: 1px; background: var(--ink-2); }
+  .clockbar .tl { position: absolute; left: 16px; font-size: 15px; color: var(--mute); transform: translateY(-50%); white-space: nowrap; }
+  .clockbar .mark { position: absolute; left: -7px; width: 16px; height: 16px; border-radius: 50%; background: var(--accent);
+    transform: translateY(-50%); transition: top .5s ease; }
+  .clockbar .ml { position: absolute; left: 22px; font-size: 17px; color: var(--accent); transform: translateY(-50%); white-space: nowrap; transition: top .5s ease; }
+  .slide.night ~ .clockbar { opacity: .4; }
+  .hero { position: absolute; right: 60px; top: 150px; width: 820px; }
+  .hero video { width: 100%; display: block; }
+  .eq { font-size: 34px; font-style: italic; margin: 18px 0; }
+  .eq span { font-style: normal; }
+</style>
+</head>
+<body data-deck="defense" data-base="../shared/">
+<div class="deck-viewport"><div class="deck-stage">
+
+<!-- ============================ 1 · QUESTION ============================ -->
+<section class="slide night" id="s1" data-title="Can a recorded flow carry a temperature that pushes back?" data-time="45" data-cues="record & replay|temperature drives the flow|where it breaks">
+  <div class="kicker">Master's thesis · AI for Simulation · JKU Linz</div>
+  <h1 class="claim" style="max-width:760px;margin-top:150px">Can a recorded flow carry a temperature that <em>pushes back</em>?</h1>
+  <p class="lead" style="color:#c9d3dc;max-width:700px">Data-based Numerical Simulation of Buoyant Jet Flow</p>
+  <p class="small author" style="color:#8f969e;margin-top:60px"></p>
+  <div class="hero"><video src="../shared/assets/demo/hero_AD.mp4" autoplay muted loop playsinline></video>
+    <div class="small" style="color:#8f969e;text-align:right">reference simulation, adiabatic tank, 3D render of stored solver states</div></div>
+</section>
+
+<!-- ============================ 2 · OBSERVE ============================ -->
+<section class="slide" id="s2" data-title="A warm jet builds a front only five millimetres thick" data-time="75" data-cues="jet for 315 s|5 mm front|outlet under the front">
+  <div class="kicker">Observe</div>
+  <h1 class="claim">A warm jet fills the top of the tank and builds a front only <em>five millimetres</em> thick.</h1>
+  <div class="cols-26">
+    <ul class="plain small" style="margin-top:10px">
+      <li><b>Warm inflow</b> at mid-height for 315 s, then cold inflow until 600 s</li>
+      <li><b>Laminar</b>: Reynolds number about 100, no turbulence model</li>
+      <li><b>Closed tank</b>, 75 mm: every joule in and out is accounted for</li>
+      <li>The <b>outlet</b> sits just below the front</li>
+    </ul>
+    <div class="demo" id="demo2" style="width:520px"></div>
+  </div>
+</section>
+
+<!-- ============================ 3 · METHOD ============================ -->
+<section class="slide" id="s3" data-title="rCFD records the motion once and replays it about 260 times cheaper" data-time="90" data-cues="maps, frame by frame|no pressure solve|260x, recording excluded">
+  <div class="kicker">Method</div>
+  <h1 class="claim">Recurrence CFD records the motion once and replays it about <em>260 times</em> cheaper.</h1>
+  <div class="plate fit" style="--h:600px"><img src="../shared/assets/fig/fig_method.svg" alt="record and replay">
+    <div class="src"><span>solver time without image output: reference 569 min, mean replay 2.16 min (range 120-700x); the recording itself is one full run</span><b>thesis Fig 2.1 · Sec 5.1</b></div></div>
+</section>
+
+<!-- ============================ 4 · Q1 ============================ -->
+<section class="slide" id="s4" data-title="One mixing knob cannot fix heat content and layer height at once" data-time="90" data-cues="f_sd is free|heat vs height|more mixing, more loss">
+  <div class="kicker">Q1 · the standard replay</div>
+  <h1 class="claim">One mixing knob cannot get heat content and layer height right <em>at the same time</em>.</h1>
+  <div class="cols-62">
+    <div class="plate"><img src="../shared/assets/fig/fig_fsd_traces.svg" alt="f_sd sweep">
+      <div class="src"><span>mean temperature and rise of the centre of gravity, seven strengths of the face exchange</span><b>thesis Fig 5.1</b></div></div>
+    <div class="stack">
+      <div class="big"><span class="v num">1.07<small>K</small></span><span class="l">best error of the mean temperature, with no added mixing (f<sub>sd</sub> = 0)</span></div>
+      <div class="big"><span class="v num">0.068<small>mm</small></span><span class="l">best error of the layer height, near f<sub>sd</sub> = 0.5</span></div>
+      <div class="big"><span class="v num red">5.08<small>K</small></span><span class="l">too cold at the end with the strongest mixing, f<sub>sd</sub> = 3</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 5 · MECHANISM ============================ -->
+<section class="slide" id="s5" data-title="The exchange smears the front, and the outlet below it drains the heat" data-time="90" data-cues="maps keep it thin|exchange smears|outlet drains">
+  <div class="kicker">Explain · from the tank budget down to one face</div>
+  <h1 class="claim">The exchange smears the front, and the outlet below it <em>drains the heat</em>.</h1>
+  <div class="cols-62">
+    <div class="demo" id="demo5"></div>
+    <div class="stack">
+      <div class="figure-row"><div class="big"><span class="v num">4.5</span><span class="l">mm, reference front at 240 s</span></div>
+        <div class="big"><span class="v num slate">19.3</span><span class="l">mm, standard replay</span></div></div>
+      <div class="big"><span class="v num">2.5<small>mm</small></span><span class="l">with the recorded maps alone: the maps do not smear it</span></div>
+      <div class="big"><span class="v num red">4.6<small>K</small></span><span class="l">of mean temperature drained through the outlet after the inflow (bulk balance, Fig 5.10)</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 6 · Q2 METHOD ============================ -->
+<section class="slide" id="s6" data-title="A bounded anti-diffusion rebuilds the front without new extremes" data-time="105" data-cues="backward diffusion explodes|local bounds|vertical weight">
+  <div class="kicker">Q2 · the correction of this thesis</div>
+  <h1 class="claim">A <em>bounded</em> anti-diffusion rebuilds the front without creating new extremes.</h1>
+  <div class="cols-62">
+    <div id="limiter"></div>
+    <div class="stack small">
+      <p>Each face moves heat <b>up</b> the gradient, but only as far as both cells stay inside the range of their neighbours:</p>
+      <div class="eq">Δq<sub>f</sub> <span>=</span> s · min(Q<sup>+</sup><sub>h</sub>, Q<sup>−</sup><sub>c</sub>)</div>
+      <p>A local maximum cannot grow, a minimum cannot sink, and heat is conserved face by face.</p>
+      <p>Faces are weighted towards the normal of the front, here the vertical, so ripples along the front are not amplified.</p>
+      <p class="mute">Limiter in the spirit of flux-corrected transport (Boris & Book 1973; Zalesak 1979).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 7 · Q2 RESULT ============================ -->
+<section class="slide" id="s7" data-title="In the adiabatic tank the front returns to the width of the reference" data-time="90" data-cues="15.7 to about 5|error halves|s chosen against the reference">
+  <div class="kicker">Compare · adiabatic tank</div>
+  <h1 class="claim">In the adiabatic tank the front returns to the <em>width of the reference</em>.</h1>
+  <div class="cols-26" style="grid-template-columns:420px 1fr">
+    <div class="stack">
+      <div class="big"><span class="v num slate">15.7<small>mm</small></span><span class="l">standard replay, end front</span></div>
+      <div class="big"><span class="v num red">5.3–4.5<small>mm</small></span><span class="l">corrected, working range s = 0.40–0.50; reference 5.0 mm</span></div>
+      <div class="big"><span class="v num" style="font-size:72px">1.46 → 0.70–0.64<small>K</small></span><span class="l">error of the mean temperature over the run</span></div>
+    </div>
+    <div class="plate fit" style="--h:560px"><img src="../shared/assets/fig/fig_ad_endstate.svg" alt="end state">
+      <div class="src"><span>end state at 599 s and the strength ladder as departure from the reference; s was chosen by comparison with this reference</span><b>thesis Fig 5.9</b></div></div>
+  </div>
+</section>
+
+<!-- ============================ 8 · Q3 Q4 ============================ -->
+<section class="slide" id="s8" data-title="Under a cooled lid the heat is right, but the layers separate too slowly" data-time="105" data-cues="heat right|layers too slow|flux helps, overcools">
+  <div class="kicker">Q3 · Q4 · cooled lid</div>
+  <h1 class="claim">Under a cooled lid the heat comes out right, but the layers <em>separate too slowly</em>.</h1>
+  <div class="cols-62">
+    <div class="plate"><img src="../shared/assets/fig/fig_wall_traces.svg" alt="wall-cooled traces">
+      <div class="src"><span>mean temperature, heterogeneity and their departures; band: lag of the local correction while the tank fills</span><b>thesis Fig 6.3</b></div></div>
+    <div class="stack">
+      <div class="big"><span class="v num">−0.66 → +0.06<small>K</small></span><span class="l">end error on 9.62 K of cooling: standard replay, then the correction at s ≈ 0.55</span></div>
+      <div class="big"><span class="v num red">2.25 → 0.45<small>K</small></span><span class="l">lag of the heterogeneity while filling, without and with a recorded vertical heat flux</span></div>
+      <div class="big"><span class="v num slate">−0.86<small>K</small></span><span class="l">the price: the tank then ends too cold</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 9 · REGIME ============================ -->
+<section class="slide" id="s9" data-title="A recording belongs to the flow regime it was made in" data-time="45" data-cues="own convection|ten times faster|one database per regime">
+  <div class="kicker">Conclude · beyond this tank</div>
+  <h1 class="claim">A recording belongs to the <em>flow regime</em> it was made in.</h1>
+  <div class="plate fit" style="--h:640px"><img src="../shared/assets/fig/fig_recurrence.svg" alt="recurrence">
+    <div class="src"><span>(c) after the inflow the cooled-lid flow renews about ten times faster at short lags; (d) neither recording recurs in the method's own terms</span><b>thesis Fig 2.2</b></div></div>
+</section>
+
+<!-- ============================ 10 · EVIDENCE ============================ -->
+<section class="slide" id="s10" data-title="What the evidence supports, and what it does not" data-time="75" data-cues="four supported|three open|vessel running">
+  <div class="kicker">Evidence and limits</div>
+  <h1 class="claim">What the evidence supports, and what it <em>does not</em>.</h1>
+  <div class="cols">
+    <ul class="plain">
+      <li><span class="tag shown">shown</span>no single f<sub>sd</sub>; the drain at the outlet is the cause</li>
+      <li><span class="tag shown">shown</span>a conservative, bounded correction rebuilds the front</li>
+      <li><span class="tag shown">shown</span>under cooling, the remaining error is missing transport</li>
+      <li><span class="tag shown">shown</span>a database belongs to its flow regime</li>
+    </ul>
+    <ul class="plain">
+      <li><span class="tag untested">open</span>a strength chosen without the reference</li>
+      <li><span class="tag untested">open</span>other meshes, turbulent or multiphase flows</li>
+      <li><span class="tag untested">open</span>the through-flow vessel (Q5): runs in progress</li>
+      <li><span class="tag untested">open</span>a recorded flux that transfers to other cases</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================ 11 · CONTRIBUTION ============================ -->
+<section class="slide night" id="s11" data-title="Contribution in three lines" data-time="45" data-cues="trade-off and cause|bounded correction|limit of local fixes">
+  <div class="kicker">Contribution</div>
+  <ol class="steps" style="margin-top:120px;font-size:40px;color:#f2eee6">
+    <li>A measured trade-off in the standard replay, and its cause: a smeared front drains heat through the outlet.</li>
+    <li>A conservative, bounded anti-diffusive correction that rebuilds the front without new extremes.</li>
+    <li>The limit of local corrections: what remains is transport, and a recording belongs to its regime.</li>
+  </ol>
+  <p class="mute" style="margin-top:80px">Thank you.</p>
+</section>
+
+<!-- ============================ BACKUP ============================ -->
+<section class="slide backup" id="b1" data-title="Backup: solver snapshots, adiabatic" data-time="0">
+  <div class="kicker">Backup · frame inspection</div>
+  <h1 class="claim" style="font-size:44px">Stored snapshots: reference, standard and corrected replay.</h1>
+  <div id="snapAD" style="width:1450px" data-t="599"></div>
+</section>
+<section class="slide backup" id="b2" data-title="Backup: solver snapshots, cooled lid" data-time="0">
+  <div class="kicker">Backup · frame inspection</div>
+  <h1 class="claim" style="font-size:44px">Cooled lid: the recorded flux restores the layering while the tank fills.</h1>
+  <div id="snapHL" style="width:1500px" data-t="240"></div>
+</section>
+<section class="slide backup" id="b3" data-title="Backup: why s ≤ 1/6 keeps every cell bounded" data-time="0">
+  <div class="kicker">Backup · derivation (thesis App. D)</div>
+  <h1 class="claim" style="font-size:44px">Below s = 1/6 no cell can leave its bounds, even before the clamp.</h1>
+  <div class="stack" style="font-size:32px;max-width:1300px">
+    <p>Each face gives at most s·Q<sup>+</sup><sub>h</sub> to the warm cell and takes at most s·Q<sup>−</sup><sub>c</sub> from the cold one.</p>
+    <p>A cell with n<sub>f</sub> faces receives at most n<sub>f</sub>·s·Q<sup>+</sup> and gives at most n<sub>f</sub>·s·Q<sup>−</sup>.</p>
+    <p>So −Q<sup>−</sup> ≤ C·ΔT ≤ Q<sup>+</sup> whenever n<sub>f</sub>·s ≤ 1, i.e. <b>s ≤ 1/6</b> on the hexahedral mesh.</p>
+    <p class="mute">Above 1/6 the clamp may act; the working range 0.40–0.50 relies on the clamp and the global conservation constraint.</p>
+  </div>
+</section>
+<section class="slide backup" id="b4" data-title="Backup: basis of the cost comparison" data-time="0">
+  <div class="kicker">Backup · cost</div>
+  <h1 class="claim" style="font-size:44px">260 times is solver time against solver time, without the recording.</h1>
+  <ul class="plain" style="font-size:30px">
+    <li>Reference: 569 min of solver time for 628 s of flow, image output removed</li>
+    <li>Replay: 0.81–4.73 min, mean 2.16 min for 600 s; grows with f<sub>sd</sub> (inner sweeps)</li>
+    <li>Ratio 120–700x across the sweep, about 260x on average, good to about 5 % (different spans)</li>
+    <li>The recording costs one full CFD run; the saving pays off from the second replay</li>
+  </ul>
+</section>
+<section class="slide backup" id="b5" data-title="Backup: every correction run in one map" data-time="0">
+  <div class="kicker">Backup · trade-off</div>
+  <h1 class="claim" style="font-size:44px">The vertical form moves straight towards the reference width.</h1>
+  <div class="plate fit" style="--h:620px"><img src="../shared/assets/fig/fig_ad_tradeoff.svg"><div class="src"><span>trace error, end profile and front width of every adiabatic correction run</span><b>thesis Fig 5.6</b></div></div>
+</section>
+<section class="slide backup" id="b6" data-title="Backup: stability of the front" data-time="0">
+  <div class="kicker">Backup · buoyancy frequency</div>
+  <h1 class="claim" style="font-size:44px">The correction restores the stability of the front, not only its width.</h1>
+  <div class="plate fit" style="--h:620px"><img src="../shared/assets/fig/fig_ad_stability.svg"><div class="src"><span>N(y) across the front; peak: reference 5.4–6.3, standard 2.9–3.9, corrected 6.2 and 6.0 s⁻¹ at 450 and 599 s</span><b>thesis Fig 5.7</b></div></div>
+</section>
+<section class="slide backup" id="b7" data-title="Backup: plumes under the cooled lid" data-time="0">
+  <div class="kicker">Backup · 3D</div>
+  <h1 class="claim" style="font-size:44px">With the correction the recorded plumes reach the front again.</h1>
+  <div class="plate fit" style="--h:620px"><img src="../shared/assets/fig/fig_3d_wall_end.svg"><div class="src"><span>end state in 3D; the replay invents no motion, the plumes were in the maps</span><b>thesis Fig 6.5</b></div></div>
+</section>
+<section class="slide backup" id="b8" data-title="Backup: the through-flow vessel" data-time="0">
+  <div class="kicker">Backup · Q5</div>
+  <h1 class="claim" style="font-size:44px">The vessel study is running; no result is claimed here.</h1>
+  <p class="lead">Two replays per feed position (lid-fed, floor-fed), with and without the correction, compared first with their own CFD and only then with thermocouple measurements.</p>
+</section>
+
+<div class="clockbar noprint" id="clockbar"></div>
+</div></div>
+
+<script type="application/json" id="notes">
+{
+ "s1": {"say": "Recurrence CFD records how a flow moves and replays that motion to carry a scalar, much faster than a new simulation. It was developed for scalars that do not act on the flow, like a dye. Temperature is different: warm water rises, so the temperature drives the flow that carries it. My thesis asks whether a replay can still carry such a temperature, and where it breaks.", "key": "The thesis tests a replay method on a scalar that drives its own flow.", "next": "Let me show you the flow first.", "short": "Replay works for dyes. Does it work for heat?"},
+ "s2": {"say": "Here is the test case. A warm jet enters a closed tank of cold liquid at mid height for 315 seconds. It rises, spreads under the lid, and builds a warm layer over the cold water. The front between the two layers is only about five millimetres thick. The flow is laminar, with a Reynolds number of about one hundred, so there is no turbulence model to argue about. Watch the outlet: it sits just below the front. That detail will matter in a minute.", "key": "A thin front forms, and the outlet sits just below it.", "next": "Simulating this costs hours. Here is the shortcut.", "short": "Jet, thin front, outlet just below."},
+ "s3": {"say": "Recurrence CFD works in two stages. The preparation runs the full simulation once and stores, frame by frame, where the fluid in each cell goes. The replay applies those stored maps to the temperature, adds a face exchange for mixing, an optional correction, and a conservation step. It never solves for velocity or pressure, so the feedback of temperature on the flow is cut. Solver time drops from 569 minutes to about two minutes. To be fair: the recording itself is one full run, and the ratio is solver time against solver time.", "key": "Record once, replay cheaply, but the feedback is cut.", "next": "The replay has one free knob, and that is my first question.", "short": "Maps, no pressure solve, 260 times."},
+ "s4": {"say": "The face exchange has a strength, f s d, that the user sets by hand. I swept seven values. With no added mixing, the mean temperature is best, about one kelvin of error. Near 0.5, the height of the warm layer is best. No single value gets both right. And more mixing makes the tank lose heat after the inflow: with the strongest mixing it ends five kelvin too cold.", "key": "No single f_sd is best; more mixing loses more heat.", "next": "Why does mixing lose heat? The answer sits at the outlet.", "short": "Heat versus height, no single best value."},
+ "s5": {"say": "On the left is the reference, on the right the standard replay, from the same recorded motion. The replay's front is about four times thicker. If I switch the exchange off, the front stays thin, so the recorded maps are not the problem. The exchange is. And because the outlet sits just below the front, a thick front puts warm fluid at the outlet, and that heat leaves the tank. I recovered the outlet temperature from the energy balance and checked it against the stored fields.", "key": "The exchange, not the maps, smears the front; the outlet drains the heat.", "next": "If the exchange smears the front, can we undo it safely?", "short": "Maps fine, exchange smears, outlet drains."},
+ "s6": {"say": "The obvious repair is diffusion backwards. It steepens a front, but it also amplifies every small wiggle, as you can see on the left. So the correction is bounded. Each face may move heat up the gradient only as far as both cells stay inside the range of their neighbours. A local maximum cannot grow, a minimum cannot sink, and the energy moved out of one cell goes into the other. The idea follows flux-corrected transport. In the tank I weight the faces across the front, here the vertical ones, so that ripples along the front are not amplified.", "key": "Up-gradient, but bounded and conservative.", "next": "Does it work on the real tank?", "short": "Backward diffusion explodes; bounded version does not."},
+ "s7": {"say": "In the adiabatic tank the uncorrected front ends almost sixteen millimetres wide. Over the working range of the correction it ends between 5.3 and 4.5 millimetres, around the 5.0 of the reference. The error of the mean temperature falls from 1.5 to about 0.65 kelvin, so it halves. One honest point: I chose this strength range by comparing with the same reference. Choosing it without a reference is open work.", "key": "The front width returns; the strength was chosen against the reference.", "next": "That was an adiabatic tank. What happens when the lid loses heat?", "short": "Sixteen to five millimetres, error halves."},
+ "s8": {"say": "Now the lid loses heat, so the temperature creates its own motion: cold plumes fall from the lid. With the declared wall coefficient, the standard replay ends 0.66 kelvin below the reference on almost ten kelvin of cooling. The correction brings the end to within 0.06 kelvin. But while the tank fills, the layers separate too slowly, and none of the local variants changed that. A vertical heat flux read from the recording removes most of this lag, from 2.25 to 0.45 kelvin. The price is that the tank then ends 0.86 kelvin too cold.", "key": "Heat right; the remaining error is missing transport.", "next": "Why can the recording not supply this by itself?", "short": "Heat right, layers too slow, flux helps but overcools."},
+ "s9": {"say": "The cooled lid drives its own convection. After the inflow, that flow changes about ten times faster than the adiabatic one at short time lags. A recording made without the cooling does not contain this motion, and no wall coefficient brings it back. So a database belongs to a flow regime, not to a single case.", "key": "One database per flow regime.", "next": "So what does all this establish?", "short": "Own convection, ten times faster."},
+ "s10": {"say": "Let me separate what is shown from what is not. Shown: there is no single mixing strength, and the drain at the outlet is the reason. A conservative, bounded correction rebuilds the front. Under cooling, what remains is missing transport. And a database belongs to its regime. Not shown: a strength chosen without the reference, other meshes or turbulent flows, and the through-flow vessel, where the runs are still in progress.", "key": "Four results shown, the limits stated.", "next": "To close, the contribution in three lines.", "short": "Four shown, three open."},
+ "s11": {"say": "First, I measured the trade-off in the standard replay and found its cause. Second, I built a bounded, conservative correction that rebuilds the front. Third, I located the limit of local fixes: what remains is transport, and a recording belongs to its regime. Thank you.", "key": "Trade-off, correction, limit.", "next": "", "short": "Three lines, then thank you."}
+}
+</script>
+<script src="../shared/assets/data/limiter_model.js"></script>
+<script src="../shared/demo.js"></script>
+<script>
+  FramePlayer(document.getElementById("demo2"), { half: "left" });
+  FramePlayer(document.getElementById("demo5"));
+  LimiterModel(document.getElementById("limiter"), window.LIMITER);
+  SnapInspector(document.getElementById("snapAD"), "AD",
+    [["reference", "reference CFD", "#16191d"], ["standard", "standard replay", "#55657a"], ["corrected", "corrected, s = 0.45", "#c4502f"]],
+    "mid-plane temperature, 293-333 K; solver snapshots of the replays, reference states interpolated in time");
+  SnapInspector(document.getElementById("snapHL"), "HL100",
+    [["reference", "reference CFD", "#16191d"], ["standard", "standard replay", "#55657a"], ["corrected", "corrected, s = 0.475", "#c4502f"], ["flux", "+ recorded flux", "#6b4f8a"]],
+    "cooled lid, h = 100; same scale 293-333 K");
+  /* === experiment clock: talk progress mapped onto the 600 s run === */
+  (function () {
+    const bar = document.getElementById("clockbar");
+    bar.innerHTML = '<div class="inflow"></div>' + [0, 150, 315, 450, 600].map(t =>
+      `<div class="tick" style="top:${t / 600 * 100}%"></div><div class="tl" style="top:${t / 600 * 100}%">${t} s</div>`).join("") +
+      '<div class="mark"></div><div class="ml"></div>';
+    const core = Array.from(document.querySelectorAll(".slide:not(.backup)"));
+    const total = core.reduce((a, s) => a + (+s.dataset.time || 0), 0);
+    window.deckProgress = function (i, slides) {
+      const s = slides[i]; const backup = s.classList.contains("backup");
+      bar.style.display = backup || s.classList.contains("night") ? "none" : "block";
+      const k = core.indexOf(s); if (k < 0) return;
+      const done = core.slice(0, k).reduce((a, x) => a + (+x.dataset.time || 0), 0) + (+s.dataset.time || 0) / 2;
+      const f = done / total, y = (f * 100).toFixed(1) + "%";
+      bar.querySelector(".mark").style.top = y; bar.querySelector(".ml").style.top = y;
+      bar.querySelector(".ml").textContent = "";
+    };
+  })();
+</script>
+<script src="../shared/deck.js"></script>
+</body>
+</html>

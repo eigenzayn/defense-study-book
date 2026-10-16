@@ -1,0 +1,71 @@
+{
+ "frames": 300,
+ "step_s": 2,
+ "fps": 10,
+ "replay_s_per_video_s": 20,
+ "first_k": 0,
+ "last_k": 598,
+ "snapshots": {
+  "AD": {
+   "reference": [
+    60,
+    150,
+    240,
+    315,
+    450,
+    599
+   ],
+   "standard": [
+    60,
+    150,
+    240,
+    315,
+    450,
+    599
+   ],
+   "corrected": [
+    60,
+    150,
+    240,
+    315,
+    450,
+    599
+   ]
+  },
+  "HL100": {
+   "reference": [
+    60,
+    150,
+    240,
+    315,
+    450,
+    599
+   ],
+   "standard": [
+    60,
+    150,
+    240,
+    315,
+    450,
+    599
+   ],
+   "corrected": [
+    60,
+    150,
+    240,
+    315,
+    450,
+    599
+   ],
+   "flux": [
+    60,
+    150,
+    240,
+    315,
+    450,
+    599
+   ]
+  }
+ },
+ "provenance": "reference: post/CFD_reference/CFD_T_path_k.jpg; standard replay: post/rCFD_render_ld_s000/rCFD_BJet_k.jpg; decoded with framefield.py and hovmoller_calib.csv; snapshots: solver files rCFD_snap_<run>/BouyantJet_SNAP_<t>"
+}

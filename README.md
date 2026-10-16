@@ -25,3 +25,8 @@ Build: `cd book && pdflatex study_book.tex` (twice).
 Every question carries a priority label: ASKED BEFORE (past defenses), COURSE EXAM, or PREDICTED, plus a "From:" line with course, chapter and origin.
 
 Chapters also cover ML: Advanced Techniques (Brandstetter, Holzleitner) and the 2025 courses (Geometric DL, ML Unsupervised, DL Architectures).
+
+
+## Talks and study plan (October 2026)
+
+`talk/` holds two offline HTML decks built from the thesis: the defense talk (`talk/defense/`) and an industrial partner talk (`talk/partner/`), each with English speaker notes, an Indonesian practice guide, a question bank and a PDF, plus a one-month study plan with speaking practice (`talk/study/`). Open `talk/index.html`. Keys: arrows, F full screen, P presenter window, R rehearsal card, V demo fallback.

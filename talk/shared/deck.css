@@ -1,0 +1,149 @@
+/* ============================================================================
+   Presentation studio, shared design system (16 Oct 2026)
+   Fixed 1920x1080 stage (frontend-slides viewport base), editorial "plates":
+   assertion headlines over evidence (Alley's assertion-evidence structure),
+   thesis colour semantics: ink = reference, slate = standard replay,
+   red = the contribution of this thesis. Fonts are local (Charis SIL, OFL).
+   ========================================================================== */
+
+/* === FONTS (local, offline) === */
+@font-face { font-family: "Charis"; src: url("fonts/CharisSIL-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; }
+@font-face { font-family: "Charis"; src: url("fonts/CharisSIL-Italic.ttf") format("truetype"); font-weight: 400; font-style: italic; }
+@font-face { font-family: "Charis"; src: url("fonts/CharisSIL-Bold.ttf") format("truetype"); font-weight: 700; font-style: normal; }
+@font-face { font-family: "Charis"; src: url("fonts/CharisSIL-BoldItalic.ttf") format("truetype"); font-weight: 700; font-style: italic; }
+
+/* === TOKENS === */
+:root {
+  --paper: #f6f3ec;
+  --paper-2: #efeae0;
+  --plate: #ffffff;
+  --ink: #16191d;
+  --ink-2: #3b4148;
+  --mute: #7c838b;
+  --rule: #cfc8bb;
+  --slate: #55657a;          /* standard replay */
+  --accent: #c4502f;         /* this thesis */
+  --accent-soft: #f3ddd4;
+  --night: #0a2131;          /* opening and closing; the background of the 3D renders */
+  --night-ink: #ece7dd;
+  --stage-bg: #0d0f12;
+  --slide-bg: var(--paper);
+  --serif: "Charis", "Charis SIL", Georgia, serif;
+}
+
+/* === VIEWPORT BASE (frontend-slides, verbatim rules) === */
+html, body { width: 100%; height: 100%; margin: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-viewport { position: fixed; inset: 0; overflow: hidden; background: var(--stage-bg, #000); }
+.deck-stage { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; overflow: hidden;
+  transform-origin: 0 0; background: var(--slide-bg, #fff); }
+.slide { position: absolute; inset: 0; width: 1920px; height: 1080px; overflow: hidden; display: block;
+  visibility: hidden; opacity: 0; pointer-events: none; background: var(--slide-bg, #fff);
+  transition: opacity .35s ease; }
+.slide.active, .slide.visible { visibility: visible; opacity: 1; pointer-events: auto; z-index: 1; }
+img, video, canvas, svg { max-width: 100%; max-height: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .2s !important; }
+}
+
+/* === TYPOGRAPHY === */
+.deck-stage { font-family: var(--serif); color: var(--ink); font-size: 30px; line-height: 1.38;
+  font-kerning: normal; font-variant-numeric: oldstyle-nums proportional-nums; }
+.slide { padding: 92px 120px 96px 176px; box-sizing: border-box; }
+.kicker { font-size: 20px; letter-spacing: .16em; text-transform: uppercase; color: var(--mute); margin: 0 0 18px; }
+h1.claim { font-size: 54px; line-height: 1.12; font-weight: 700; margin: 0 0 34px; max-width: 1480px;
+  letter-spacing: -.005em; text-wrap: balance; }
+h1.claim em { font-style: italic; font-weight: 700; color: var(--accent); }
+p { margin: 0 0 18px; max-width: 980px; }
+.lead { font-size: 34px; color: var(--ink-2); max-width: 1180px; }
+.small { font-size: 22px; color: var(--ink-2); }
+.mute { color: var(--mute); }
+.red { color: var(--accent); } .slate { color: var(--slate); }
+.num { font-variant-numeric: lining-nums tabular-nums; }
+
+/* === LAYOUT === */
+.cols { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start; }
+.cols-62 { display: grid; grid-template-columns: 1.55fr 1fr; gap: 64px; align-items: start; }
+.cols-26 { display: grid; grid-template-columns: 1fr 1.6fr; gap: 64px; align-items: start; }
+.stack > * + * { margin-top: 22px; }
+
+/* === PLATES (figures from the thesis, labelled with their source) === */
+.plate { background: var(--plate); border: 1px solid var(--rule); padding: 22px 26px 16px; box-shadow: 0 1px 0 rgba(0,0,0,.03); }
+.plate img, .plate video, .plate canvas { display: block; width: 100%; height: auto; }
+.plate .src { display: flex; justify-content: space-between; gap: 24px; margin-top: 12px; font-size: 18px;
+  color: var(--mute); border-top: 1px solid #ece7dd; padding-top: 8px; }
+.plate .src b { font-weight: 400; letter-spacing: .12em; text-transform: uppercase; font-size: 15px; color: var(--ink-2); }
+
+/* === NUMBERS THAT CARRY THE ARGUMENT === */
+.figure-row { display: flex; gap: 56px; align-items: flex-end; flex-wrap: wrap; }
+.big { display: flex; flex-direction: column; gap: 4px; }
+.big .v { font-size: 96px; line-height: 1; font-weight: 700; font-variant-numeric: lining-nums tabular-nums; letter-spacing: -.02em; }
+.big .v small { font-size: 40px; font-weight: 400; margin-left: 6px; }
+.big .l { font-size: 21px; color: var(--mute); max-width: 360px; line-height: 1.3; }
+.arrow { font-size: 64px; color: var(--mute); line-height: 1.1; }
+
+/* === LISTS === */
+ul.plain { list-style: none; margin: 0; padding: 0; }
+ul.plain li { padding: 14px 0; border-top: 1px solid var(--rule); max-width: 980px; }
+ul.plain li:last-child { border-bottom: 1px solid var(--rule); }
+ol.steps { counter-reset: s; list-style: none; margin: 0; padding: 0; }
+ol.steps li { counter-increment: s; position: relative; padding: 0 0 22px 70px; max-width: 900px; }
+ol.steps li::before { content: counter(s); position: absolute; left: 0; top: -6px; font-size: 44px; font-weight: 700; color: var(--accent); }
+.tag { display: inline-block; font-size: 17px; letter-spacing: .12em; text-transform: uppercase; padding: 3px 10px;
+  border: 1px solid currentColor; border-radius: 2px; margin-right: 10px; vertical-align: 4px; }
+.tag.untested { color: var(--slate); } .tag.shown { color: var(--accent); }
+
+/* === NIGHT SLIDES (opening, closing, statements) === */
+.slide.night { background: var(--night); color: var(--night-ink); }
+.slide.night .kicker, .slide.night .mute { color: #8f969e; }
+.slide.night h1.claim { color: #fbf8f2; }
+
+/* === CHROME: footer and progress === */
+.footer { position: absolute; left: 176px; right: 120px; bottom: 34px; display: flex; justify-content: space-between;
+  font-size: 17px; color: var(--mute); letter-spacing: .04em; }
+.slide.night .footer { color: #6f767e; }
+
+/* === DEMO PLAYER === */
+.demo { position: relative; }
+.demo .labels { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; font-size: 22px; margin-top: 10px; }
+.demo .labels span:first-child { color: var(--ink); } .demo .labels span:last-child { color: var(--slate); }
+.controls { display: flex; align-items: center; gap: 18px; margin-top: 18px; font-size: 22px; user-select: none; }
+.controls button { font: inherit; font-size: 20px; padding: 8px 18px; background: transparent; color: var(--ink);
+  border: 1px solid var(--ink-2); border-radius: 2px; cursor: pointer; }
+.controls button.on { background: var(--ink); color: var(--paper); }
+.controls input[type=range] { flex: 1; accent-color: var(--accent); height: 4px; }
+.controls .clock { min-width: 150px; text-align: right; font-variant-numeric: lining-nums tabular-nums; }
+.snapgrid { display: grid; gap: 14px; }
+.snapgrid figure { margin: 0; } .snapgrid img { width: 100%; display: block; }
+.snapgrid figcaption { font-size: 19px; color: var(--ink-2); margin-top: 4px; }
+.colorbar { height: 12px; border-radius: 1px; background: linear-gradient(90deg,#001260,#2e75b0,#e9eff3,#c7623d,#590007); }
+.cb-row { display: flex; justify-content: space-between; font-size: 17px; color: var(--mute); margin-top: 4px; }
+
+/* === UTILITY OVERLAYS (rehearsal, help) === */
+.overlay { position: absolute; inset: 0; background: rgba(246,243,236,.97); z-index: 50; padding: 80px 176px;
+  box-sizing: border-box; display: none; font-size: 28px; }
+.overlay.show { display: block; }
+.overlay h2 { font-size: 40px; margin: 0 0 24px; }
+.overlay .cues { display: flex; gap: 28px; margin: 24px 0 36px; }
+.overlay .cues div { flex: 1; border-top: 3px solid var(--accent); padding-top: 14px; font-size: 34px; font-weight: 700; }
+.toast { position: absolute; right: 40px; bottom: 40px; z-index: 60; background: var(--ink); color: var(--paper);
+  font-size: 20px; padding: 10px 18px; opacity: 0; transition: opacity .25s; }
+.toast.show { opacity: 1; }
+
+/* === PRINT: one slide per page, demos fall back to their key frame === */
+@media print {
+  @page { size: 1920px 1080px; margin: 0; }
+  html, body { width: 1920px; height: auto; overflow: visible; background: #fff; }
+  .deck-viewport { position: static; overflow: visible; background: #fff; }
+  .deck-stage { position: static; width: auto; height: auto; transform: none !important; background: none; }
+  .slide { position: relative; display: block !important; visibility: visible !important; opacity: 1 !important;
+    width: 1920px; height: 1080px; break-after: page; page-break-after: always; transition: none; }
+  .slide:last-child { break-after: auto; page-break-after: auto; }
+  .controls, .overlay, .toast, .noprint { display: none !important; }
+  .printonly { display: block !important; }
+}
+.printonly { display: none; }
+
+/* === FITTED PLATES: the figure keeps its proportions inside a height budget === */
+.plate.fit { display: inline-block; max-width: 100%; box-sizing: border-box; }
+.plate.fit img { height: var(--h, 560px); width: auto; max-width: 100%; object-fit: contain; margin: 0 auto; }
+.plate.fit .src { max-width: var(--w, 1500px); }
