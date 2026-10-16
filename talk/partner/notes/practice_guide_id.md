@@ -1,5 +1,24 @@
 # Panduan latihan talk industri (bahasa Indonesia)
 
+
+## Pelafalan (latih dulu, cek di https://youglish.com)
+| Kata | Cara ucap (kira-kira) | Arti |
+|---|---|---|
+| buoyancy / buoyant | BOY-un-see / BOY-unt | gaya apung / mengapung |
+| heterogeneity | het-uh-ruh-juh-NEE-uh-tee | ketidakmerataan suhu |
+| adiabatic | ay-dee-uh-BAT-ik | tanpa pertukaran panas dengan dinding |
+| recurrence | ri-KUR-uns | pengulangan |
+| thermocline | THUR-muh-klyn | lapisan transisi suhu (front) |
+| conservative | kun-SUR-vuh-tiv | menjaga jumlah total (panas tidak hilang) |
+| diffusion / anti-diffusion | di-FYOO-zhun / AN-tee di-FYOO-zhun | penyebaran / kebalikannya |
+| laminar | LAM-in-ar | aliran teratur, tidak turbulen |
+| millimetres | MIL-ih-mee-terz | milimeter |
+| kelvin | KEL-vin | satuan suhu |
+| reservoir, regime | REZ-er-vwar, ray-ZHEEM | wadah, rezim/jenis aliran |
+
+Simbol tidak dibaca sebagai huruf. Katakan "the mixing strength", bukan "f s d"; "the correction
+strength", bukan "s".
+
 Audiens: insinyur dan manajer R&D perusahaan pendana. Mereka menilai cara Anda berpikir, bukan
 detail rumus. Pesan utama: *"This is how I investigate a physical problem, test a numerical method,
 and decide what the evidence supports."* Jangan pernah mengklaim tesis sudah menyelesaikan masalah

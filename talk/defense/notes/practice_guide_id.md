@@ -1,5 +1,24 @@
 # Panduan latihan sidang (bahasa Indonesia)
 
+
+## Pelafalan (latih dulu, cek di https://youglish.com)
+| Kata | Cara ucap (kira-kira) | Arti |
+|---|---|---|
+| buoyancy / buoyant | BOY-un-see / BOY-unt | gaya apung / mengapung |
+| heterogeneity | het-uh-ruh-juh-NEE-uh-tee | ketidakmerataan suhu |
+| adiabatic | ay-dee-uh-BAT-ik | tanpa pertukaran panas dengan dinding |
+| recurrence | ri-KUR-uns | pengulangan |
+| thermocline | THUR-muh-klyn | lapisan transisi suhu (front) |
+| conservative | kun-SUR-vuh-tiv | menjaga jumlah total (panas tidak hilang) |
+| diffusion / anti-diffusion | di-FYOO-zhun / AN-tee di-FYOO-zhun | penyebaran / kebalikannya |
+| laminar | LAM-in-ar | aliran teratur, tidak turbulen |
+| millimetres | MIL-ih-mee-terz | milimeter |
+| kelvin | KEL-vin | satuan suhu |
+| reservoir, regime | REZ-er-vwar, ray-ZHEEM | wadah, rezim/jenis aliran |
+
+Simbol tidak dibaca sebagai huruf. Katakan "the mixing strength", bukan "f s d"; "the correction
+strength", bukan "s".
+
 Untuk latihan, bukan untuk dibaca di depan penguji. Naskah Inggris ada di `speaker_notes_en.md`;
 di sini ada logikanya. Cara pakai: baca satu slide, tutup berkas, jelaskan dalam bahasa Inggris
 dengan tiga kata kunci saja. Rekam, dengar ulang.

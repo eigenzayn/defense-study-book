@@ -3,15 +3,15 @@
 Generated from `defense/index.html` (the presenter window shows the same text). Speak, do not read:
 the cues are enough once the story is clear. Planning rate about 120 words per minute.
 
-## Can a recorded flow carry a temperature that pushes back? (0:45, cumulative 0:45, 67 words)
+## Can a recorded flow carry a temperature that pushes back? (0:45, cumulative 0:45, 69 words)
 
 **Cues:** record & replay · temperature drives the flow · where it breaks
 
-Recurrence CFD records how a flow moves and replays that motion to carry a scalar, much faster than a new simulation. It was developed for scalars that do not act on the flow, like a dye. Temperature is different: warm water rises, so the temperature drives the flow that carries it. My thesis asks whether a replay can still carry such a temperature, and where it breaks.
+Recurrence CFD records how a flow moves. Then it replays that motion to carry something, like a dye. This is much faster than a new simulation. But it was built for things that do not change the flow. Temperature is different. Warm water rises, so the temperature moves the flow. So my question is simple. Can a replay still carry a temperature like this? And where does it break?
 
-**Key message:** The thesis tests a replay method on a scalar that drives its own flow.
+**Key message:** I test a replay method on a temperature that moves its own flow.
 
-**If you lose your place:** Replay works for dyes. Does it work for heat?
+**If you lose your place:** Replay works for a dye. Does it work for heat?
 
 **Transition:** Let me show you the flow first.
 
@@ -19,117 +19,117 @@ Recurrence CFD records how a flow moves and replays that motion to carry a scala
 
 **Cues:** jet for 315 s · 5 mm front · outlet under the front
 
-Here is the test case. A warm jet enters a closed tank of cold liquid at mid height for 315 seconds. It rises, spreads under the lid, and builds a warm layer over the cold water. The front between the two layers is only about five millimetres thick. The flow is laminar, with a Reynolds number of about one hundred, so there is no turbulence model to argue about. Watch the outlet: it sits just below the front. That detail will matter in a minute.
+Here is my test case. A warm jet comes into a closed tank of cold liquid. It comes in at mid height, for 315 seconds. The warm water rises and spreads under the lid. So we get a warm layer on top of cold water. Between them there is a front. It is only about five millimetres thick. The flow is laminar, so I need no turbulence model. Please look at the outlet. It sits just below the front. We will come back to that.
 
 **Key message:** A thin front forms, and the outlet sits just below it.
 
 **If you lose your place:** Jet, thin front, outlet just below.
 
-**Transition:** Simulating this costs hours. Here is the shortcut.
+**Transition:** This simulation is expensive. Here is the shortcut.
 
-## rCFD records the motion once and replays it about 260 times cheaper (1:30, cumulative 3:30, 93 words)
+## rCFD records the motion once and replays it about 260 times cheaper (1:30, cumulative 3:30, 79 words)
 
 **Cues:** maps, frame by frame · no pressure solve · 260x, recording excluded
 
-Recurrence CFD works in two stages. The preparation runs the full simulation once and stores, frame by frame, where the fluid in each cell goes. The replay applies those stored maps to the temperature, adds a face exchange for mixing, an optional correction, and a conservation step. It never solves for velocity or pressure, so the feedback of temperature on the flow is cut. Solver time drops from 569 minutes to about two minutes. To be fair: the recording itself is one full run, and the ratio is solver time against solver time.
+The method has two steps. First, the full simulation runs once. While it runs, it stores where the fluid in each cell goes. Second, the replay uses these stored maps to move the temperature. It also mixes a little at every cell face, and it keeps the total heat right. It never solves for velocity or pressure. So it is much cheaper. 569 minutes become about two minutes. But to be fair, the recording itself costs one full run.
 
 **Key message:** Record once, replay cheaply, but the feedback is cut.
 
-**If you lose your place:** Maps, no pressure solve, 260 times.
+**If you lose your place:** Store the maps, skip the pressure, 260 times faster.
 
-**Transition:** The replay has one free knob, and that is my first question.
+**Transition:** The replay has one free setting. That is my first question.
 
-## One mixing knob cannot fix heat content and layer height at once (1:30, cumulative 5:00, 70 words)
+## One mixing knob cannot fix heat content and layer height at once (1:30, cumulative 5:00, 71 words)
 
 **Cues:** f_sd is free · heat vs height · more mixing, more loss
 
-The face exchange has a strength, f s d, that the user sets by hand. I swept seven values. With no added mixing, the mean temperature is best, about one kelvin of error. Near 0.5, the height of the warm layer is best. No single value gets both right. And more mixing makes the tank lose heat after the inflow: with the strongest mixing it ends five kelvin too cold.
+The mixing step has one strength. The user picks it by hand. I tried seven values. With no extra mixing, the heat content is best. With a strength near one half, the height of the warm layer is best. So no single value is good for both. And there is more. With more mixing, the tank loses heat after the inflow. With the strongest mixing, it ends five kelvin too cold.
 
-**Key message:** No single f_sd is best; more mixing loses more heat.
+**Key message:** No single mixing strength is best; more mixing loses more heat.
 
-**If you lose your place:** Heat versus height, no single best value.
+**If you lose your place:** Heat or height, not both.
 
-**Transition:** Why does mixing lose heat? The answer sits at the outlet.
+**Transition:** Why does mixing lose heat? The answer is at the outlet.
 
-## The exchange smears the front, and the outlet below it drains the heat (1:30, cumulative 6:30, 86 words)
+## The exchange smears the front, and the outlet below it drains the heat (1:30, cumulative 6:30, 82 words)
 
 **Cues:** maps keep it thin · exchange smears · outlet drains
 
-On the left is the reference, on the right the standard replay, from the same recorded motion. The replay's front is about four times thicker. If I switch the exchange off, the front stays thin, so the recorded maps are not the problem. The exchange is. And because the outlet sits just below the front, a thick front puts warm fluid at the outlet, and that heat leaves the tank. I recovered the outlet temperature from the energy balance and checked it against the stored fields.
+On the left is the reference. On the right is the standard replay. Both use the same recorded motion. But the replay's front is about four times thicker. When I switch the mixing off, the front stays thin. So the stored maps are fine. The mixing step is the problem. Now remember the outlet. It sits just below the front. A thick front puts warm water at the outlet. And that heat leaves the tank. I checked this with the energy balance.
 
-**Key message:** The exchange, not the maps, smears the front; the outlet drains the heat.
+**Key message:** The mixing step, not the maps, smears the front, and the outlet drains the heat.
 
-**If you lose your place:** Maps fine, exchange smears, outlet drains.
+**If you lose your place:** Maps fine, mixing smears, outlet drains.
 
-**Transition:** If the exchange smears the front, can we undo it safely?
+**Transition:** So can we undo the smearing safely?
 
-## A bounded anti-diffusion rebuilds the front without new extremes (1:45, cumulative 8:15, 99 words)
+## A bounded anti-diffusion rebuilds the front without new extremes (1:45, cumulative 8:15, 95 words)
 
 **Cues:** backward diffusion explodes · local bounds · vertical weight
 
-The obvious repair is diffusion backwards. It steepens a front, but it also amplifies every small wiggle, as you can see on the left. So the correction is bounded. Each face may move heat up the gradient only as far as both cells stay inside the range of their neighbours. A local maximum cannot grow, a minimum cannot sink, and the energy moved out of one cell goes into the other. The idea follows flux-corrected transport. In the tank I weight the faces across the front, here the vertical ones, so that ripples along the front are not amplified.
+The obvious idea is to run diffusion backwards. That makes the front sharp again. But it also makes every small wiggle grow. You can see that on the left. So my correction has limits. Each face may move heat from cold to warm. But only so far that both cells stay inside the range of their neighbours. So no new hot spot and no new cold spot can appear. And the heat that leaves one cell goes into the other. In the tank, I only use the vertical faces. That stops ripples along the front.
 
-**Key message:** Up-gradient, but bounded and conservative.
+**Key message:** Sharpen the front, but within limits and without losing heat.
 
-**If you lose your place:** Backward diffusion explodes; bounded version does not.
+**If you lose your place:** Backwards diffusion explodes; the limited version does not.
 
-**Transition:** Does it work on the real tank?
+**Transition:** Does it work in the real tank?
 
-## In the adiabatic tank the front returns to the width of the reference (1:30, cumulative 9:45, 70 words)
+## In the adiabatic tank the front returns to the width of the reference (1:30, cumulative 9:45, 61 words)
 
 **Cues:** 15.7 to about 5 · error halves · s chosen against the reference
 
-In the adiabatic tank the uncorrected front ends almost sixteen millimetres wide. Over the working range of the correction it ends between 5.3 and 4.5 millimetres, around the 5.0 of the reference. The error of the mean temperature falls from 1.5 to about 0.65 kelvin, so it halves. One honest point: I chose this strength range by comparing with the same reference. Choosing it without a reference is open work.
+Without the correction, the front ends almost sixteen millimetres wide. With the correction, it ends between 5.3 and 4.5 millimetres. The reference has 5.0. So the width is back. The error of the mean temperature is about half as large. One honest point. I chose the strength by comparing with this same reference. Choosing it without the reference is still open.
 
-**Key message:** The front width returns; the strength was chosen against the reference.
+**Key message:** The width comes back; the strength was chosen with the reference.
 
 **If you lose your place:** Sixteen to five millimetres, error halves.
 
-**Transition:** That was an adiabatic tank. What happens when the lid loses heat?
+**Transition:** That tank had no heat loss. Now the lid gets cold.
 
-## Under a cooled lid the heat is right, but the layers separate too slowly (1:45, cumulative 11:30, 95 words)
+## Under a cooled lid the heat is right, but the layers separate too slowly (1:45, cumulative 11:30, 96 words)
 
 **Cues:** heat right · layers too slow · flux helps, overcools
 
-Now the lid loses heat, so the temperature creates its own motion: cold plumes fall from the lid. With the declared wall coefficient, the standard replay ends 0.66 kelvin below the reference on almost ten kelvin of cooling. The correction brings the end to within 0.06 kelvin. But while the tank fills, the layers separate too slowly, and none of the local variants changed that. A vertical heat flux read from the recording removes most of this lag, from 2.25 to 0.45 kelvin. The price is that the tank then ends 0.86 kelvin too cold.
+Now the lid loses heat. Cold water sinks from the lid, so the temperature makes its own motion. With the declared wall setting, the standard replay ends 0.66 kelvin too cold. That is on almost ten kelvin of cooling. With the correction, it ends within 0.06 kelvin. So the heat is right. But while the tank fills, the layers separate too slowly. No local fix changed that. Then I read a heat flux from the recording. It removes most of the delay, from 2.25 to 0.45 kelvin. But the tank then ends 0.86 kelvin too cold.
 
-**Key message:** Heat right; the remaining error is missing transport.
+**Key message:** The heat is right; what is missing is transport.
 
 **If you lose your place:** Heat right, layers too slow, flux helps but overcools.
 
-**Transition:** Why can the recording not supply this by itself?
+**Transition:** Why can the recording not do this by itself?
 
-## A recording belongs to the flow regime it was made in (0:45, cumulative 12:15, 56 words)
+## A recording belongs to the flow regime it was made in (0:45, cumulative 12:15, 37 words)
 
 **Cues:** own convection · ten times faster · one database per regime
 
-The cooled lid drives its own convection. After the inflow, that flow changes about ten times faster than the adiabatic one at short time lags. A recording made without the cooling does not contain this motion, and no wall coefficient brings it back. So a database belongs to a flow regime, not to a single case.
+The cold lid creates its own movement. After the inflow, this flow changes about ten times faster. A recording without the cold lid does not contain this movement. So a recording belongs to one type of flow.
 
-**Key message:** One database per flow regime.
+**Key message:** One recording per type of flow.
 
-**If you lose your place:** Own convection, ten times faster.
+**If you lose your place:** Own movement, ten times faster.
 
-**Transition:** So what does all this establish?
+**Transition:** So what does all this show?
 
 ## What the evidence supports, and what it does not (1:15, cumulative 13:30, 71 words)
 
 **Cues:** four supported · three open · vessel running
 
-Let me separate what is shown from what is not. Shown: there is no single mixing strength, and the drain at the outlet is the reason. A conservative, bounded correction rebuilds the front. Under cooling, what remains is missing transport. And a database belongs to its regime. Not shown: a strength chosen without the reference, other meshes or turbulent flows, and the through-flow vessel, where the runs are still in progress.
+Let me be clear about what I showed. One: no single mixing strength works, and the outlet explains why. Two: a limited correction rebuilds the front. Three: with a cold lid, what remains is missing transport. Four: a recording belongs to its type of flow. And what I did not show. A strength chosen without the reference. Other meshes or turbulent flows. And the through-flow vessel. Those runs are still going.
 
 **Key message:** Four results shown, the limits stated.
 
 **If you lose your place:** Four shown, three open.
 
-**Transition:** To close, the contribution in three lines.
+**Transition:** To close, my contribution in three lines.
 
 ## Contribution in three lines (0:45, cumulative 14:15, 45 words)
 
 **Cues:** trade-off and cause · bounded correction · limit of local fixes
 
-First, I measured the trade-off in the standard replay and found its cause. Second, I built a bounded, conservative correction that rebuilds the front. Third, I located the limit of local fixes: what remains is transport, and a recording belongs to its regime. Thank you.
+First, I measured the problem of the standard replay and found its cause. Second, I built a limited correction that rebuilds the front. Third, I found where local fixes stop. What remains is transport, and a recording belongs to its type of flow. Thank you.
 
-**Key message:** Trade-off, correction, limit.
+**Key message:** Problem and cause, correction, limit.
 
 **If you lose your place:** Three lines, then thank you.
 
