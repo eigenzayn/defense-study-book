@@ -13,6 +13,41 @@
   const deckName = document.body.dataset.deck || "deck";
   let idx = 0, presenter = null, t0 = null, rehearse = false;
 
+  /* === BRAND CHROME: JKU logo, department, section tabs, page number, progress ===
+     Built from <body data-dept data-sub data-footer data-sections="A|B|C"> and each slide's
+     data-step (index into the sections). A slide with data-chrome="none" gets nothing. The chrome
+     lives inside each slide, so it fades with the slide and prints with it. */
+  (function chrome() {
+    const B = document.body.dataset, base = B.base || "../shared/";
+    const sections = (B.sections || "").split("|").filter(Boolean);
+    const core = slides.filter(s => !s.classList.contains("backup"));
+    slides.forEach((s, i) => {
+      if (s.dataset.chrome === "none") return;
+      const night = s.classList.contains("night"), backup = s.classList.contains("backup");
+      const step = backup ? -1 : +(s.dataset.step || 0);
+      const top = document.createElement("div"); top.className = "chrome-top";
+      top.innerHTML = `<img class="logo" src="${base}assets/brand/jku_en_${night ? "white" : "black"}.svg" alt="Johannes Kepler University Linz">` +
+        `<div class="dept"><b>${B.dept || ""}</b>${B.sub || ""}</div>` +
+        (sections.length ? `<div class="tabs">${sections.map((t, j) => `<span class="${j < step ? "done" : j === step ? "now" : ""}">${t}</span>`).join("")}</div>` : "");
+      const k = core.indexOf(s);
+      const bot = document.createElement("div"); bot.className = "chrome-bot";
+      bot.innerHTML = `<span>${B.footer || ""}</span><span class="pg">${k >= 0 ? (k + 1) + " / " + core.length : "Backup " + (i - core.length + 1)}</span>`;
+      const bar = document.createElement("div"); bar.className = "chrome-bar";
+      bar.style.width = k >= 0 ? ((k + 1) / core.length * 100).toFixed(2) + "%" : "0";
+      s.append(top, bot, bar);
+    });
+  })();
+
+  /* === MODEL AUDIO (rehearsal): A plays the recorded model delivery of the current slide ===
+     Files: <data-audio><slide id>.mp3, made by audio/build_audio.py from the notes below. */
+  const voice = new Audio();
+  function playVoice() {
+    const dir = document.body.dataset.audio; if (!dir) return;
+    if (!voice.paused) { voice.pause(); say("Model audio paused"); return; }
+    voice.src = dir + slides[idx].id + ".mp3";
+    voice.play().then(() => say("Model audio: " + (slides[idx].dataset.title || ""))).catch(() => say("No model audio for this slide"));
+  }
+
   /* === SCALE THE 1920x1080 STAGE TO THE WINDOW === */
   function fit() {
     const s = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
@@ -44,6 +79,7 @@
     i = Math.max(0, Math.min(slides.length - 1, i));
     slides[idx].classList.remove("active");
     slides[idx].dispatchEvent(new CustomEvent("slide:leave"));
+    if (!voice.paused) voice.pause();
     idx = i;
     slides[idx].classList.add("active");
     slides[idx].dispatchEvent(new CustomEvent("slide:enter"));
@@ -103,9 +139,10 @@
     else if (k === "p" || k === "P") openPresenter();
     else if (k === "r" || k === "R") { rehearse = !rehearse; card.classList.toggle("show", rehearse); if (rehearse) renderCard(); }
     else if (k === "v" || k === "V") { slides[idx].dispatchEvent(new CustomEvent("slide:fallback")); say("Demo fallback"); }
+    else if (k === "a" || k === "A") playVoice();
     else if (k === "b" || k === "B") { const j = slides.findIndex(s => s.classList.contains("backup")); if (j >= 0) go(j); }
     else if (k === "g" || k === "G") { const n = parseInt(prompt("Go to slide", idx + 1), 10); if (n) go(n - 1); }
-    else if (k === "h" || k === "H" || k === "?") say("→ next · ← back · F full screen · P presenter · R rehearse · V demo fallback · B backups · G go to");
+    else if (k === "h" || k === "H" || k === "?") say("→ next · ← back · F full screen · P presenter · R rehearse · A model audio · V demo fallback · B backups · G go to");
   }
   document.addEventListener("keydown", key);
   stage.addEventListener("click", (e) => { if (!e.target.closest("button, input, video, a, .noclick")) go(idx + 1); });
