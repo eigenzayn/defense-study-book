@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Buoyant Jet Defense</title>
+<link rel="stylesheet" href="../shared/deck.css">
+<style>
+  /* === DEFENSE: deck-specific sizes (design system in ../shared/deck.css, v2 18 Oct 2026) === */
+  .eq { font-size: 36px; font-style: italic; margin: 18px 0; color: var(--ink); }
+  .eq span { font-style: normal; }
+  .listhead { font-size: 18px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; margin: 0 0 12px; }
+  #s10 ul.plain li { font-size: 31px; padding: 20px 0; }
+  #s11 ol.steps { font-size: 40px; color: #f2f5f8; margin-top: 30px; }
+  #s11 .thanks { font-size: 44px; font-style: italic; color: #7fc1dc; margin-top: 30px; }
+  #s2 .controls { gap: 10px; font-size: 18px; } #s2 .controls button { padding: 6px 12px; font-size: 17px; }
+  #s2 .controls .clock { min-width: 0; }
+  #s5 .big .v { font-size: 76px; } #s5 .stack > * + * { margin-top: 18px; } #s5 .big .l { font-size: 21px; }
+</style>
+</head>
+<body data-deck="defense" data-base="../shared/" data-audio="../audio/defense/"
+  data-dept="Department of Particulate Flow Modelling" data-sub="Master's thesis defense · MSc Artificial Intelligence"
+  data-footer="Data-based Numerical Simulation of Buoyant Jet Flow"
+  data-sections="Question|Method|Diagnosis|Correction|Cooled lid|Conclusion">
+<div class="deck-viewport"><div class="deck-stage">
+
+<!-- ============================ 1 · TITLE ============================ -->
+<section class="slide night title" id="s1" data-chrome="none" data-title="Can a recorded flow carry a temperature that pushes back?" data-time="45" data-cues="film the flow once|temperature pushes back|where does it break?">
+  <img class="brand" src="../shared/assets/brand/jku_en_white.svg" alt="Johannes Kepler University Linz">
+  <div class="tblock">
+    <div class="kicker">Master's thesis defense · MSc Artificial Intelligence</div>
+    <h1 class="claim">Can a recorded flow carry a temperature that <em>pushes back</em>?</h1>
+    <p class="lead">Data-based Numerical Simulation of Buoyant Jet Flow</p>
+    <div class="meta">
+      <p class="small author"></p>
+      <p class="dept">Department of Particulate Flow Modelling · Institute for Machine Learning<br>Johannes Kepler University Linz</p>
+    </div>
+  </div>
+  <div class="hero"><video src="../shared/assets/demo/hero_AD.mp4" autoplay muted loop playsinline></video>
+    <div class="small">reference simulation, adiabatic tank, 3D render of stored solver states</div></div>
+</section>
+
+<!-- ============================ 2 · THE CASE ============================ -->
+<section class="slide" id="s2" data-step="0" data-title="A warm jet builds a front only five millimetres thick" data-time="75" data-cues="jet for 315 s|5 mm front|outlet under the front">
+  <div class="kicker">The test case</div>
+  <h1 class="claim">A warm jet builds a front only <em>five millimetres</em> thick.</h1>
+  <div class="cols-26" style="grid-template-columns:1fr 480px">
+    <ul class="plain small" style="font-size:29px">
+      <li><b>Warm inflow</b> at mid-height for 315 s, then cold inflow until 600 s</li>
+      <li><b>Laminar</b>: Reynolds number about 100, no turbulence model</li>
+      <li><b>Closed tank</b>, 75 mm: every joule in and out is accounted for</li>
+      <li>The <b>outlet</b> sits just below the front</li>
+    </ul>
+    <div class="demo" id="demo2" style="width:480px"></div>
+  </div>
+</section>
+
+<!-- ============================ 3 · METHOD ============================ -->
+<section class="slide" id="s3" data-step="1" data-title="rCFD records the motion once and replays it about 260 times cheaper" data-time="90" data-cues="record the routes|replay moves heat|260x, feedback cut">
+  <div class="kicker">Recurrence CFD</div>
+  <h1 class="claim">Record the motion once, replay it about <em>260 times</em> cheaper.</h1>
+  <div class="plate fit" style="--h:620px"><img src="../shared/assets/fig/fig_method.svg" alt="record and replay">
+    <div class="src"><span>solver time without image output: reference 569 min, mean replay 2.16 min (range 120-700x); the recording itself is one full run</span><b>thesis Fig 2.1 · Sec 5.1</b></div></div>
+</section>
+
+<!-- ============================ 4 · Q1 ============================ -->
+<section class="slide" id="s4" data-step="2" data-title="One mixing knob cannot fix heat content and layer height at once" data-time="90" data-cues="one knob, seven values|heat or height|more mixing, more loss">
+  <div class="kicker">Q1 · the standard replay</div>
+  <h1 class="claim">One mixing knob cannot get heat and layer height right <em>at the same time</em>.</h1>
+  <div class="cols-62">
+    <div class="plate"><img src="../shared/assets/fig/fig_fsd_traces.svg" alt="f_sd sweep">
+      <div class="src"><span>mean temperature and rise of the centre of gravity, seven strengths of the face exchange</span><b>thesis Fig 5.1</b></div></div>
+    <div class="stack">
+      <div class="big"><span class="v num">1.07<small>K</small></span><span class="l">best heat error, with no added mixing; the layer height is best near f<sub>sd</sub> = 0.5</span></div>
+      <div class="big"><span class="v num red">5.08<small>K</small></span><span class="l">too cold at the end with the strongest mixing</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 5 · MECHANISM ============================ -->
+<section class="slide" id="s5" data-step="2" data-title="The exchange smears the front, and the outlet below it drains the heat" data-time="90" data-cues="same motion, thick front|maps fine, mixing guilty|outlet drains heat">
+  <div class="kicker">Diagnosis · from the tank budget down to one face</div>
+  <h1 class="claim">The mixing smears the front, and the outlet below it <em>drains the heat</em>.</h1>
+  <div class="cols-62" style="grid-template-columns:1fr 440px">
+    <div class="demo" id="demo5" style="max-width:880px;justify-self:center;width:100%"></div>
+    <div class="stack">
+      <div class="figure-row"><div class="big"><span class="v num">4.5</span><span class="l">mm, reference front at 240 s</span></div>
+        <div class="big"><span class="v num slate">19.3</span><span class="l">mm, standard replay</span></div></div>
+      <div class="big"><span class="v num red">4.6<small>K</small></span><span class="l">of mean temperature drained through the outlet after the inflow</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 6 · Q2 METHOD ============================ -->
+<section class="slide" id="s6" data-step="3" data-title="A bounded anti-diffusion rebuilds the front without new extremes" data-time="105" data-cues="backwards diffusion explodes|stay inside the neighbours|vertical, across the front">
+  <div class="kicker">Q2 · the correction of this thesis</div>
+  <h1 class="claim">A <em>bounded</em> anti-diffusion rebuilds the front without new extremes.</h1>
+  <div class="cols-62" style="grid-template-columns:1.6fr 1fr">
+    <div id="limiter"></div>
+    <div class="stack small">
+      <p>Heat moves <b>uphill</b>, but both cells stay inside their neighbours' range:</p>
+      <div class="eq">Δq<sub>f</sub> <span>=</span> s · min(Q<sup>+</sup><sub>h</sub>, Q<sup>−</sup><sub>c</sub>)</div>
+      <p>No new extremes, energy kept face by face, acting across the front.</p>
+      <p class="mute" style="font-size:21px">Limiter in the spirit of flux-corrected transport (Boris &amp; Book 1973; Zalesak 1979).</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 7 · Q2 RESULT ============================ -->
+<section class="slide" id="s7" data-step="3" data-title="In the adiabatic tank the front returns to the width of the reference" data-time="90" data-cues="15.7 to about 5|error halves|chosen with the reference">
+  <div class="kicker">Result · insulated lid</div>
+  <h1 class="claim">The front returns to the <em>width of the reference</em>.</h1>
+  <div class="cols-26" style="grid-template-columns:440px 1fr">
+    <div class="stack">
+      <div class="big"><span class="v num slate">15.7<small>mm</small></span><span class="l">standard replay, end front</span></div>
+      <div class="big"><span class="v num red">5.3–4.5<small>mm</small></span><span class="l">corrected, s = 0.40–0.50; reference 5.0 mm</span></div>
+      <p class="small">Heat error over the run: 1.46 → about 0.7 K. Strength chosen against the reference.</p>
+    </div>
+    <div class="plate fit" style="--h:600px"><img src="../shared/assets/fig/fig_ad_endstate.svg" alt="end state">
+      <div class="src"><span>end state at 599 s and the strength ladder as departure from the reference; s was chosen by comparison with this reference</span><b>thesis Fig 5.9</b></div></div>
+  </div>
+</section>
+
+<!-- ============================ 8 · Q3 Q4 ============================ -->
+<section class="slide" id="s8" data-step="4" data-title="Under a cooled lid the heat is right, but the layers separate too slowly" data-time="105" data-cues="heat right|layers too slow|flux helps, overcools">
+  <div class="kicker">Q3 · Q4 · cooled lid</div>
+  <h1 class="claim">With a cold lid the heat comes out right, but the layers <em>separate too slowly</em>.</h1>
+  <div class="cols-62" style="grid-template-columns:1fr 520px">
+    <div class="plate fit" style="--h:560px"><img src="../shared/assets/fig/fig_wall_traces.svg" alt="wall-cooled traces">
+      <div class="src"><span>mean temperature, heterogeneity and their departures; band: lag of the local correction while the tank fills</span><b>thesis Fig 6.3</b></div></div>
+    <div class="stack">
+      <div class="big"><span class="v num" style="font-size:80px">−0.66 → +0.06<small>K</small></span><span class="l">end error on 9.62 K of cooling: standard replay, then the correction at s ≈ 0.55</span></div>
+      <div class="big"><span class="v num red" style="font-size:80px">2.25 → 0.45<small>K</small></span><span class="l">layering lag while filling, without and with a recorded heat flux; the price: the tank ends 0.86 K too cold</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================ 9 · REGIME ============================ -->
+<section class="slide" id="s9" data-step="4" data-title="A recording belongs to the flow regime it was made in" data-time="45" data-cues="cold lid, own motion|ten times faster|one recording per regime">
+  <div class="kicker">Why the recording cannot do it</div>
+  <h1 class="claim">A recording belongs to the <em>flow regime</em> it was made in.</h1>
+  <div class="plate fit" style="--h:640px"><img src="../shared/assets/fig/fig_recurrence.svg" alt="recurrence">
+    <div class="src"><span>(c) after the inflow the cooled-lid flow renews about ten times faster at short lags; (d) neither recording recurs in the method's own terms</span><b>thesis Fig 2.2</b></div></div>
+</section>
+
+<!-- ============================ 10 · EVIDENCE ============================ -->
+<section class="slide" id="s10" data-step="5" data-title="What the evidence supports, and what it does not" data-time="75" data-cues="four shown|four open|vessel running">
+  <div class="kicker">Evidence and limits</div>
+  <h1 class="claim">What the evidence supports, and what it <em>does not</em>.</h1>
+  <div class="cols">
+    <div><p class="listhead red">Shown</p>
+    <ul class="plain">
+      <li><span class="tag shown">1</span>no single f<sub>sd</sub>; the drain at the outlet is the cause</li>
+      <li><span class="tag shown">2</span>a conservative, bounded correction rebuilds the front</li>
+      <li><span class="tag shown">3</span>under cooling, the remaining error is missing transport</li>
+      <li><span class="tag shown">4</span>a recording belongs to its flow regime</li>
+    </ul></div>
+    <div><p class="listhead slate">Open</p>
+    <ul class="plain">
+      <li><span class="tag untested">open</span>a strength chosen without the reference</li>
+      <li><span class="tag untested">open</span>other meshes, turbulent or multiphase flows</li>
+      <li><span class="tag untested">open</span>the through-flow vessel (Q5): runs in progress</li>
+      <li><span class="tag untested">open</span>a recorded flux that transfers to other cases</li>
+    </ul></div>
+  </div>
+</section>
+
+<!-- ============================ 11 · CONTRIBUTION ============================ -->
+<section class="slide night" id="s11" data-step="5" data-title="Contribution in three lines" data-time="45" data-cues="trade-off and cause|bounded correction|limit of local fixes">
+  <div class="kicker">Three things to take home</div>
+  <ol class="steps">
+    <li>A measured trade-off in the standard replay, and its cause: a smeared front drains heat through the outlet.</li>
+    <li>A conservative, bounded anti-diffusive correction that rebuilds the front without new extremes.</li>
+    <li>The limit of local corrections: what remains is transport, and a recording belongs to its regime.</li>
+  </ol>
+  <p class="thanks">Thank you.</p>
+</section>
+
+<!-- ============================ BACKUP ============================ -->
+<section class="slide backup" id="b1" data-title="Backup: solver snapshots, adiabatic" data-time="0">
+  <div class="kicker">Backup · frame inspection</div>
+  <h1 class="claim" style="font-size:44px">Stored snapshots: reference, standard and corrected replay.</h1>
+  <div id="snapAD" style="width:1450px;align-self:center" data-t="599"></div>
+</section>
+<section class="slide backup" id="b2" data-title="Backup: solver snapshots, cooled lid" data-time="0">
+  <div class="kicker">Backup · frame inspection</div>
+  <h1 class="claim" style="font-size:44px">Cooled lid: the recorded flux restores the layering while the tank fills.</h1>
+  <div id="snapHL" style="width:1500px;align-self:center" data-t="240"></div>
+</section>
+<section class="slide backup" id="b3" data-title="Backup: why s ≤ 1/6 keeps every cell bounded" data-time="0">
+  <div class="kicker">Backup · derivation (thesis App. D)</div>
+  <h1 class="claim" style="font-size:44px">Below s = 1/6 no cell can leave its bounds, even before the clamp.</h1>
+  <div class="stack" style="font-size:32px;max-width:1300px">
+    <p>Each face gives at most s·Q<sup>+</sup><sub>h</sub> to the warm cell and takes at most s·Q<sup>−</sup><sub>c</sub> from the cold one.</p>
+    <p>A cell with n<sub>f</sub> faces receives at most n<sub>f</sub>·s·Q<sup>+</sup> and gives at most n<sub>f</sub>·s·Q<sup>−</sup>.</p>
+    <p>So −Q<sup>−</sup> ≤ C·ΔT ≤ Q<sup>+</sup> whenever n<sub>f</sub>·s ≤ 1, i.e. <b>s ≤ 1/6</b> on the hexahedral mesh.</p>
+    <p class="mute">Above 1/6 the clamp may act; the working range 0.40–0.50 relies on the clamp and the global conservation constraint.</p>
+  </div>
+</section>
+<section class="slide backup" id="b4" data-title="Backup: basis of the cost comparison" data-time="0">
+  <div class="kicker">Backup · cost</div>
+  <h1 class="claim" style="font-size:44px">260 times is solver time against solver time, without the recording.</h1>
+  <ul class="plain" style="font-size:30px">
+    <li>Reference: 569 min of solver time for 628 s of flow, image output removed</li>
+    <li>Replay: 0.81–4.73 min, mean 2.16 min for 600 s; grows with f<sub>sd</sub> (inner sweeps)</li>
+    <li>Ratio 120–700x across the sweep, about 260x on average, good to about 5 % (different spans)</li>
+    <li>The recording costs one full CFD run; the saving pays off from the second replay</li>
+  </ul>
+</section>
+<section class="slide backup" id="b5" data-title="Backup: every correction run in one map" data-time="0">
+  <div class="kicker">Backup · trade-off</div>
+  <h1 class="claim" style="font-size:44px">The vertical form moves straight towards the reference width.</h1>
+  <div class="plate fit" style="--h:640px"><img src="../shared/assets/fig/fig_ad_tradeoff.svg"><div class="src"><span>trace error, end profile and front width of every adiabatic correction run</span><b>thesis Fig 5.6</b></div></div>
+</section>
+<section class="slide backup" id="b6" data-title="Backup: stability of the front" data-time="0">
+  <div class="kicker">Backup · buoyancy frequency</div>
+  <h1 class="claim" style="font-size:44px">The correction restores the stability of the front, not only its width.</h1>
+  <div class="plate fit" style="--h:640px"><img src="../shared/assets/fig/fig_ad_stability.svg"><div class="src"><span>N(y) across the front; peak: reference 5.4–6.3, standard 2.9–3.9, corrected 6.2 and 6.0 s⁻¹ at 450 and 599 s</span><b>thesis Fig 5.7</b></div></div>
+</section>
+<section class="slide backup" id="b7" data-title="Backup: plumes under the cooled lid" data-time="0">
+  <div class="kicker">Backup · 3D</div>
+  <h1 class="claim" style="font-size:44px">With the correction the recorded plumes reach the front again.</h1>
+  <div class="plate fit" style="--h:640px"><img src="../shared/assets/fig/fig_3d_wall_end.svg"><div class="src"><span>end state in 3D; the replay invents no motion, the plumes were in the maps</span><b>thesis Fig 6.5</b></div></div>
+</section>
+<section class="slide backup" id="b8" data-title="Backup: the through-flow vessel" data-time="0">
+  <div class="kicker">Backup · Q5</div>
+  <h1 class="claim" style="font-size:44px">The vessel study is running; no result is claimed here.</h1>
+  <p class="lead">Two replays per feed position (lid-fed, floor-fed), with and without the correction, compared first with their own CFD and only then with thermocouple measurements.</p>
+</section>
+
+</div></div>
+
+<!-- Speaker notes: TED-style script, plain spoken English (rewritten 18 Oct 2026).
+     Every number is on the slide or in claim_evidence_matrix.md. The audio in ../audio/defense/
+     is generated from "say" by ../audio/build_audio.py. -->
+<script type="application/json" id="notes">
+{
+ "s1": {
+  "say": "Thank you for coming. Imagine you could film how water moves through a tank, just once. And then, every time you need an answer, you simply replay that film, instead of solving the physics again. That is the idea behind recurrence CFD, and it is fast. Really fast. But there is a catch. The method was built for things that just ride along with the flow, like a drop of dye. Temperature is different. Warm water rises. So temperature pushes back on the very flow that carries it. And that is my question today. Can a recorded flow carry a temperature that pushes back? And if it cannot, where exactly does it break?",
+  "key": "I test a replay method on a temperature that moves its own flow.",
+  "next": "Let me show you the flow first.",
+  "short": "Replay works for dye. Does it work for heat?"
+ },
+ "s2": {
+  "say": "Let me show you the flow first. This is my test case. A small, closed tank, seventy-five millimetres wide, full of cold liquid. At mid-height, a warm jet comes in, for 315 seconds. Now watch what happens. The warm water rises, spreads out under the lid, and slowly fills the tank from the top down. Between the warm layer and the cold water below, a front forms. And look how thin it is. Only about five millimetres. The flow is slow and smooth, with a Reynolds number of about one hundred. So it is laminar, and I need no turbulence model. And because the tank is closed, I can account for every joule that goes in and every joule that comes out. One more detail, and please keep it in mind: the outlet. It sits just below the front. We will come back to it.",
+  "key": "A thin front forms, and the outlet sits just below it.",
+  "next": "This simulation is expensive. Here is the shortcut.",
+  "short": "Jet, thin front, outlet just below."
+ },
+ "s3": {
+  "say": "So how does the shortcut work? It has two steps. First, we run the full simulation once. And while it runs, we record, for every time step, where the fluid in each cell goes. Think of a traffic camera that records the route of every car in a city. Second, the replay. It takes those stored routes and uses them to move the temperature. It also mixes a little heat between neighbouring cells, and it keeps the total heat right. But it never solves for velocity or pressure again. That is why it is so cheap. In my case, the full simulation needed 569 minutes of solver time. One replay needs about two minutes. That is roughly 260 times faster. To be fair, the recording itself costs one full run, so the saving starts with the second replay. Now, here is the problem. Back to the traffic camera. What if the parcels you move are so heavy that they change the traffic? That is temperature. In the replay, the motion is fixed. The temperature can no longer change it. That feedback is cut.",
+  "key": "Record once, replay cheaply, but the feedback is cut.",
+  "next": "The replay has one free setting. That is my first question.",
+  "short": "Store the routes, skip the pressure, 260 times faster, feedback cut."
+ },
+ "s4": {
+  "say": "The replay has one free setting. After each move, it mixes a bit of heat across every face between two cells. How much? That is a knob, and the user sets it by hand. So my first question was simple. What is the right setting? I tried seven values, from no extra mixing at all, up to strong mixing. On the left, you see the mean temperature of the tank. On the right, how high the heat sits. And here is the trouble. The heat content is best with no extra mixing. The error is 1.07 kelvin. But the height of the warm layer is best with a medium setting, around one half. There, the error is only 0.068 millimetres. So no single value gets both right. And it gets worse. The more you mix, the more heat the tank loses after the inflow stops. With the strongest mixing, the tank ends 5.08 kelvin too cold. So mixing does not just blur the picture. It changes the energy in the tank. The question is: why?",
+  "key": "No single mixing strength is best; more mixing loses more heat.",
+  "next": "Why does mixing lose heat? The answer is at the outlet.",
+  "short": "Heat or height, not both. Strong mixing ends 5 K too cold."
+ },
+ "s5": {
+  "say": "Here is the answer. On the left, the reference simulation. On the right, the standard replay. Both use exactly the same recorded motion. But look at the front. In the reference, at 240 seconds, it is 4.5 millimetres thick. In the replay, it is 19.3. More than four times thicker. So who is guilty? The recording, or the mixing? I tested that. When I switch the mixing off and keep only the recorded maps, the front stays thin: 2.5 millimetres. So the recording is fine. It is the mixing step that smears the front. Now, remember the outlet, just below the front. A thick front reaches down to the outlet. So warm water leaves the tank, and the heat leaves with it. I checked this with the energy balance of the whole tank. After the inflow, the smeared replay drains 4.6 kelvin of mean temperature through the outlet. So a small numerical error at the front becomes a real error in the energy budget.",
+  "key": "The mixing step, not the maps, smears the front, and the outlet drains the heat.",
+  "next": "So can we undo the smearing, safely?",
+  "short": "Maps fine, mixing smears, outlet drains."
+ },
+ "s6": {
+  "say": "So, can we undo the smearing? The obvious idea is to run diffusion backwards. Diffusion makes things smooth, so negative diffusion should make them sharp again. And it does, for a moment. But it also makes every tiny wiggle grow, and the smallest wiggles grow the fastest. You can see it on the left. In this one-dimensional test, after just 21 steps, the field leaves the range of the data. That is useless. So I kept the useful part, and I stopped the dangerous part with a limit. My rule is this. Across each face, heat may move uphill, from the colder cell to the warmer one. That sharpens the front. But only so far that both cells stay inside the range of their neighbours. No cell may get hotter than its hottest neighbour, or colder than its coldest one. So no new hot spot and no new cold spot can appear. And whatever heat leaves one cell enters the other, so energy is conserved, face by face. This idea comes from flux-corrected transport, by Boris and Book, and by Zalesak. One last detail. The front is horizontal, so I let the correction act across the front, in the vertical direction, and not along it. On the right, the limited version simply sharpens the front, from 8.8 cells to 0.9, and then it stops.",
+  "key": "Sharpen the front, but within limits and without losing heat.",
+  "next": "Does it work in the real tank?",
+  "short": "Backwards diffusion explodes; the limited version does not."
+ },
+ "s7": {
+  "say": "Does it work in the real tank? Here is the end of the run. Without the correction, the front ends 15.7 millimetres wide. With the correction, in its working range, it ends between 5.3 and 4.5 millimetres. The reference has 5.0. So the width is back. You can see it in the pictures. The row below shows the departure from the reference. It shrinks as the strength grows, and it turns again when the correction gets too strong. And the error of the mean temperature over the whole run drops from 1.46 kelvin to about 0.7. I want to be honest about one point. I chose the strength by comparing with this same reference. So this shows what the correction can do. Choosing the strength without a reference is still an open question.",
+  "key": "The width comes back; the strength was chosen with the reference.",
+  "next": "That tank had no heat loss. Now the lid gets cold.",
+  "short": "Sixteen to five millimetres, error halves, honest about s."
+ },
+ "s8": {
+  "say": "So far, the lid was insulated. Now I make it cold, and this changes the story. Cold water sinks from the lid in plumes. So now the temperature creates its own motion. This is exactly the feedback that the replay cannot reproduce. Let's see what happens. Over the run, the tank cools by 9.62 kelvin. The standard replay ends 0.66 kelvin too cold. With the correction, it ends within 0.06 kelvin, again with a strength chosen against the reference. So the heat content is right. But look at the shaded band during the warm inflow. While the tank fills, the layers separate too slowly. I tried six different local corrections, and none of them moved this lag. Why not? Because a local rule only moves heat between neighbours. It can sharpen a front, but it cannot carry heat from one layer to another. That needs transport. So I read a vertical heat flux from the recording itself, and I added it to the replay. It removes most of the lag, from 2.25 to 0.45 kelvin. But it comes with a price. The tank then ends 0.86 kelvin too cold.",
+  "key": "The heat is right; what is missing is transport.",
+  "next": "Why can the recording not do this by itself?",
+  "short": "Heat right, layers too slow, flux helps but overcools."
+ },
+ "s9": {
+  "say": "Why can the recording not do this by itself? Because the cold lid makes a different kind of flow. These maps compare every moment of a recording with every other moment. After the inflow, the cooled flow keeps renewing itself, about ten times faster than the insulated one. A recording made without the cold lid simply does not contain that motion. Think of the traffic camera again. A recording of a quiet Sunday will not tell you how the city moves in a snowstorm. So a recording belongs to the flow regime it was made in.",
+  "key": "One recording per type of flow.",
+  "next": "So what does all this show?",
+  "short": "Own motion, ten times faster, Sunday is not a snowstorm."
+ },
+ "s10": {
+  "say": "Let me be clear about what the evidence supports. One. There is no single best mixing setting, and the outlet below the front explains why. Two. A conservative, bounded correction rebuilds the front, without creating new extremes. Three. Under a cold lid, what remains is missing transport, not missing sharpness. And four. A recording belongs to its flow regime. Now, what I have not shown. I have not chosen the strength without the reference. I have not tested other meshes, turbulent flows, or several phases. The through-flow vessel study is still running, so I claim no result from it. And I have not shown that a recorded flux transfers to other cases.",
+  "key": "Four results shown, the limits stated.",
+  "next": "To close, three things to take home.",
+  "short": "Four shown, four open."
+ },
+ "s11": {
+  "say": "So, three things to take home. One. I measured the trade-off of the standard replay, and I found its cause: a smeared front that drains heat through the outlet. Two. I built a correction that sharpens the front within physical bounds, without creating new extremes. Three. I found where local fixes stop. What remains is transport, and a recording belongs to its regime. A fast simulation is only useful when we know its error. That is what this thesis measures. Thank you.",
+  "key": "Problem and cause, correction, limit.",
+  "next": "",
+  "short": "Three lines, then thank you."
+ }
+}
+</script>
+<script src="../shared/assets/data/limiter_model.js"></script>
+<script src="../shared/demo.js"></script>
+<script>
+  FramePlayer(document.getElementById("demo2"), { half: "left" });
+  FramePlayer(document.getElementById("demo5"));
+  LimiterModel(document.getElementById("limiter"), window.LIMITER);
+  SnapInspector(document.getElementById("snapAD"), "AD",
+    [["reference", "reference CFD", "#16191d"], ["standard", "standard replay", "#55657a"], ["corrected", "corrected, s = 0.45", "#c4502f"]],
+    "mid-plane temperature, 293-333 K; solver snapshots of the replays, reference states interpolated in time");
+  SnapInspector(document.getElementById("snapHL"), "HL100",
+    [["reference", "reference CFD", "#16191d"], ["standard", "standard replay", "#55657a"], ["corrected", "corrected, s = 0.475", "#c4502f"], ["flux", "+ recorded flux", "#6b4f8a"]],
+    "cooled lid, h = 100; same scale 293-333 K");
+</script>
+<script src="../shared/deck.js"></script>
+</body>
+</html>
