@@ -15,7 +15,7 @@ section{display:grid;grid-template-columns:56px 1fr;gap:10px;padding:26px 0;bord
 </style></head><body><main>
 <h1>Defense script</h1>
 <p class="lead">Data-based Numerical Simulation of Buoyant Jet Flow. One section per slide: the anchor sentence to learn by heart, the spoken text in a technical and a casual version, cue words, the meaning in Bahasa Indonesia and the audio.</p>
-<p class="meta">27 slides · 2608 words · about 21 min at 125 words per minute · whole talk: <a href="audio/talk.mp3">technical</a>, <a href="audio/talk_casual.mp3">casual</a> · <a href="index.html">deck</a> (keys: S notes, T version, A audio)</p>
+<p class="meta">26 slides · 2581 words · about 21 min at 125 words per minute · whole talk: <a href="audio/talk.mp3">technical</a>, <a href="audio/talk_casual.mp3">casual</a> · <a href="index.html">deck</a> (keys: S notes, T version, A audio)</p>
 <section><div class="no">01</div><div>
 <h2>Title</h2><p class="anchor">The title in three parts: a buoyant jet, still a numerical simulation, but driven by a flow recorded once. Can such a recording carry a temperature that changes the flow?</p>
 <p class="lab">Script</p><p class="say">Good morning, and thank you for being here. My thesis is called Data-based Numerical Simulation of Buoyant Jet Flow. Let me read that title from the end. A buoyant jet is a jet driven by two things, its own momentum and the lift of warm liquid. Numerical simulation means that the temperature is still computed on a mesh, cell by cell, with its energy balance. And data-based means that the flow itself is not computed again. It comes from data, a database recorded from one solver run, and we replay it whenever we need it. There is one difficulty. The temperature changes the flow, and the flow carries the temperature. So can a recording of the flow really transport such a temperature? I answered this in two steps. First, a small closed configuration with a laminar flow, where I can follow every error back to its source. Then a laboratory vessel, to see whether the answer still holds in a real rig. Here is the closed configuration. The liquid inside is at rest at 293 kelvin. A warm jet at 333 kelvin enters for 315 seconds, and we follow the run until 599 seconds. The jet bends upwards and spreads under the lid. A warm layer settles on top of the cold one, and we call the border between them the thermocline. This is the flow we will record, just once. But why would anyone want to record a flow?</p>
@@ -155,27 +155,21 @@ section{display:grid;grid-template-columns:56px 1fr;gap:10px;padding:26px 0;bord
 <div class="cues"><span>settings per case</span><span>nudged floor 0.51 vs 0.81 K</span><span>nudged runs are not predictions</span></div>
 <p class="lab">Ucapkan &amp; kenapa</p><div class="why"></div>
 <p class="id">Cadangan Q5: angka bejana.</p></div></section><section><div class="no">24</div><div>
-<h2>B4b Thermocouple traces</h2><p class="anchor">Full traces of both feeds, each against its own reference.</p>
-<p class="lab">Script</p><p class="say">Here are the traces at all seven thermocouple heights, the lid feed on the left and the floor feed on the right, each against its own reference.</p>
-<audio controls preload="none" src="audio/24.mp3"></audio>
-<div class="cues"><span>tujuh tinggi</span><span>tutup kiri, dasar kanan</span></div>
-<p class="lab">Ucapkan &amp; kenapa</p><div class="why">Cadangan: gambar lengkap 7.2 dan 7.3.</div>
-<p class="id">Cadangan Q5: jejak termokopel kedua umpan.</p></div></section><section><div class="no">25</div><div>
 <h2>B5 Limits</h2><p class="anchor">The domain reference is a laminar simulation, one mesh was tested, and the saving counts the replay alone.</p>
 <p class="lab">Script</p><p class="say">Backup slide, only for questions. The domain reference is a laminar simulation, one mesh was tested, and the saving counts the replay alone.</p>
-<audio controls preload="none" src="audio/25.mp3"></audio>
+<audio controls preload="none" src="audio/24.mp3"></audio>
 <div class="cues"><span>Re ≈ 100, Pr ≈ 42</span><span>no discretisation study</span><span>non-recurrent databases</span><span>24.5 s feed offset not tested</span></div>
 <p class="lab">Ucapkan &amp; kenapa</p><div class="why"></div>
-<p class="id">Cadangan: batasan studi.</p></div></section><section><div class="no">26</div><div>
+<p class="id">Cadangan: batasan studi.</p></div></section><section><div class="no">25</div><div>
 <h2>B6 Measures</h2><p class="anchor">Mean temperature, centre of gravity and heterogeneity as traces, end profile and thermocline thickness at the end.</p>
 <p class="lab">Script</p><p class="say">Backup slide, only for questions. Mean temperature, centre of gravity and heterogeneity as traces, end profile and thermocline thickness at the end.</p>
-<audio controls preload="none" src="audio/26.mp3"></audio>
+<audio controls preload="none" src="audio/25.mp3"></audio>
 <div class="cues"><span>T_mean heat held</span><span>z_cog where heat sits</span><span>sigma layering</span><span>delta 10-90 %</span></div>
 <p class="lab">Ucapkan &amp; kenapa</p><div class="why"></div>
-<p class="id">Cadangan: definisi ukuran galat.</p></div></section><section><div class="no">27</div><div>
+<p class="id">Cadangan: definisi ukuran galat.</p></div></section><section><div class="no">26</div><div>
 <h2>B7 Cost</h2><p class="anchor">Every replay is about two orders of magnitude faster than its reference, except the floor-fed standard replay.</p>
 <p class="lab">Script</p><p class="say">Backup slide, only for questions. Every replay is about two orders of magnitude faster than its reference, except the floor-fed standard replay.</p>
-<audio controls preload="none" src="audio/27.mp3"></audio>
+<audio controls preload="none" src="audio/26.mp3"></audio>
 <div class="cues"><span>domain 569 min vs 2 min</span><span>vessel 7.4 d vs 8.5 min</span><span>recording 9 days</span><span>floor standard 581 min</span></div>
 <p class="lab">Ucapkan &amp; kenapa</p><div class="why"></div>
 <p class="id">Cadangan: biaya semua kasus.</p></div></section>
