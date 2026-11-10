@@ -8,5 +8,5 @@ TOMBOL DI DECK
   S                    jendela naskah pembicara
   A                    putar audio slide yang sedang tampil
   F                    layar penuh
-Slide 6, 8 dan 9 punya tab di atas gambar (klik untuk berpindah, otomatis juga berpindah).
+Slide 6, 7, 8 dan 9 punya tab di atas gambar (klik untuk berpindah, otomatis juga berpindah).
 Folder audio/ berisi audio tiap slide dan talk.mp3 untuk presentasi penuh.

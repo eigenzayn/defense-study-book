@@ -123,7 +123,8 @@ p.lead{font-size:21px;line-height:1.55;color:var(--ink2)}
 .vcol{position:absolute;left:1124px;top:186px;width:412px;display:grid;row-gap:12px}.vcol .panel{position:relative;padding:12px 16px}.vrow{display:flex;justify-content:space-between;align-items:baseline;font:400 14px var(--mono);color:var(--ink2);margin:6px 0}.vrow b{font:600 21px var(--mono);color:var(--ink)}
 .wtiles{display:grid;grid-template-columns:1fr;row-gap:10px;margin-top:22px;width:540px}.wtiles .panel{position:relative;padding:12px 16px;display:flex;justify-content:space-between;align-items:baseline}.wtiles small{font:400 12.5px var(--mono);color:var(--mute)}.wtiles b{font:600 26px var(--mono)}
 .cost.c2>div{grid-template-columns:110px 1fr 70px;margin:10px 0}.cost.c2 b{font-size:19px}
-.wtabs{display:flex;gap:6px;text-transform:none;letter-spacing:0}.wtabs .btn{font-size:11.5px;padding:4px 10px}
+.wtabs,.qtabs{display:flex;gap:6px;text-transform:none;letter-spacing:0}.wtabs .btn,.qtabs .btn{font-size:11.5px;padding:4px 10px}
+.mf .nt{display:block;font:400 12px var(--mono);color:var(--mute);font-style:normal;margin-top:4px;width:232px;line-height:1.5}
 .flow{margin:24px 0 0 22px;font-size:19px;line-height:1.55;color:var(--ink2)}.flow li{padding-left:6px;margin:4px 0}
 .bl{margin:12px 0 0 20px;font-size:17px;line-height:1.55;color:var(--ink2)}.bl li{margin:4px 0}
 .tb{margin-top:20px;border-collapse:collapse;font:400 14px var(--mono);color:var(--ink2);width:540px}.tb th{font-weight:500;font-size:12px;color:var(--mute);text-align:right;padding:6px 8px;border-bottom:1px solid var(--line)}.tb th:first-child,.tb td:first-child{text-align:left}.tb td{text-align:right;padding:8px;border-bottom:1px solid var(--line)}.tb b{font-size:16px}
@@ -314,7 +315,14 @@ p.lead{font-size:21px;line-height:1.55;color:var(--ink2)}
       <div class="panel rise" style="--d:.3s;position:relative;margin-top:22px;width:540px;padding:14px 18px;border-color:var(--ext)"><h3><span class="ext">So</span></h3>
         <p style="font-size:18px;line-height:1.45;color:var(--ink)">The database must hold the flow regime. I recorded it again, this time under cooling.</p></div>
     </div>
-    <div class="panel rise" style="--d:.3s;left:700px;top:150px;width:836px;height:560px"><h3><span>Heat removed through the lid</span><span>reference = 100 %</span></h3><svg id="lidbars" width="800" height="500"></svg></div>
+    <div class="panel rise" style="--d:.3s;left:700px;top:150px;width:836px;height:600px">
+      <h3><span class="qtabs"><button class="btn on" data-qp="end">End state, 599 s</button><button class="btn" data-qp="bars">Heat removed through the lid</button></span><span id="qpNote">mid-plane, cooled lid</span></h3>
+      <div class="qp" data-qp="end"><div style="display:flex;gap:22px;align-items:flex-start;margin-top:10px">
+          <div class="mf"><canvas id="cv7r" width="232" height="232"></canvas><span>reference</span><em class="nt">cooled liquid sinks, the upper layer mixes</em></div>
+          <div class="mf"><canvas id="cv7a" width="232" height="232"></canvas><span style="color:#5f6670">replay, adiabatic database</span><em class="nt">a cold film stays under the lid</em></div>
+          <svg id="wprof7" width="326" height="446"></svg></div></div>
+      <div class="qp" data-qp="bars" style="display:none"><svg id="lidbars" width="800" height="500"></svg></div>
+    </div>
   </section>
 
   <section class="slide" id="s-wall" data-part="c">
@@ -2319,7 +2327,7 @@ Promise.all([loadGrey(DATA.ref),loadGrey(DATA.std),loadGrey(DATA.ext),loadGrey(D
   const WJ=DATA.walljson;profPlot('wprof',[{y:WJ.y,T:WJ.ref,c:INK,w:1.9,label:'reference'},{y:WJ.y,T:WJ.std,c:STDC,w:1.7,dash:'5 4',label:'standard',lc:MUTE},{y:WJ.y,T:WJ.cor,c:EXTC,w:2.2,label:'extended, s = 0.55'}],293,313);
   SVS.img={hot_top:svA,hot_bottom:svB};SVS.anim={hot_top:vaA,hot_bottom:vaB};
   for(const k of Object.keys(SVR))SVS.rep[k]=await loadGrey(DATA.svr[SVR[k].label]);svTick();
-  lidBars();vesselBars();c1reset();whyInit();measInit();q1Init();
+  lidBars();vesselBars();c1reset();whyInit();measInit();q1Init();if(window.wall7Init)wall7Init();
   fit();go(0);setFlow('lines');requestAnimationFrame(frame);});
 
 /* 02: two time scales, schematic after thesis Sections 1.1 and 2.2, no data */
@@ -2519,6 +2527,13 @@ addEventListener('keydown',e=>{if(e.key==='v'||e.key==='V')film();if(e.key==='Es
  function show(i){W.i=i;document.querySelectorAll('.wp').forEach(d=>d.style.display=d.dataset.wp===P[i]?'':'none');document.querySelectorAll('.wtabs .btn').forEach(b=>b.classList.toggle('on',b.dataset.wp===P[i]));document.getElementById('wpNote').textContent=N[P[i]];}
  document.querySelectorAll('.wtabs .btn').forEach(b=>b.onclick=()=>{W.man=true;show(P.indexOf(b.dataset.wp));});
  setInterval(()=>{const s=document.getElementById('s-wall'),on=s&&s.classList.contains('on');if(on&&!W.on){W.t=0;W.man=false;show(0);}W.on=on;if(!on||W.man)return;W.t+=1;if(W.t>=40&&W.i===0)show(1);},1000);
+ /* slide 7: end state (reference against the adiabatic database, real 599 s fields of data/wall_end.png) and the lid bars */
+ const Q={t:0,man:false,i:0,on:false},QP=['end','bars'],QN={end:'mid-plane, cooled lid',bars:'reference = 100 %'};
+ function qshow(i){Q.i=i;document.querySelectorAll('.qp').forEach(d=>d.style.display=d.dataset.qp===QP[i]?'':'none');document.querySelectorAll('.qtabs .btn').forEach(b=>b.classList.toggle('on',b.dataset.qp===QP[i]));document.getElementById('qpNote').textContent=QN[QP[i]];}
+ document.querySelectorAll('.qtabs .btn').forEach(b=>b.onclick=()=>{Q.man=true;qshow(QP.indexOf(b.dataset.qp));});
+ setInterval(()=>{const s=document.getElementById('s-q4'),on=s&&s.classList.contains('on');if(on&&!Q.on){Q.t=0;Q.man=false;qshow(0);}Q.on=on;if(!on||Q.man)return;Q.t+=1;if(Q.t>=30&&Q.i===0)qshow(1);},1000);
+ window.wall7Init=function(){if(typeof WALL==='undefined'||!WALL)return;paintCv(document.getElementById('cv7r'),snapTile(WALL,0));paintCv(document.getElementById('cv7a'),snapTile(WALL,1));
+   const J=DATA.walljson;profPlot('wprof7',[{y:J.y,T:J.ref,c:INK,w:2,label:'reference'},{y:J.y,T:J.adb,c:STDC,w:2,dash:'6 4',label:'adiabatic database',lc:MUTE}],293,323);};
 })();
 </script>
 </body>
