@@ -31,4 +31,4 @@ Chapters also cover ML: Advanced Techniques (Brandstetter, Holzleitner) and the 
 
 `qbank/` is the question bank for the defense: 63 cards with a one-line answer to learn by heart, a short spoken answer, formulas and a memory hook, with a practice mode.
 
-`talk/` holds two offline HTML decks built from the thesis: the defense talk (`talk/defense/`) and an industrial partner talk (`talk/partner/`), each with English speaker notes, an Indonesian practice guide, a question bank and a PDF, plus a one-month study plan with speaking practice (`talk/study/`). Open `talk/index.html`. Keys: arrows, F full screen, P presenter window, R rehearsal card, V demo fallback.
+`talk/` holds two offline HTML decks built from the thesis: the defense talk (`talk/defense12/`, 12 slides) and an industrial partner talk (`talk/partner/`), each with English speaker notes, an Indonesian practice guide, a question bank and a PDF, plus a one-month study plan with speaking practice (`talk/study/`). Open `talk/index.html`. Keys: arrows, F full screen, P presenter window, R rehearsal card, V demo fallback.
