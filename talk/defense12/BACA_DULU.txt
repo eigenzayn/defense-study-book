@@ -1,0 +1,14 @@
+CARA MEMBUKA SECARA OFFLINE
+1. Ekstrak (Extract All) seluruh isi ZIP ke satu folder. Jangan dibuka langsung dari dalam ZIP.
+2. Klik dua kali index.html. Deck terbuka di browser (Chrome atau Edge) tanpa internet.
+3. Klik dua kali script.html untuk naskah, gambar slide dan audio per slide.
+
+TOMBOL DI DECK
+  panah kanan / kiri   pindah slide
+  S                    jendela naskah pembicara
+  A                    putar audio slide yang sedang tampil
+  F                    layar penuh
+Di slide 6 tab "Result" menampilkan montase hasil (otomatis setelah 11 detik).
+
+Folder audio/ berisi audio tiap slide (01.mp3 sampai 12.mp3) dan talk.mp3 untuk presentasi penuh.
+Semua file harus tetap dalam folder yang sama dengan index.html.
