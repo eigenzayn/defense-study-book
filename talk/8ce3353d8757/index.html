@@ -16,4 +16,13 @@ f.onload=()=>{document.title=f.contentDocument.title;f.focus();f.contentWindow.f
 f.srcdoc=html;m.remove();document.body.appendChild(f);
 addEventListener('keydown',e=>{f.focus();f.contentWindow.dispatchEvent(new KeyboardEvent('keydown',{key:e.key}));});}   // keys that reach the outer page before the frame has focus
 catch(e){m.textContent='This link is not valid.';}})();
+
+async function K(){const k=location.hash.slice(1);if(!k)throw 0;const b=k.replace(/-/g,'+').replace(/_/g,'/');
+return crypto.subtle.importKey('raw',Uint8Array.from(atob(b+'==='.slice((b.length+3)%4)),c=>c.charCodeAt(0)),'AES-GCM',false,['decrypt']);}
+async function D(key,u,type){const x=new Uint8Array(await (await fetch(u,{cache:'no-store'})).arrayBuffer());
+return URL.createObjectURL(new Blob([await crypto.subtle.decrypt({name:'AES-GCM',iv:x.slice(0,12)},key,x.slice(12))],{type}));}
+(async()=>{try{const key=await K();const M={};
+ for(let k=1;k<=8;k++){const n=String(k).padStart(2,'0');const u=await D(key,'a'+n+'.bin','audio/mpeg');M['audio/'+n+'.mp3']=u;M['audio/casual/'+n+'.mp3']=u;}
+ const hook=()=>{const f=document.querySelector('iframe');if(!f||!f.contentWindow||!f.contentWindow.go)return setTimeout(hook,500);
+  const w=f.contentWindow,A=w.Audio;w.Audio=function(s){return new A(M[s]||s);};window.__hooked=w.location.href;};hook();}catch(e){window.__hookErr=String(e);}})();
 </script></body></html>
