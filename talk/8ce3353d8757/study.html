@@ -5,22 +5,29 @@
 @media (prefers-color-scheme:dark){:root{--ink:#e8eaed;--mute:#a0a7b0;--line:#2c3138;--ext:#2dd4bf;--bg:#111417}}
 body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,sans-serif}
 main{max-width:980px;margin:0 auto;padding:20px 16px 40px}h1{font-size:22px;margin:0 0 4px}p.s{color:var(--mute);margin:0 0 18px}
-.a{display:grid;grid-template-columns:1fr;gap:8px;margin:0 0 20px}.row{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:8px;padding:8px 12px}
-.row span{min-width:150px;font-size:14px}.row audio{flex:1;min-width:0}a{color:var(--ext)}
-iframe{width:100%;height:80vh;border:1px solid var(--line);border-radius:8px}</style></head>
-<body><main><h1>Study material</h1><p class="s" id="m">Loading…</p><div class="a" id="a"></div><div id="g"></div></main><script>
+a{color:var(--ext)}audio{width:100%;margin:8px 0 4px}
+section{border-top:1px solid var(--line);padding:22px 0 8px}h2{font-size:19px;margin:0 0 10px;display:flex;justify-content:space-between;gap:12px}h2 small{font:500 13px ui-monospace,monospace;color:var(--mute)}
+section img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:6px}
+.al{background:rgba(47,94,158,.08);border-left:3px solid #2f5e9e;padding:8px 12px;border-radius:4px;font-size:15px;margin:10px 0}
+.nk p{margin:0 0 8px}.kw{font-size:14.5px;color:var(--mute);margin:6px 0 0;padding-left:20px}</style></head>
+<body><main><h1>Study material</h1><p class="s" id="m">Loading…</p><div id="all"></div><div id="sl"></div></main><script>
 async function K(){const k=location.hash.slice(1);if(!k)throw 0;const b=k.replace(/-/g,'+').replace(/_/g,'/');
 return crypto.subtle.importKey('raw',Uint8Array.from(atob(b+'==='.slice((b.length+3)%4)),c=>c.charCodeAt(0)),'AES-GCM',false,['decrypt']);}
 async function D(key,u,type){const x=new Uint8Array(await (await fetch(u,{cache:'no-store'})).arrayBuffer());
 return URL.createObjectURL(new Blob([await crypto.subtle.decrypt({name:'AES-GCM',iv:x.slice(0,12)},key,x.slice(12))],{type}));}
-const N=['Whole talk','1 · Title','2 · Challenge','3 · Method','4 · Adiabatic','5 · Wall-cooled','6 · Vessel','7 · Cost','8 · Outlook'];
+const E=t=>String(t).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 (async()=>{const m=document.getElementById('m');let key;
 try{key=await K();}catch(e){m.textContent='This link is incomplete.';return;}
-try{const g=await D(key,'g.bin','application/pdf');
- m.innerHTML='Guide with slides, script and key words · <a href="'+g+'" download="Panduan_Hafalan_Talk_Singkat.pdf">download PDF</a>';
- const f=document.createElement('iframe');f.src=g;f.title='Guide';document.getElementById('g').appendChild(f);
- for(let k=0;k<9;k++){const u=await D(key,'a'+String(k).padStart(2,'0')+'.bin','audio/mpeg');
-  const r=document.createElement('div');r.className='row';r.innerHTML='<span>'+N[k]+'</span><audio controls preload="none" src="'+u+'"></audio>';
-  document.getElementById('a').appendChild(r);}}
+try{const G=JSON.parse(await (await fetch(await D(key,'n.bin','application/json'))).text());
+ const g=await D(key,'g.bin','application/pdf');
+ m.innerHTML='Per slide: picture, audio and script · <a href="'+g+'" download="Panduan_Hafalan_Talk_Singkat.pdf">download the PDF guide</a>';
+ document.getElementById('all').innerHTML='<h2>Whole talk</h2><audio controls preload="none" src="'+await D(key,'a00.bin','audio/mpeg')+'"></audio>';
+ for(const x of G){const n=String(x.slide).padStart(2,'0');
+  const [img,au]=await Promise.all([D(key,'s'+n+'.bin','image/png'),D(key,'a'+n+'.bin','audio/mpeg')]);
+  const s=document.createElement('section');
+  s.innerHTML='<h2><span>Slide '+x.slide+' · '+E(x.title)+'</span><small>'+E(x.time)+'</small></h2><img alt="Slide '+x.slide+'" src="'+img+'">'
+   +'<audio controls preload="none" src="'+au+'"></audio><div class="al">'+E(x.alur)+'</div>'
+   +'<div class="nk">'+x.paras.map(p=>'<p>'+E(p)+'</p>').join('')+'</div><ol class="kw">'+x.kw.map(k=>'<li>'+E(k)+'</li>').join('')+'</ol>';
+  document.getElementById('sl').appendChild(s);}}
 catch(e){m.textContent='This link is not valid.';}})();
 </script></body></html>
