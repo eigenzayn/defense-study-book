@@ -226,6 +226,17 @@ p.lead{font-size:21px;line-height:1.55;color:var(--ink2)}
 #rt b{color:var(--ink);font-weight:600;font-size:15px}#rt.over b#rtS{color:#b23e26}
 #rt i{position:absolute;left:16px;right:16px;bottom:4px;height:2px;background:#e3e6ea;border-radius:2px;overflow:hidden}#rt i u{display:block;height:2px;width:0;background:var(--ext)}#rt.over i u{background:#b23e26}
 </style>
+<style id="legible-ult">
+.note{font-size:14.5px;line-height:1.6}.tag{font-size:14.5px}.panel h3,h3{font-size:13px}
+.tb{font-size:14.5px}.tb th{font-size:13.5px}.vrow{font-size:16px}.sub{font-size:13.5px}
+.wml{font-size:13.5px}.wmh{font-size:13px}.chip{font-size:13px}.q1read{font-size:14px}.big small{font-size:14px}
+.lab{font-size:13px}.mf span{font-size:13.5px}.nt{font-size:13px}
+.seg button,.btn,.wtabs .btn,.qtabs .btn,.tabs .btn{font-size:13px}.otabs .btn{white-space:nowrap}
+.call{font-size:14px}.call i{font-size:13.5px}.card .sub{font-size:13.5px}
+svg text[font-size="11"],svg text[font-size="11.5"],svg text[font-size="12"],svg text[font-size="12.5"]{font-size:13.5px}
+#wm .wmh{font-size:12px;white-space:nowrap}#s-wall .vrow{font-size:14.5px}#reuse text[font-size="11.5"]{font-size:12px}#rpt{font-size:13px}
+.lrow{font-size:19px}.lrow.lhead{font-size:13.5px}
+</style>
 </head>
 <body>
 <div id="stage">
@@ -243,7 +254,7 @@ p.lead{font-size:21px;line-height:1.55;color:var(--ink2)}
       <p class="lead rise" style="--d:.16s;width:560px;font-size:22px"></p>
       <div class="rise" style="--d:.24s;height:1px;background:var(--line2);width:520px;margin:34px 0 20px"></div>
       <div class="rise" style="--d:.28s;font-size:20px;font-weight:600">Mochamad Bukhori Zainun</div>
-      <div class="tag rise" style="--d:.32s;font-size:12.5px;line-height:1.9;margin-top:10px">MSc Artificial Intelligence · Johannes Kepler University Linz<br>Supervisor · Prof. Stefan Pirker, Department of Particulate Flow Modelling</div>
+      <div class="tag rise" style="--d:.32s;font-size:12.5px;line-height:1.9;margin-top:10px">MSc Artificial Intelligence · Johannes Kepler University Linz<br>Supervisor · Prof. Stefan Pirker<br>Department of Particulate Flow Modelling</div>
     </div>
     <div class="panel" style="display:none">
       <h3><span>Reference run</span><span class="live">live</span></h3>
@@ -314,13 +325,13 @@ p.lead{font-size:21px;line-height:1.55;color:var(--ink2)}
         <text x="0" y="16" font-size="13" fill="#5f6670" font-family="var(--mono)">adiabatic database</text>
         <rect x="0" y="24" width="170" height="20" rx="3" fill="#5f6670" opacity=".55"/><text x="178" y="40" font-size="16" font-weight="600" fill="#14171c" font-family="var(--mono)">63 %</text>
         <text x="0" y="80" font-size="13" fill="#0f766e" font-family="var(--mono)">wall-cooled database</text>
-        <rect x="0" y="88" width="265" height="20" rx="3" fill="#0f766e"/><text x="273" y="104" font-size="16" font-weight="600" fill="#14171c" font-family="var(--mono)">98 %</text>
+        <rect x="0" y="88" width="265" height="20" rx="3" fill="#0f766e"/><text x="280" y="104" font-size="16" font-weight="600" fill="#14171c" font-family="var(--mono)">98 %</text>
         <line x1="270" x2="270" y1="20" y2="116" stroke="#14171c" stroke-dasharray="3 3"/></svg>
       <div class="vrow" style="margin-top:14px"><span>final mean T</span><b class="ext">within 0.06 K</b></div>
       <div class="vrow"><span>end-profile RMSE</span><b class="ext">0.41 K</b></div>
       <p class="note" style="margin-top:10px">Remaining deviation: during the warm inflow the upper layer fills too slowly, because the replay does not carry the full convective heat transport.</p>
     </div>
-    <div class="ovl panel" data-ovl="w" style="position:absolute;left:64px;top:236px;width:1090px;height:610px;padding:10px;z-index:5;background:var(--bg)"><div id="wm"><div class="wmcol" style="left:14px"><div class="wml" style="color:#14171c"><svg width="22" height="6"><line x1="0" x2="22" y1="3" y2="3" stroke="#14171c" stroke-width="2.4"/></svg>CFD</div><canvas id="wmc0" width="488" height="488"></canvas><div class="wmrow"><span class="big" id="wmv0">–</span><span class="note" id="wmd0">mid-plane mean</span></div></div><div class="wmcol" style="left:282px"><div class="wml" style="color:#5f6670"><svg width="22" height="6"><line x1="0" x2="22" y1="3" y2="3" stroke="#5f6670" stroke-width="1.8" stroke-dasharray="5 4"/></svg>rCFD · adiabatic database</div><canvas id="wmc1" width="488" height="488"></canvas><div class="wmrow"><span class="big" id="wmv1">–</span><span class="note" id="wmd1"></span></div></div><div class="wmcol" style="left:550px"><div class="wml" style="color:#0f766e"><svg width="22" height="6"><line x1="0" x2="22" y1="3" y2="3" stroke="#0f766e" stroke-width="2"/></svg>rCFD · wall-cooled database</div><canvas id="wmc2" width="488" height="488"></canvas><div class="wmrow"><span class="big" id="wmv2" style="color:#0f766e">–</span><span class="note" id="wmd2"></span></div></div><div class="wmh" style="left:822px;top:5px;width:236px"><span>⟨T⟩ [K] against height [mm]</span></div><svg id="wmprof" width="236" height="304" style="position:absolute;left:822px;top:28px"></svg><div class="wmh" style="left:14px;top:346px;width:774px"><span>Mid-plane mean temperature [K] at the stored states</span><span>select a state</span></div><svg id="wmchart" width="788" height="214"></svg><div style="position:absolute;left:836px;top:372px;width:222px"><div class="big" id="wmt" style="font-size:46px">–</div><div class="note" id="wmp" style="margin-top:2px">&nbsp;</div><div style="display:flex;gap:6px;margin-top:14px"><button class="btn vpause" style="font:500 12px var(--mono);padding:5px 12px">Pause</button><button class="btn" id="wmprev" style="font:500 13px var(--mono);padding:5px 12px" aria-label="previous state">‹</button><button class="btn" id="wmnext" style="font:500 13px var(--mono);padding:5px 12px" aria-label="next state">›</button></div><canvas id="wmbar" width="444" height="20" style="display:block;width:222px;height:10px;margin-top:26px;border-radius:2px"></canvas><div style="display:flex;justify-content:space-between;font:400 11px var(--mono);color:var(--mute);margin-top:5px"><span>293</span><span>T [K]</span><span>333</span></div></div></div></div>
+    <div class="ovl panel" data-ovl="w" style="position:absolute;left:64px;top:236px;width:1090px;height:594px;padding:10px;z-index:5;background:var(--bg)"><div id="wm"><div class="wmcol" style="left:14px"><div class="wml" style="color:#14171c"><svg width="22" height="6"><line x1="0" x2="22" y1="3" y2="3" stroke="#14171c" stroke-width="2.4"/></svg>CFD</div><canvas id="wmc0" width="488" height="488"></canvas><div class="wmrow"><span class="big" id="wmv0">–</span><span class="note" id="wmd0">mid-plane mean</span></div></div><div class="wmcol" style="left:282px"><div class="wml" style="color:#5f6670"><svg width="22" height="6"><line x1="0" x2="22" y1="3" y2="3" stroke="#5f6670" stroke-width="1.8" stroke-dasharray="5 4"/></svg>rCFD · adiabatic database</div><canvas id="wmc1" width="488" height="488"></canvas><div class="wmrow"><span class="big" id="wmv1">–</span><span class="note" id="wmd1"></span></div></div><div class="wmcol" style="left:550px"><div class="wml" style="color:#0f766e"><svg width="22" height="6"><line x1="0" x2="22" y1="3" y2="3" stroke="#0f766e" stroke-width="2"/></svg>rCFD · wall-cooled database</div><canvas id="wmc2" width="488" height="488"></canvas><div class="wmrow"><span class="big" id="wmv2" style="color:#0f766e">–</span><span class="note" id="wmd2"></span></div></div><div class="wmh" style="left:822px;top:5px;width:236px"><span>⟨T⟩ [K] against height [mm]</span></div><svg id="wmprof" width="236" height="304" style="position:absolute;left:822px;top:28px"></svg><div class="wmh" style="left:14px;top:346px;width:774px"><span>Mid-plane mean temperature [K] at the stored states</span><span>select a state</span></div><svg id="wmchart" width="788" height="214"></svg><div style="position:absolute;left:836px;top:372px;width:222px"><div class="big" id="wmt" style="font-size:46px">–</div><div class="note" id="wmp" style="margin-top:2px">&nbsp;</div><div style="display:flex;gap:6px;margin-top:14px"><button class="btn vpause" style="font:500 12px var(--mono);padding:5px 12px">Pause</button><button class="btn" id="wmprev" style="font:500 13px var(--mono);padding:5px 12px" aria-label="previous state">‹</button><button class="btn" id="wmnext" style="font:500 13px var(--mono);padding:5px 12px" aria-label="next state">›</button></div><canvas id="wmbar" width="444" height="20" style="display:block;width:222px;height:10px;margin-top:26px;border-radius:2px"></canvas><div style="display:flex;justify-content:space-between;font:400 11px var(--mono);color:var(--mute);margin-top:5px"><span>293</span><span>T [K]</span><span>333</span></div></div></div></div>
     <div style="position:absolute;left:64px;top:792px;display:flex;gap:14px;align-items:center"><input type="range" class="vsl" id="wsl" min="0" max="599" value="0" step="1" style="width:420px;accent-color:#0f766e"><button class="btn vpause" style="font:500 12px var(--mono);padding:5px 12px">Pause</button><div class="clk" id="wclk" style="font:500 14px var(--mono);color:var(--mute)">t = 0 s</div></div>
     <div style="display:none"><span id="wpNote"></span><svg id="wprof" width="326" height="446"></svg></div>
   </section>
@@ -2075,7 +2086,7 @@ STACKK.forEach((k,i)=>{const tx=fieldTex(),z=-26-i*16,m=new THREE.Mesh(new THREE
   m.position.set(37.5,37.5,z);m.castShadow=true;const e=edges(new THREE.PlaneGeometry(75,75).translate(37.5,37.5,z),new THREE.LineBasicMaterial({color:0xb9bfc7}));V1.add(m,e);stackTex.push(tx);
   const r=m.clone();r.scale.y=-1;r.position.y=-8-37.5;r.renderOrder=-5;r.castShadow=false;V1.add(r);V1.refl.push(r);});
 V1.call([75,75,-26-8*16],34,-44,'Frame 599 s');
-V1.call([37.5,0,-26-5*16],-20,118,'600 frames, Δt = 1 s<i>recorded on the reference run</i>');
+V1.call([37.5,0,-26-5*16],70,150,'600 frames, Δt = 1 s<i>recorded on the reference run</i>');
 V1.call([0,0,16],-44,64,'The domain being replayed');
 views.push(V1);
 
