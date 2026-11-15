@@ -228,6 +228,18 @@ p.lead{font-size:21px;line-height:1.55;color:var(--ink2)}
 </style>
 <style>#rail button{font-size:9px;letter-spacing:.04em;padding:8px 4px 0}</style>
 <style>#s-wall .wmcol:nth-of-type(2){display:none}#s-wall .wmcol:nth-of-type(3){left:418px!important}#wmp1{display:none}</style>
+<style id="legible">
+.note{font-size:14.5px;line-height:1.6}.tag{font-size:14.5px}.panel h3,h3{font-size:13px}
+.tb{font-size:15.5px}.tb th{font-size:13.5px}.vrow{font-size:16px}.sub{font-size:13.5px}
+.wml{font-size:13.5px}.wmh{font-size:13px}.chip{font-size:13px}.q1read{font-size:14px}.big small{font-size:14px}
+.lab{font-size:13px}.mf span{font-size:13.5px}.nt{font-size:13px}
+#wmchart text,#wmprof text{font-size:13px}
+.sc{position:absolute;top:612px;width:474px;height:190px;padding:20px 24px}
+.sc b{display:block;font:600 22px var(--sans);color:var(--ink);letter-spacing:-.01em}
+.sc p{margin:10px 0 0;font-size:17px;line-height:1.45;color:var(--ink2)}
+#wm .wmh{font-size:12px;white-space:nowrap}#s-wall .vrow{font-size:14.5px}.tb{font-size:14.5px}.tb td:first-child,.tb td:nth-child(2){white-space:nowrap}
+.sc i{position:absolute;left:24px;bottom:16px;font:500 13px var(--mono);font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--ext)}
+</style>
 </head>
 <body>
 <div id="stage">
@@ -286,15 +298,14 @@ p.lead{font-size:21px;line-height:1.55;color:var(--ink2)}
     <div class="gl" id="gl2"></div><svg class="hud" id="hud2" viewBox="0 0 1600 900"></svg><div class="labs" id="lab2"></div>
     <div class="col" style="width:560px">
       <div class="tag rise"><b>03</b> // Study design</div>
-      <h2 class="rise" style="--d:.08s;font-size:40px">Two boundary conditions in one closed configuration, then a laboratory vessel</h2>
-      <div class="kv rise" style="--d:.2s;grid-template-columns:260px 1fr;margin-top:22px;width:540px;row-gap:8px;font-size:15px">
+      <h2 class="rise" style="--d:.08s;font-size:38px">Three cases separate numerical error from missing motion</h2>
+      <div class="kv rise" style="--d:.2s;grid-template-columns:310px 1fr;margin-top:26px;width:540px;row-gap:10px;font-size:17px">
         <span>Size</span><b>75 × 75 × 15 mm</b><span>Mesh</span><b>85 625 cells of 1 mm</b><span>Inlet Reynolds number</span><b>≈ 100, laminar</b><span>Warm inlet / initial fluid</span><b>333 K / 293 K</b></div>
     </div>
-    <div class="rise" style="--d:.3s;position:absolute;left:64px;top:560px;width:540px;display:grid;gap:10px">
-      <div class="kv" style="grid-template-columns:150px 1fr"><b style="text-align:left">Adiabatic lid</b><span>a warm jet enters the cold fluid and builds a temperature layer, the error is numerical only</span></div>
-      <div class="kv" style="grid-template-columns:150px 1fr"><b style="text-align:left" class="cool">Wall-cooled lid</b><span>the top wall removes heat, cooled fluid becomes denser and sinks, extra motion appears</span></div>
-      <div class="kv" style="grid-template-columns:150px 1fr"><b style="text-align:left">Laboratory vessel</b><span>lid feed and floor feed, replayed from one lid-fed database</span></div>
-    </div>
+    <div class="panel sc rise" style="--d:0.30s;left:64px"><b>Adiabatic lid</b><p>Recording and reference are the same flow, so every deviation of the replay is numerical.</p><i>Research questions 1 and 2</i></div>
+    <div class="panel sc rise" style="--d:0.42s;left:563px"><b>Cooled lid</b><p>The lid drives a convection of its own, so the database meets a flow it may not contain.</p><i>Research questions 3 and 4</i></div>
+    <div class="panel sc rise" style="--d:0.54s;left:1062px"><b>Laboratory vessel</b><p>Lid feed and floor feed are replayed from one lid-fed database, so the operators meet a second flow.</p><i>Research question 5</i></div>
+    
   </section>
 
   <section class="slide" id="s-q1" data-part="c">
@@ -365,8 +376,8 @@ p.lead{font-size:21px;line-height:1.55;color:var(--ink2)}
 
   <section class="slide" id="s-q4" data-part="c">
     <div class="col" style="width:560px">
-      <div class="tag rise"><b>08</b> // The limit: missing motion</div>
-      <h2 class="rise" style="--d:.08s;font-size:40px">A local correction cannot create a convective motion that was never recorded</h2>
+      <div class="tag rise"><b>08</b> // The cooling regime</div>
+      <h2 class="rise" style="--d:.08s;font-size:40px">A database belongs to its flow regime</h2>
       <ul class="bl rise" style="--d:.16s;width:540px"><li>The lid removes heat, and the cooled liquid becomes denser and sinks.</li>
         <li>First test, the adiabatic database under the cooled lid. Its recording contains no sinking motion.</li>
         <li>The replay removes only <b>63 %</b> of the reference lid heat loss, and 64 to 67 % with stronger mixing or the correction.</li></ul>
@@ -2741,10 +2752,10 @@ function MONT(o){const R=document.getElementById(o.id);if(!R||!o.J||!o.src)retur
  R.innerHTML=h+'</div>';
  const cvs=[...R.querySelectorAll('canvas')].slice(0,C.length),vals=[...R.querySelectorAll('.wmrow')],ch=R.querySelector('.mtch'),sl=R.querySelector('.mts'),pb=R.querySelector('.mtp');
  const bx=R.querySelector('.mtbar').getContext('2d');for(let i=0;i<300;i++){const q=lut[Math.round(i/299*255)];bx.fillStyle=`rgb(${q[0]},${q[1]},${q[2]})`;bx.fillRect(i,0,1,20);}
- const L=46,RR=14,T=10,B=26,CH=o.ch,cx=t=>L+t/600*(W-L-RR),cy=v=>CH-B-(Math.min(o.yhi,Math.max(o.ylo,v))-o.ylo)/(o.yhi-o.ylo)*(CH-B-T);
+ const L=46,RR=30,T=10,B=26,CH=o.ch,cx=t=>L+t/600*(W-L-RR),cy=v=>CH-B-(Math.min(o.yhi,Math.max(o.ylo,v))-o.ylo)/(o.yhi-o.ylo)*(CH-B-T);
  let q=`<rect x="${cx(0)}" y="${T}" width="${cx(315)-cx(0)}" height="${CH-B-T}" fill="rgba(178,62,38,.05)"/>`;
- o.yt.forEach(v=>{q+=`<line x1="${L}" x2="${W-RR}" y1="${cy(v)}" y2="${cy(v)}" stroke="#eceef1"/><text x="${L-7}" y="${cy(v)+4}" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#5f6670">${v}</text>`;});
- TS.forEach((t,i)=>{q+=`<text x="${cx(t)}" y="${CH-B+17}" text-anchor="middle" font-family="JetBrains Mono" font-size="11.5" fill="#14171c">${t}${i===NT-1?' s':''}</text>`;});
+ o.yt.forEach(v=>{q+=`<line x1="${L}" x2="${W-RR}" y1="${cy(v)}" y2="${cy(v)}" stroke="#eceef1"/><text x="${L-7}" y="${cy(v)+4}" text-anchor="end" font-family="JetBrains Mono" font-size="13" fill="#5f6670">${v}</text>`;});
+ TS.forEach((t,i)=>{q+=`<text x="${cx(t)}" y="${CH-B+17}" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#14171c">${t}${i===NT-1?' s':''}</text>`;});
  C.forEach(c=>{const ys=J[o.key][c.r];let d='';ys.forEach((v,i)=>{if(v==null)return;d+=(d?'L':'M')+cx(TS[i]).toFixed(1)+' '+cy(v).toFixed(1);});
    q+=`<path d="${d}" fill="none" stroke="${c.col}" stroke-width="1.6" ${c.dash?'stroke-dasharray="5 4"':''}/>`;
    ys.forEach((v,i)=>{if(v!=null)q+=`<circle cx="${cx(TS[i]).toFixed(1)}" cy="${cy(v).toFixed(1)}" r="3.2" fill="#fff" stroke="${c.col}" stroke-width="1.6"/>`;});});
@@ -2756,8 +2767,8 @@ function MONT(o){const R=document.getElementById(o.id);if(!R||!o.J||!o.src)retur
   ch.querySelector('.mtcur').style.transform=`translateX(${cx(TS[i]).toFixed(1)}px)`;
   const pr=R.querySelector('.mtpr');
   if(pr){const PH=S,pl=30,prr=16,pt=6,pb=22,px=v=>pl+(v-293)/40*(PW-pl-prr),py=hh=>PH-pb-hh/75*(PH-pb-pt);let g='';
-   [293,313,333].forEach(v=>g+=`<line x1="${px(v)}" x2="${px(v)}" y1="${pt}" y2="${PH-pb}" stroke="#eceef1"/><text x="${px(v)}" y="${PH-pb+15}" text-anchor="middle" font-family="JetBrains Mono" font-size="11" fill="#5f6670">${v}</text>`);
-   [0,25,50,75].forEach(hh=>g+=`<text x="${pl-5}" y="${py(hh)+4}" text-anchor="end" font-family="JetBrains Mono" font-size="11" fill="#5f6670">${hh}</text>`);
+   [293,313,333].forEach(v=>g+=`<line x1="${px(v)}" x2="${px(v)}" y1="${pt}" y2="${PH-pb}" stroke="#eceef1"/><text x="${px(v)}" y="${PH-pb+15}" text-anchor="middle" font-family="JetBrains Mono" font-size="13" fill="#5f6670">${v}</text>`);
+   [0,25,50,75].forEach(hh=>g+=`<text x="${pl-5}" y="${py(hh)+4}" text-anchor="end" font-family="JetBrains Mono" font-size="13" fill="#5f6670">${hh}</text>`);
    C.forEach(c=>{let d='';J.prof[c.r][i].forEach((v,k)=>d+=(k?'L':'M')+px(v).toFixed(1)+' '+py(k+.5).toFixed(1));g+=`<path d="${d}" fill="none" stroke="${c.col}" stroke-width="${c.dash?1.7:2.4}" ${c.dash?'stroke-dasharray="5 4"':''}/>`;});
    pr.innerHTML=g;}
   R.querySelector('.mtt').textContent=TS[i]+' s';R.querySelector('.mtph').textContent=TS[i]<315?'warm inflow':TS[i]===315?'end of the inflow':'inlet at 293 K';}
