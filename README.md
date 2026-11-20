@@ -4,6 +4,7 @@ Study notes for the Master's examination in Artificial Intelligence:
 Machine Learning & Perception, LSTM and sequence models, and recurrence CFD.
 
 **Read online:** https://eigenzayn.github.io/defense-study-book/  
+**Committee answers with audio (November 2026):** https://eigenzayn.github.io/committee-exam-prep/jawaban.html (ML&P per examiner, defense questions answered from the final thesis, second-order optimization)  
 **Presentation (slides):** https://eigenzayn.github.io/defense-study-book/presentation/ (keys: arrows, P presenter, O overview, F fullscreen; PDF backup in `presentation/`)  
 **Read the PDF:** [Defense_Study_Book.pdf](Defense_Study_Book.pdf)  
 **Spoken answers (oral exam):** website https://eigenzayn.github.io/defense-study-book/oral_exam_v2/ (filter: asked before / predicted, search, practice mode) and PDF [oral_exam_v2/oral_exam_v2.pdf](oral_exam_v2/oral_exam_v2.pdf): thesis, Machine Learning & Perception and AI for Simulation (rCFD). Each answer has a core sentence, a short explanation, the numbers to know, a line-by-line derivation with the reason for each step, and a summary. Every question is labelled ASKED BEFORE (in the list of past defenses, with the examiner) or PREDICTED. Build: `cd oral_exam_v2 && python add_origins.py && pdflatex oral_exam_v2.tex` (twice) `&& python to_html.py`.
@@ -29,6 +30,6 @@ Chapters also cover ML: Advanced Techniques (Brandstetter, Holzleitner) and the 
 
 ## Talks and study plan (October 2026)
 
-`qbank/` is the question bank for the defense: 63 cards with a one-line answer to learn by heart, a short spoken answer, formulas and a memory hook, with a practice mode.
+`qbank/` is the question bank for the defense: 73 cards with a one-line answer to learn by heart, a short spoken answer, formulas and a memory hook, with a practice mode.
 
 `talk/` holds two offline HTML decks built from the thesis: the defense talk (`talk/defense12/`, 12 slides) and an industrial partner talk (`talk/partner/`), each with English speaker notes, an Indonesian practice guide, a question bank and a PDF, plus a one-month study plan with speaking practice (`talk/study/`). Open `talk/index.html`. Keys: arrows, F full screen, P presenter window, R rehearsal card, V demo fallback.

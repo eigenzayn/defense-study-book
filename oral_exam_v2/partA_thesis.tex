@@ -1,8 +1,8 @@
 \section{Thesis}
 
 Thesis: \emph{Data-based Numerical Simulation of Buoyant Jet Flow}. Supervisor: Prof.\ Stefan
-Pirker. Every number here is taken from the thesis of 10 October 2026. Equation and figure numbers
-refer to that version; the derivations follow Appendix~D of the thesis.
+Pirker. Every number here is taken from the final thesis uploaded to PAS on 18 November 2026.
+Equation and figure numbers refer to that version; the derivations follow Appendix~D of the thesis.
 
 \subsection{The talk in 15 minutes}
 
@@ -24,11 +24,14 @@ Min & Slide & What you say \\
 6--8 & Claim 1 & No single mixing constant is best. The outlet sits just below the front, so a
   smeared front drains heat. \\
 8--11 & Claim 2 & A bounded anti-diffusive correction, weighted to the vertical. Front 15.7~mm
-  $\to$ 5.3 to 4.5~mm, reference 5.0~mm. Error of the mean temperature more than halved. \\
-11--13 & Claim 3 & Under the cooled lid, on the fluid of the reference, the correction at
-  $s \approx 0.55$ ends 0.06~K off on 9.62~K of cooling. \\
-13--14 & What remains & While the tank fills, the layers separate too slowly. A flux read from the
+  $\to$ 5.3 to 4.0~mm, reference 5.0~mm. Trace error at $\fsd=0.5$: 1.46 $\to$ 0.70--0.59~K. \\
+11--12 & Claim 3 & Under the cooled lid, on the fluid of the reference, the correction at
+  $s \approx 0.55$ ends 0.06~K off on 9.62~K of cooling. The adiabatic database removes only
+  63 per cent of the lid loss. \\
+12--13 & What remains & While the tank fills, the layers separate too slowly. A flux read from the
   recording reduces this error from 2.25 to 0.45~K, but the tank then ends 0.86~K too cold. \\
+13--14 & Vessel & One lid-fed database for a lab vessel fed at the lid or the floor. Mean error
+  1.28 $\to$ 0.77~K and 1.61 $\to$ 0.68~K. The operators transfer, a single setting does not. \\
 14--15 & Take-home & A database belongs to a flow regime, not to a case. A numerical error at a
   front becomes an energy error near an outlet. \\
 \bottomrule
@@ -91,7 +94,7 @@ nearest-neighbour search in a database of states, the method of analogues. My ma
 generalization: a database belongs to a flow regime. A boundary condition that changes the regime
 makes the database out of distribution.
 \summary{Database = training data. New regime = out of distribution.}
-\src{Thesis, Section 2.2 and Section 6.4.}
+\src{Thesis, Section 2.2 and Section 6.3.}
 \end{qabox}
 
 \begin{qabox}{What is the recurrence matrix, and is your flow recurrent?}
@@ -156,7 +159,7 @@ G &= 1 + 4\lvert\nu\rvert \why{shortest mode $k\Delta x = \pi$, $\nu<0$}
 \end{align*}
 $\lvert G\rvert > 1$, so the shortest mode grows in every step.
 \summary{Negative diffusion grows wiggles. Keep the steepening, limit the rest.}
-\src{Thesis, Section 4.2.2, Eq.~(4.13), Figure 4.1.}
+\src{Thesis, Section 4.2.2, Eq.~(4.19), Figure 4.2.}
 \end{qabox}
 
 \begin{qabox}{Explain your limiter.}
@@ -167,12 +170,14 @@ Across a face, heat moves from the colder to the warmer cell. The amount is the 
 headrooms, times a strength $s$. This is the limiter idea of flux-corrected transport, by Zalesak.
 \derive
 \begin{align*}
-Q_h^{+} &= C_h\,(T_h^{\max} - T_h),\quad Q_c^{-} = C_c\,(T_c - T_c^{\min}) \why{headrooms, Eq.~(4.15)} \\
-\Delta q_f &= s\,\min(Q_h^{+},Q_c^{-}) \why{limited exchange, Eq.~(4.16)} \\
-C_i\,\Delta T_i &\le n_f\,s\,Q_i^{+} \why{at most $n_f$ faces bring heat} \\
-T_i + \Delta T_i &\le T_i^{\max} \quad\text{if}\quad s \le 1/n_f = 1/6 \why{Eq.~(4.17)}
+Q_h^{+} &= C_h\,(T_h^{\max} - T_h),\quad Q_c^{-} = C_c\,(T_c - T_c^{\min}) \why{headrooms, Eq.~(4.21)} \\
+\Delta q_f &= s\,\min(Q_h^{+},Q_c^{-}) \why{limited exchange, Eq.~(4.22)} \\
+C_i\,\Delta T_i &\le s\,Q_i^{+}\textstyle\sum_{f\ni i} w_f \why{weights $w_f\le1$ scale each face} \\
+T_i + \Delta T_i &\le T_i^{\max} \quad\text{if}\quad s\textstyle\sum_f w_f \le 1 \why{Eq.~(4.23)} \\
+\textstyle\sum_f w_f &= 6 \Rightarrow s\le\tfrac16,\qquad \textstyle\sum_f w^{\mathrm{dir}}_f = 2 \Rightarrow s\le\tfrac12 \why{unweighted vs vertical weight}
 \end{align*}
-\summary{Smaller headroom times $s$. Conservative, no new extremum, safe for $s \le 1/6$.}
+\summary{Smaller headroom times $s$. Conservative, no new extremum. Safe for $s\le1/6$ unweighted and
+$s\le1/2$ with the vertical weight, which covers the working range 0.40--0.50.}
 \src{Thesis, Section 4.2.3; Appendix D.4.}
 \end{qabox}
 
@@ -187,10 +192,10 @@ direction only.
 \begin{align*}
 K_f &= \hat{\mathbf{e}}^{\mathsf{T}}\mathbf{K}\,\hat{\mathbf{e}} \why{two-point face coefficient} \\
     &= K\,(\hat{\mathbf{e}}\cdot\hat{\mathbf{n}})^2 \why{rank-one tensor $\mathbf{K} = K\hat{\mathbf{n}}\hat{\mathbf{n}}^{\mathsf{T}}$} \\
-    &= K\,w^{\mathrm{dir}}_f \why{Eq.~(4.21)}
+    &= K\,w^{\mathrm{dir}}_f \why{Eq.~(4.25)}
 \end{align*}
 \summary{Act across the front: $\cos^2$ weight = one-direction diffusion.}
-\src{Thesis, Section 4.2.4, Eqs.~(4.19), (4.21).}
+\src{Thesis, Section 4.2.4, Eqs.~(4.24)--(4.25); Section 8.5, Eq.~(D.1).}
 \end{qabox}
 
 \begin{qabox}{The recorded diffusivity did not help. Why?}
@@ -206,25 +211,29 @@ step or an implicit exchange would let the field act.
 \mathrm{Di} &= D\,\Delta t/c_s^{2} \le 0.5 \why{the cap as a diffusion number, Eq.~(2.16)}
 \end{align*}
 \summary{Recorded $D$ above the cap $\to$ acts like a constant.}
-\src{Thesis, Section 5.2.1, Figure 5.4.}
+\src{Thesis, Sections 5.2.1 and 6.1.3.}
 \end{qabox}
 
 \begin{qabox}{What happened under the cooled lid?}
 \origin{predicted}{your thesis: everything you used can be asked}
 \core{On the fluid of the reference, the corrected replay ends 0.06~K from the reference.}
-\explain The reference fluid has the specific heat 1006.43~J/(kg\,K). A replay given the specific
-heat of water cools four times less for the same wall power, and ends 4.34~K too warm. On the right
-fluid the replay is close, and the correction puts the heat back in the right layer.
+\explain The reference fluid has the specific heat 1006.43~J/(kg\,K), the solver default for air,
+and the wall term divides by it. So the replay must use the same value; with the specific heat of
+water it would cool about four times less (factor $1006.43/4182=0.2407$). With the database recorded
+under the cooled lid, the standard replay removes 98 per cent of the lid loss, and the correction
+puts the heat back in the right layer. The adiabatic database removes only 63 per cent: the cooled
+fluid that should sink is missing from its recorded motion.
 \nums{Cooling depth 9.62~K. Without correction $-0.66$~K. With correction at $s\approx0.55$:
-$+0.06$~K, end profile 0.41~K.}
+$+0.06$~K, end profile 0.41~K. Adiabatic database: 63 per cent of the lid loss.}
 \derive
 \begin{align*}
-\Delta T_{\mathrm{cell}} &= -\frac{q\,\Delta t}{\rho\,c_p\,V} \why{wall loss of one cell, Eq.~(4.25)} \\
-\frac{\Delta T_{\mathrm{rep}}}{\Delta T_{\mathrm{case}}} &= \frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} = \frac{1006.43}{4182} = \frac{1}{4.155} \why{same power, two specific heats} \\
-h_{\mathrm{eff}} &= G\,h\,\frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} \why{Eq.~(4.26)}
+\Delta T_{\mathrm{cell}} &= -\frac{q\,\Delta t}{\rho\,c_p\,V} \why{wall loss of one cell, Eq.~(4.29)} \\
+\frac{\Delta T_{\mathrm{rep}}}{\Delta T_{\mathrm{case}}} &= \frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} = \frac{1006.43}{4182} = 0.2407 \why{same power, two specific heats} \\
+h_{\mathrm{eff}} &= G\,h\,\frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} \why{Eq.~(D.2)}
 \end{align*}
-\summary{Same fluid on both sides first. Then the correction does the rest.}
-\src{Thesis, Sections 6.1--6.2; Appendix D.5.}
+\summary{Same fluid on both sides first. Then the correction does the rest. A database recorded
+without cooling cannot cool enough.}
+\src{Thesis, Section 4.3.1, Sections 6.1--6.3, Table 6.2; Appendix D.}
 \end{qabox}
 
 \begin{qabox}{What could not be repaired, and why?}
@@ -241,7 +250,7 @@ F &= \rho c_p v\,(T - \bar{T}_{\mathrm{b}}) \why{the recorded flux, Eq.~(2.18)} 
 \langle F\rangle_{\mathrm{b}} &= \rho c_p \langle v' T'\rangle_{\mathrm{b}} \why{band mean: the eddy heat flux}
 \end{align*}
 \summary{Local repair fixes shape. Missing transport needs recorded transport.}
-\src{Thesis, Sections 6.5--6.6; Appendix D.2.}
+\src{Thesis, Section 6.5, Eq.~(2.18); Appendix D.2.}
 \end{qabox}
 
 \begin{qabox}{How do you know your results are correct?}
@@ -251,7 +260,7 @@ F &= \rho c_p v\,(T - \bar{T}_{\mathrm{b}}) \why{the recorded flux, Eq.~(2.18)} 
 instants and over the same end window. The energy budget of each case is closed term by term.
 \nums{End window 580 to 599~s on both sides.}
 \summary{Deterministic, one change per run, same clock, closed budget.}
-\src{Thesis, Section 3.9 and Appendix B.5.}
+\src{Thesis, Section 2.4, Section 3.9 and Appendix B.3.}
 \end{qabox}
 
 \begin{qabox}{Why these error measures? Bias and RMSE?}
@@ -299,12 +308,45 @@ change the velocity.
 
 \begin{qabox}{What is future work?}
 \origin{asked}{thesis part, Küng committee (``What would you do differently?''), Mara (``How could I extend my work?'')}
-\core{Let the recorded diffusivity act, split the conservation constraint, and switch databases by state.}
+\core{Let the recorded diffusivity act, split the conservation constraint, record only the
+kinematic flux, switch databases by state, and learn the correction strength.}
 \explain An implicit exchange or a shorter step would let the recorded diffusivity work. A balance
-per compartment would stop the constraint from putting heat back at the front. Several recordings,
-chosen by the replayed temperature, could cover more than one regime.
-\summary{Implicit exchange, compartments, several databases.}
-\src{Thesis, Section 9.3.}
+per compartment, as the method prescribes, would remove part of the excess cooling. Recording only
+$\rho c_p v$ would let the replay supply its own temperature anomaly, so the flux could transfer.
+Several recordings, chosen by the replayed temperature, could cover more than one regime. A small
+network could predict the local correction strength from the replayed field, acting inside the
+limiter so that conservation and the bounds still hold. Finally: a second mesh and measurements.
+\summary{Implicit exchange, compartments, kinematic flux, several databases, a small network
+inside the limiter, a second mesh and experiments.}
+\src{Thesis, Section 9.2.}
+\end{qabox}
+
+\begin{qabox}{How much does the correction improve the adiabatic replay?}
+\origin{predicted}{research question Q2, Section 9.1}
+\core{Weighted to the vertical, it brings the front close to the reference and more than halves the
+trace error, without leaving the range of the data.}
+\explain The direction matters more than the strength. Without the weight the correction reaches
+the reference thickness only with grid-scale ripples.
+\nums{Front 15.7~mm $\to$ 5.3 to 4.0~mm for $s=0.40$--$0.50$, reference 5.0~mm. Trace error at
+$\fsd=0.5$: 1.46~K $\to$ 0.70, 0.64, 0.59~K for $s=0.40, 0.45, 0.50$.}
+\summary{Direction first. 15.7 $\to$ 5.3--4.0~mm, 1.46 $\to$ 0.59--0.70~K.}
+\src{Thesis, Section 9.1 (Q2), Table C.1.}
+\end{qabox}
+
+\begin{qabox}{Does the correction transfer to another flow? (Q5, the through-flow vessel)}
+\origin{predicted}{research question Q5, Chapter 7 and Section 9.1}
+\core{The operators transfer as a set, but not with a single setting, and they cannot create motion
+that is missing from the database.}
+\explain The vessel of a laboratory rig is fed through four ports at the lid or at the floor, has an
+outlet at half height and a turbulence model in its reference. I replayed both cases with one
+database recorded for the lid feed. Against the reference of each case the extended replay lowers the
+mean error over the seven sensor heights. The lid feed needed a weak vertical correction and
+down-gradient mixing under the lid, the floor feed a convective adjustment. Neither replay can create
+the plume of the floor feed. Nudged to the rig thermocouples, the replays cost 9 to 11 minutes.
+\nums{Lid feed 1.28 $\to$ 0.77~K. Floor feed 1.61 $\to$ 0.68~K. Nudged floor feed: 0.33~K extended
+vs 0.72~K standard. Speed-ups about 1,250 and 790.}
+\summary{Operators transfer, settings do not. A database belongs to a flow regime.}
+\src{Thesis, Chapter 7, Section 8.3, Section 8.4, Section 9.1 (Q5).}
 \end{qabox}
 
 \begin{qabox}{Which papers influenced you most?}

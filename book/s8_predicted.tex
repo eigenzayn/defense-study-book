@@ -7,11 +7,12 @@ rCFD records a flow once and replays it to carry a scalar. It was built for pass
 tested it on temperature, which drives its own flow (buoyant jet in a $75\times75\times15$~mm tank,
 Re 99). (1) No single mixing constant is best: the outlet sits under the front, so smearing
 drains heat. (2) A bounded, vertically weighted anti-diffusive correction brings the front from
-15.7 to 5.3/4.5~mm (reference 5.0), no value outside the data range. (3) Under wall cooling the
-replay was 4.34~K too warm because the reference used $c_p$ of air (1006.43) and the replay of
-water (4182); on one fluid 0.66~K, corrected 0.06~K on 9.62~K. (4) What remains is missing
-transport: a recorded flux cuts the heterogeneity error from 1.66 to 0.26~K. Take-home: a
-database belongs to a flow regime.
+15.7 to 5.3--4.0~mm (reference 5.0), no value outside the data range. (3) Under the cooled lid,
+on the fluid of the reference ($c_p=1006.43$), the standard replay ends 0.66~K low, the corrected
+one 0.06~K on 9.62~K of cooling; a database recorded without cooling removes only 63 per cent of
+the lid loss. (4) What remains is missing transport: a recorded flux cuts the heterogeneity error
+from 2.25 to 0.45~K. (5) In a laboratory vessel, one lid-fed database: mean error 1.28 $\to$ 0.77~K
+(lid feed) and 1.61 $\to$ 0.68~K (floor feed). Take-home: a database belongs to a flow regime.
 \end{summary}
 
 \pic{A cooking video recorded once (preparation) and replayed to cook many times (replay). It

@@ -69,7 +69,7 @@ That is my result: under the cooled lid the flow keeps renewing itself with cold
 that the adiabatic recording never saw. The answer of the lecture is multi-state rCFD: one database
 per process state.
 \summary{A database belongs to a flow regime, not to a case.}
-\src{Pirker, rCFD lecture, slide 59; thesis, Section 6.4, Figure 6.6.}
+\src{Pirker, rCFD lecture, slide 59; thesis, Section 6.3, Figures 2.2 and 6.3.}
 \end{qabox}
 
 \begin{qabox}{rCFD and digital twins. How would you use your work in a plant?}
@@ -97,163 +97,149 @@ function of the state, or train a neural operator on the database.
 
 \subsection{The figures of the thesis}
 
-For every figure, have three sentences ready: what is plotted, what we see, and why.
+For every figure, have three sentences ready: what is plotted, what we see, and why. Figure numbers
+follow the final thesis (PAS, 18 November 2026).
 
 \begin{qabox}{Figure 1.1 -- passive and non-passive transport.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
 \core{A dye only rides the flow, but temperature makes the flow, and the replay cuts this feedback.}
-\explain (a) A dye in the stored velocity of the adiabatic tank is only stretched. (b) In the cooled
-tank, cold plumes from the lid create the motion. (c) The replay moves temperature with recorded
-maps and never solves the velocity.
+\explain (a) The recorded flow carries the temperature. (b) Under a cooled lid, cold plumes from the
+lid govern the motion and mix the warm layer. (c) A replay with the flow of (a) cannot form the
+plumes, and the heat loss stays in a film under the lid. (d) compares the horizontal means.
 \summary{The whole thesis question in one figure.}
 \end{qabox}
 
-\begin{qabox}{Figure 2.2 -- recurrence of the database.}
+\begin{qabox}{Figure 2.2 -- recurrence of the two recordings.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
 \core{The flow has two phases, filling and settling, and no state comes back.}
-\explain The distance matrix has two blocks split at frame 315. The rows rise to a plateau and none
-returns towards zero. The prominence stays below what the method needs, so the replay plays the
-frames in order.
-\nums{Median prominence 0.028. Nearest-neighbour distance 0.013, only because neighbouring frames are similar.}
-\summary{Two blocks, no return, frames in order.}
+\explain (a) The distance matrix has two blocks split at frame 315, when the warm inflow stops.
+(b) After the inflow the cooled-lid flow keeps changing, the adiabatic one hardly changes. (c) The
+prominence stays below what the method asks for, so the replay plays the frames in order.
+\nums{Median prominence 0.028 and 0.027; only 4.0 and 3.7 per cent of the vectors reach 0.05.}
+\summary{Two blocks, no return, frames in order. Two lids, two regimes.}
 \end{qabox}
 
-\begin{qabox}{Figure 3.3 -- vertical heat transport and plume scale.}
-\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{Under the cooled lid, the flow carries heat about 600 times more than conduction.}
-\explain The plane-mean vertical heat flux is split into the part carried by the flow and the part
-carried by conduction. The temperature departures under the lid have the size of whole plumes. So
-cooling is a transport process, and a diffusive step cannot copy it.
-\summary{Cooling is transport, not diffusion.}
-\end{qabox}
-
-\begin{qabox}{Figures 3.4 and 3.5 -- the two regimes.}
+\begin{qabox}{Figure 3.2 -- the two reference flows.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
 \core{One boundary condition switches the flow from one regime to another.}
-\explain With the adiabatic lid the jet rises, spreads under the lid, and the warm layer then rests.
-With the cooled lid the layer above the front overturns in a row of cells driven by cold plumes.
-Same geometry, same inflow, two different flows.
+\explain Temperature and in-plane streamlines on the mid-plane at four stored states. With the
+adiabatic lid the warm layer circulates only slowly after the inflow and the thermocline stays at
+the height of the channels. With the cooled lid the layer above the thermocline overturns in a row
+of cells driven by cold plumes from the lid. Under the cooled lid the flow carries heat about 600
+times more than conduction.
 \summary{Same tank, same inflow, two flows.}
+\end{qabox}
+
+\begin{qabox}{Figure 4.2 -- anti-diffusion on a model front.}
+\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
+\core{Unlimited anti-diffusion explodes, the limited correction sharpens the front inside the data range.}
+\explain (a) With $\nu=-0.1$ a disturbance of 1~mK grows by 1.4 per step and leaves the data range
+by more than 1~K after 21 applications. (b) The limited correction at $s=0.25$ steepens the front
+without leaving the range. (c) The thickness falls from 8.8 to 4.4 cells after 30 applications and to
+0.9 after 60, with energy conserved to $10^{-11}$.
+\summary{Ill-posed without a limiter, safe with it.}
 \end{qabox}
 
 \begin{qabox}{Figure 5.1 -- the standard replay over the face-exchange sweep.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{More mixing heats the tank faster during the inflow and drains it faster afterwards.}
-\explain The mean temperature and the height of the heat are shown for seven strengths. The height
-is best at intermediate strengths, the mean temperature with little mixing. So no single strength is
-best for both.
+\core{Stronger mixing makes the replay too warm during the inflow and too cold after it.}
+\explain Mean temperature and rise of the centre of gravity for all strengths. The height is best
+near $\fsd=0.5$, the mean temperature with little mixing. So no single strength is best for both.
+\nums{At $\fsd=3$ the tank ends 5.08~K below the reference.}
 \summary{No single best $\fsd$.}
 \end{qabox}
 
-\begin{qabox}{Figure 5.2 -- the adiabatic tank through the run.}
-\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{The recorded maps keep the front thin, the face exchange smears it, and the correction makes it thin again.}
-\explain The mid-plane temperature is shown at four times, with the front width in each panel. The
-replay with maps only keeps the front as thin as the reference. So the smearing comes from the
-exchange, not from the maps.
-\summary{Maps: thin. Exchange: smeared. Correction: thin again.}
-\end{qabox}
-
-\begin{qabox}{Figure 5.3 -- space--time diagram.}
-\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{It shows the warm layer growing downwards and where the standard replay is too warm or too cold.}
-\explain The horizontal mean temperature is plotted against height and time. The difference panel
-shows the error of the standard replay, and the thickness panel shows that its front stays too
-thick. The corrected replay follows the reference.
-\summary{Height against time: the layer grows, the error is visible.}
-\end{qabox}
-
-\begin{qabox}{Figure 5.6 -- every correction run in one map.}
-\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{Only the vertically weighted form brings both errors down while the front reaches the reference width.}
-\explain Each marker is one replay: trace error and end-profile error against the front width. The
-other forms reach a thin front only with a large error. The working range of the vertical form is
-$s = 0.40$ to 0.50.
-\nums{Reference front 5.0~mm.}
-\summary{Direction matters more than strength.}
-\end{qabox}
-
-\begin{qabox}{Figure 5.7 -- buoyancy frequency across the front.}
-\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{A sharper front is a stronger barrier to vertical motion.}
-\explain The buoyancy frequency measures how strongly the stratification resists vertical motion.
-The standard replay holds a barrier about half as strong as the reference. The corrected replay
-reaches the reference value after the inflow.
-\derive
-\begin{align*}
-N^2 &= g\,\beta\,\frac{\partial T}{\partial y} \why{buoyancy frequency, Eq.~(3.3)}
-\end{align*}
-\summary{Steeper gradient, larger $N$, stronger barrier.}
-\end{qabox}
-
-\begin{qabox}{Figure 5.8 -- end profiles through the front.}
-\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{Read the width always together with the profile.}
-\explain Without correction the front is wide and too high. The unweighted correction makes it thin
-but puts it in the wrong place. The vertical weight follows the reference. A saw-toothed front can
-have the right width and the wrong shape.
-\summary{Right width is not enough: check the shape.}
-\end{qabox}
-
-\begin{qabox}{Figure 5.10 -- outlet temperature from the energy balance.}
+\begin{qabox}{Figure 5.2 -- why the outlet matters.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
 \core{The outlet sits just below the front, so a smeared front turns into a heat leak.}
-\explain While the inflow is warm the standard replay keeps heat in the tank, and afterwards it
-drains it. The vertical correction ends much closer. So a numerical error at the front becomes an
-error in the energy budget.
-\nums{Standard: $+2.7$~K kept at $t = 315$~s, ends at $-1.9$~K. Vertical correction ends at
-$-0.5$~K.}
+\explain Horizontal means of the reference and the standard replay at 150~s and 450~s, with the
+outlet as a grey band. During the inflow the replay releases colder fluid than the reference and
+keeps heat. After the inflow the diffused front reaches the outlet and the replay releases warmer
+fluid.
 \derive
 \begin{align*}
-M\frac{\mathrm{d}\bar T}{\mathrm{d}t} &= \dot m\,(T_{\mathrm{in}} - T_{\mathrm{out}}) \why{energy in minus out, Eq.~(4.10)} \\
-T_{\mathrm{out}} &= T_{\mathrm{in}} - \tau\,\frac{\mathrm{d}\bar T}{\mathrm{d}t},\quad \tau = M/\dot m \why{solve for the outlet, Eq.~(4.11)}
+M\frac{\mathrm{d}\bar T}{\mathrm{d}t} &= \dot m\,(T_{\mathrm{in}} - T_{\mathrm{out}}) \why{energy in minus out} \\
+T_{\mathrm{out}} &= T_{\mathrm{in}} - \tau\,\frac{\mathrm{d}\bar T}{\mathrm{d}t},\quad \tau = M/\dot m \why{solve for the outlet}
 \end{align*}
 \summary{Smeared front + outlet below it = heat leak.}
 \end{qabox}
 
-\begin{qabox}{Figure 5.11 -- state space.}
+\begin{qabox}{Figure 5.3 -- the adiabatic tank through the run.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{The correction keeps the replay close to the states that the recording spans.}
-\explain The two leading POD modes of the reference field are shown, and the distance of each run
-from the space of the first ten modes. The standard replay leaves this space and does not return.
-The corrected replay returns after the inflow.
-\summary{Corrected replay stays on the recorded state space.}
+\core{The recorded maps keep the front thin, the face exchange smears it, and the correction makes it thin again.}
+\explain Rows: reference, recorded advection only, standard replay, extended replay at $s=0.45$,
+with the 10--90 per cent thickness in each panel. The maps alone keep the front thin, so the
+smearing comes from the exchange, not from the maps.
+\summary{Maps: thin. Exchange: smeared. Correction: thin again.}
 \end{qabox}
 
-\begin{qabox}{Figure 6.2 -- wall-cooled end profiles.}
+\begin{qabox}{Figure 5.4 -- where the heat is wrong.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{The standard replay holds nearly the right heat, but in the wrong place.}
-\explain The bulk is too warm and the top layer too cold. The correction moves the heat back. This
-is why I report the mean temperature and the profile together.
-\nums{Standard replay: profile 2.79~K. Corrected at $s = 0.475$: 0.59~K.}
-\summary{Same heat, wrong place.}
+\core{The correction removes most of the heat-content error, the unweighted form does not.}
+\explain Deviation from the reference at 599~s without correction, with the vertical weight at
+$s=0.5$ and 0.7, and unweighted at $s=0.9$. The exchanges across vertical faces act along the
+thermocline and amplify ripples.
+\nums{Final deviation $-0.35$~K with the correction against $-1.69$~K without.}
+\summary{Vertical weight: small deviation. Unweighted: ripples.}
 \end{qabox}
 
-\begin{qabox}{Figure 6.3 -- wall-cooled traces.}
+\begin{qabox}{Figure 5.5 -- every correction run in one map.}
+\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
+\core{Only the vertically weighted form brings both errors down while the front reaches the reference width.}
+\explain Trace error and end-profile error against the thermocline thickness, one marker per run,
+with the Pareto front of the two errors. The working range of the vertical form is $s=0.40$ to 0.50.
+\nums{Reference thickness 5.0~mm; vertical form 5.3 to 4.0~mm.}
+\summary{Direction matters more than strength.}
+\end{qabox}
+
+\begin{qabox}{Figure 6.1 -- wall-cooled end state over the strength ladder.}
+\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
+\core{The departure is smallest at $s=0.55$.}
+\explain Departure from the reference in the upper part at $s=0$, 0.55 and 0.8, and the horizontal
+mean for all strengths. The cold top and the warm bulk of the standard replay fade together as $s$
+grows, until at 0.8 the top turns warm.
+\nums{Smallest mean departure 0.22~K at $s=0.55$.}
+\summary{Right layering at $s\approx0.55$.}
+\end{qabox}
+
+\begin{qabox}{Figure 6.3 -- heat removed through the lid on two recordings.}
+\origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
+\core{On the adiabatic recording the lid falls behind early and removes only 63 per cent of the reference loss.}
+\explain Power of the wall term and heat removed since the start, against the reference's 1575~J. On
+the adiabatic database a cold film stays under the lid and traps the warm layer below, because the
+recorded motion does not carry the cooled fluid away.
+\summary{Different regime $\to$ different database.}
+\end{qabox}
+
+\begin{qabox}{Figure 6.4 -- wall-cooled traces.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
 \core{The local correction follows the heat content but lags in layering while the tank fills.}
-\explain The red band shows how far the local correction lags in heterogeneity during the warm
-inflow. Only the recorded flux also follows the heterogeneity. A lag in layering is missing
-transport, not missing sharpness.
+\explain Mean temperature and heterogeneity with their departures. The gap between the corrected
+replay and the reference in heterogeneity during the warm inflow is missing transport. The recorded
+flux, shown as a test, closes it.
+\nums{Heterogeneity error 2.25~K $\to$ 0.45~K with the recorded flux at $s=0.475$.}
 \summary{Layering lag = missing transport.}
 \end{qabox}
 
-\begin{qabox}{Figures 6.4 and 6.5 -- end state and plumes.}
+\begin{qabox}{Figures 7.2 and 7.3 -- the through-flow vessel.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{The departure is smallest at $s = 0.55$, and only the corrected replay has plumes that reach the front.}
-\explain Along the strength ladder the cold top and the warm bulk fade together. At $s = 0.8$ the
-top turns warm. In 3D, the plumes of the standard replay end halfway down, and with the correction
-they reach the front again. The plumes were in the recorded maps all along.
-\nums{Smallest mean departure 0.22~K at $s = 0.55$.}
-\summary{Right layering lets the recorded plumes show.}
+\core{With one lid-fed database, the extended replay is closer to the reference for both feeds.}
+\explain Temperature at the seven thermocouple heights, heterogeneity and outlet temperature. In
+the floor-fed case the standard replay loses almost all heterogeneity after the pulse, while the
+extended replay keeps about half of it. Neither can create the floor plume, because the database is
+lid-fed.
+\nums{Mean error lid feed 1.28 $\to$ 0.77~K, floor feed 1.61 $\to$ 0.68~K. Mean $H$ 600--714~s: 0.05~K
+standard, 0.61~K extended, 1.14~K reference.}
+\summary{Operators transfer, settings do not, motion cannot be invented.}
 \end{qabox}
 
-\begin{qabox}{Figure 6.6 -- recurrence of the two recordings.}
+\begin{qabox}{Figure 7.6 -- why the vessel replays err.}
 \origin{predicted}{no past questions from Prof.~Pirker yet; predicted from his lecture and the thesis figures}
-\core{After the inflow the cooled flow keeps renewing itself, and the adiabatic flow hardly changes.}
-\explain At short lags the cooled flow changes about ten times faster. So the cooled case is a
-different regime, and a database recorded without cooling cannot contain its motion.
-\summary{Different regime $\to$ different database.}
+\core{The face exchange at $\fsd=160$ mixes far more than the turbulence of the references.}
+\explain Volume share of cells below a given diffusivity, the vertical exchange as a multiple of the
+feed, and the gradient ratio replay over reference. The standard replay hides the missing motion
+behind a diffusivity 12 to 17 times larger than the largest eddy diffusivity of the references.
+\summary{Too much mixing hides missing motion.}
 \end{qabox}
 
 \subsection{CFD basics behind rCFD}

@@ -105,6 +105,9 @@ code{font-size:13.5px;background:var(--q-bg);padding:1px 4px;border-radius:4px}
   <div class="tools">
     <a href="Defense_Study_Book.pdf">PDF</a>
     <a href="presentation/">Slides</a>
+    <a href="oral_exam_v2/">Oral exam</a>
+    <a href="qbank/">Question bank</a>
+    <a href="https://eigenzayn.github.io/committee-exam-prep/jawaban.html">Committee answers + audio (Nov)</a>
     <button id="fold">Fold all</button>
     <button id="theme">Theme</button>
   </div>
@@ -114,7 +117,7 @@ code{font-size:13.5px;background:var(--q-bg);padding:1px 4px;border-radius:4px}
     <button data-k="e">Course exam</button>
     <button data-k="p">Predicted</button>
   </div>
-  <a class='l1' href='#s0'>How this book works</a><a class='l1' href='#s1'>Empirical risk minimization</a><a class='l1' href='#s2'>Backpropagation and the delta error</a><a class='l1' href='#s3'>Training: optimizers, activations, regularization</a><a class='l1' href='#s4'>Recurrent networks and LSTM (Prof. Hochreiter)</a><a class='l2' href='#s5'>Recurrent networks and BPTT</a><a class='l2' href='#s6'>LSTM</a><a class='l2' href='#s7'>Beyond LSTM: xLSTM, Mamba, Hopfield</a><a class='l1' href='#s8'>Attention and Transformers</a><a class='l1' href='#s9'>Classical ML asked in the same slot</a><a class='l1' href='#s10'>rCFD and CFD (Prof. Pirker)</a><a class='l1' href='#s11'>Predicted questions and rapid-fire drill</a><a class='l2' href='#s12'>Thesis questions (first 5 minutes)</a><a class='l2' href='#s13'>Rapid-fire (say it in one breath)</a><a class='l1' href='#s14'>Conversation chains</a><a class='l2' href='#s15'>Doors to open and doors to keep closed</a><a class='l1' href='#s16'>Hot topics and the Linz school</a><a class='l2' href='#s17'>The Linz school (IML, JKU)</a><a class='l2' href='#s18'>Hot topics 2025–2026</a><a class='l1' href='#s19'>ML: Advanced Techniques (Brandstetter, Holzleitner)</a><a class='l2' href='#s20'>Generative models and AI for physics (Brandstetter)</a><a class='l2' href='#s21'>Statistical theory (Holzleitner)</a><a class='l1' href='#s22'>New 2025 courses: Geometric DL, Unsupervised, DL Architectures</a><a class='l2' href='#s23'>Deep Learning: Geometric Techniques</a><a class='l2' href='#s24'>ML: Unsupervised Techniques</a><a class='l2' href='#s25'>Deep Learning: Architectures and Generative Techniques</a><a class='l1' href='#s26'>October 2026: the newest questions, derived step by step</a>
+  <a class='l1' href='#s0'>How this book works</a><a class='l1' href='#s1'>Empirical risk minimization</a><a class='l1' href='#s2'>Backpropagation and the delta error</a><a class='l1' href='#s3'>Training: optimizers, activations, regularization</a><a class='l1' href='#s4'>Recurrent networks and LSTM (Prof. Hochreiter)</a><a class='l2' href='#s5'>Recurrent networks and BPTT</a><a class='l2' href='#s6'>LSTM</a><a class='l2' href='#s7'>Beyond LSTM: xLSTM, Mamba, Hopfield</a><a class='l1' href='#s8'>Attention and Transformers</a><a class='l1' href='#s9'>Classical ML asked in the same slot</a><a class='l1' href='#s10'>rCFD and CFD (Prof. Pirker)</a><a class='l1' href='#s11'>Predicted questions and rapid-fire drill</a><a class='l2' href='#s12'>Thesis questions (first 5 minutes)</a><a class='l2' href='#s13'>Rapid-fire (say it in one breath)</a><a class='l1' href='#s14'>Conversation chains</a><a class='l2' href='#s15'>Doors to open and doors to keep closed</a><a class='l1' href='#s16'>Hot topics and the Linz school</a><a class='l2' href='#s17'>The Linz school (IML, JKU)</a><a class='l2' href='#s18'>Hot topics 2025–2026</a><a class='l1' href='#s19'>ML: Advanced Techniques (Brandstetter, Holzleitner)</a><a class='l2' href='#s20'>Generative models and AI for physics (Brandstetter)</a><a class='l2' href='#s21'>Statistical theory (Holzleitner)</a><a class='l1' href='#s22'>New 2025 courses: Geometric DL, Unsupervised, DL Architectures</a><a class='l2' href='#s23'>Deep Learning: Geometric Techniques</a><a class='l2' href='#s24'>ML: Unsupervised Techniques</a><a class='l2' href='#s25'>Deep Learning: Architectures and Generative Techniques</a><a class='l1' href='#s26'>October 2026: the newest questions, derived step by step</a><a class='l1' href='#s27'>November 2026: the newest report and the examiner Hoedt</a>
 </nav>
 <main>
   <h1>Defense Study Book</h1>
@@ -707,7 +710,7 @@ the lecture, $d&lt;0.5$.
 <p><b class='lbl'>Say:</b> First-order upwind is stable but adds false diffusion that smears fronts. In my replay the
 smearing comes from the face exchange, not the maps (maps only keep the front at 2–4&nbsp;mm). My
 correction is an anti-diffusive step bounded like flux-corrected transport: conservative, no new
-extremum, front 15.7 $\to$ 5.3/4.5&nbsp;mm against 5.0&nbsp;mm.
+extremum, front 15.7 $\to$ 5.3–4.0&nbsp;mm against 5.0&nbsp;mm.
 </div></details>
 <details class='card qa k-p' open><summary class='ttl'><span>Q · <span class='badge b-p'>PREDICTED</span> rCFD and digital twins.</span><span class='who'>Pirker</span></summary><div class='bd'><p class='from'><b>From:</b> Numerical Methods in Fluid Mechanics (Pirker) · rCFD slides 59–72 digital twins · predicted</p>
 <p><b class='lbl'>Say:</b> CSTR models are instant but blind to heterogeneity; CFD sees it but takes days. rCFD built on
@@ -730,11 +733,12 @@ rCFD records a flow once and replays it to carry a scalar. It was built for pass
 tested it on temperature, which drives its own flow (buoyant jet in a $75\times75\times15$&nbsp;mm tank,
 Re 99). (1) No single mixing constant is best: the outlet sits under the front, so smearing
 drains heat. (2) A bounded, vertically weighted anti-diffusive correction brings the front from
-15.7 to 5.3/4.5&nbsp;mm (reference 5.0), no value outside the data range. (3) Under wall cooling the
-replay was 4.34&nbsp;K too warm because the reference used $c_p$ of air (1006.43) and the replay of
-water (4182); on one fluid 0.66&nbsp;K, corrected 0.06&nbsp;K on 9.62&nbsp;K. (4) What remains is missing
-transport: a recorded flux cuts the heterogeneity error from 1.66 to 0.26&nbsp;K. Take-home: a
-database belongs to a flow regime.
+15.7 to 5.3–4.0&nbsp;mm (reference 5.0), no value outside the data range. (3) Under the cooled lid,
+on the fluid of the reference ($c_p=1006.43$), the standard replay ends 0.66&nbsp;K low, the corrected
+one 0.06&nbsp;K on 9.62&nbsp;K of cooling; a database recorded without cooling removes only 63 per cent of
+the lid loss. (4) What remains is missing transport: a recorded flux cuts the heterogeneity error
+from 2.25 to 0.45&nbsp;K. (5) In a laboratory vessel, one lid-fed database: mean error 1.28 $\to$ 0.77&nbsp;K
+(lid feed) and 1.61 $\to$ 0.68&nbsp;K (floor feed). Take-home: a database belongs to a flow regime.
 </div></div>
 <div class='pic'><b>Picture it.</b> A cooking video recorded once (preparation) and replayed to cook many times (replay). It
 works for soup that just gets stirred (passive scalar). For bread that rises by itself (buoyancy),
@@ -1451,6 +1455,80 @@ stride or pooling, and dilation.
 Three $3\times3$ layers, stride 1: $r=1+2+2+2=7$. Stride or pooling 2 doubles $j$. Dilation $d$: effective kernel
 $d(k-1)+1$. Pooling (max or average) has no weights, shrinks the map, enlarges later receptive fields and adds a
 little shift invariance. Global average pooling gives one vector per image or sequence.
+</div></details>
+<h2 id='s27'>November 2026: the newest report and the examiner Hoedt</h2>
+<div class='card sum'><div class='ttl'>2-minute summary · What was asked, and what it means for the committee Zoitl, Hoedt, Pirker</div><div class='bd'>
+<b>November 2026</b> (chair Kofler, ML&amp;P Küng, AI&amp;LS Luukkonen): the student wrote the maximum-likelihood
+formula instead of the empirical risk and was guided to it. Then: what happens when $N\to\infty$, and what makes
+deep networks powerful from a computational point of view (“nested functions”). The defense was strictly
+timed.  <b>September 2026</b> (ML&amp;P Hoedt): what is a neural network and a single neuron, why “network”, why a
+non-linear activation, why deep networks instead of simpler models, then backprop and $\delta^{[l]}$.  <b>Rule:</b> write the simplest correct formula first and let the examiner steer. Answer from the examiner's
+own research: Hoedt wrote the chapters on learning methods, initialization and higher-order optimization of the
+DLNN script. Full answers with audio: \url{https://eigenzayn.github.io/committee-exam-prep/jawaban.html}.
+</div></div>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Write down empirical risk minimization. How is it different from maximum likelihood?</span><span class='who'>Küng</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;5 ERM, Ch.&nbsp;4 linear model · asked November 2026</p>
+<p><b class='lbl'>Say:</b> ERM picks the parameters that minimise the average loss on the training data. Maximum likelihood picks
+the parameters that make the observed labels most probable. They coincide when the loss is the negative log
+of the model's probability, for example squared loss with Gaussian noise or cross-entropy with a Bernoulli
+or softmax output.
+<p><b class='lbl'>Write:</b>  Step 1, the empirical risk, for any model $g$ and any loss $L$:
+\[ \Remp(\mathbf w)=\frac1N\sum_{n=1}^N L\bigl(y_n,g(\mathbf x_n;\mathbf w)\bigr),\qquad \hat{\mathbf w}=\arg\min_{\mathbf w}\Remp(\mathbf w). \]
+Step 2, the likelihood of independent labels, and its negative logarithm:
+\[ p(\mathbf y\mid X,\mathbf w)=\prod_{n=1}^N p(y_n\mid\mathbf x_n,\mathbf w),\qquad
+-\log p=\sum_{n=1}^N -\log p(y_n\mid\mathbf x_n,\mathbf w). \]
+Step 3, choose $L(y,g)=-\log p(y\mid\mathbf x,\mathbf w)$. Then $-\log p = N\,\Remp$, so maximising the likelihood
+is minimising the empirical risk. Gaussian noise gives $-\log p=\frac N2\log(2\pi\sigma^2)+\frac1{2\sigma^2}\sum_n(y_n-g_n)^2$:
+the squared loss.
+<p><b class='lbl'>Follow-up:</b> “Is every loss a likelihood?” No. The zero-one loss or a hinge loss is not the negative log of a
+probability model, but it is still a valid loss for ERM.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> What happens when the number of samples goes to infinity?</span><span class='who'>Küng</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;5 generalization error, test set · asked November 2026</p>
+<p><b class='lbl'>Say:</b> For a fixed model the empirical risk converges to the true risk, by the law of large numbers. The
+catch is that the parameters were chosen on the same data, so the training error is optimistic; that is
+why we need a separate test set.
+<p><b class='lbl'>Write:</b>  Risk and its estimate:
+\[ \Rgen(\mathbf w)=\mathbb E_{(\mathbf x,y)\sim p}\bigl[L(y,g(\mathbf x;\mathbf w))\bigr]
+=\int L(y,g(\mathbf x;\mathbf w))\,p(\mathbf x,y)\,\mathrm d\mathbf x\,\mathrm dy . \]
+For fixed $\mathbf w$ the losses $L_n$ are i.i.d. with mean $\Rgen(\mathbf w)$, so
+\[ \Remp(\mathbf w)=\frac1N\sum_n L_n\;\xrightarrow{N\to\infty}\;\Rgen(\mathbf w),\qquad
+\operatorname{Var}\bigl(\Remp\bigr)=\frac{\operatorname{Var}(L)}{N}. \]
+The error of the estimate shrinks like $1/\sqrt N$.
+<p><b class='lbl'>Follow-up:</b> “And for $\hat{\mathbf w}$?” With more data the gap between training and test error closes,
+because a fixed model class can fit less of the noise.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> What makes deep networks so powerful from a computational perspective?</span><span class='who'>Küng</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;4 deep feed-forward networks, Eq.&nbsp;(4.74) · asked November 2026</p>
+<p><b class='lbl'>Say:</b> A deep network is a composition of simple functions, a function of a function of a function. Each
+layer reuses what the layer below computed, and the chain rule over this composition gives all gradients in
+one backward pass, at a cost linear in the number of weights.
+<p><b class='lbl'>Write:</b>  The nested function and the cost:
+\[ \hat{\mathbf y}=\sigma\Bigl(W^{[L]}\,f\bigl(\cdots f\bigl(W^{[2]}f(W^{[1]}\mathbf x)\bigr)\cdots\bigr)\Bigr),\qquad
+\text{forward and backward pass: } O(W). \]
+Backward along the composition: $\boldsymbol\delta^{[l-1]T}=\boldsymbol\delta^{[l]T}W^{[l]}\operatorname{diag}\bigl(f'(\mathbf s^{[l-1]})\bigr)$, and
+$\partial L/\partial W^{[l]}$ uses $\boldsymbol\delta^{[l]}$ and $\mathbf a^{[l-1]}$.
+<p><b class='lbl'>Follow-up:</b> “Is one hidden layer not enough?” In principle yes, by the universal approximation theorem, but the
+theorem does not say how many units are needed, and composition reuses features instead.
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> What is a neural network, what is a single neuron, and why is it a “network”?</span><span class='who'>Hoedt</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I), lecturers Klambauer and Hoedt · Ch.&nbsp;4 · asked September 2026</p>
+<p><b class='lbl'>Say:</b> A neuron forms a weighted sum of its inputs plus a bias and passes it through an activation function. A
+network connects many neurons so that the output of one becomes the input of others; in a feed-forward net they
+are arranged in layers.
+<p><b class='lbl'>Write:</b>  \[ s_i=\sum_j w_{ij}a_j+b_i,\qquad a_i=f(s_i),\qquad \mathbf a^{[l]}=f\bigl(W^{[l]}\mathbf a^{[l-1]}+\mathbf b^{[l]}\bigr). \]
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Why is a non-linear activation necessary, and why deep networks instead of simpler models?</span><span class='who'>Hoedt</span></summary><div class='bd'><p class='from'><b>From:</b> DL Basic Techniques (DLNN I) · Ch.&nbsp;4 XOR; DLNN II Ch.&nbsp;13 universal approximation · asked September 2026</p>
+<p><b class='lbl'>Say:</b> Without a non-linearity the layers collapse into one linear map, which cannot even solve XOR. With
+one, a network can approximate any continuous function on a compact set, it reuses features through
+composition, and backpropagation makes it trainable at scale.
+<p><b class='lbl'>Write:</b>  Collapse: $W_2(W_1\mathbf x+\mathbf b_1)+\mathbf b_2=W'\mathbf x+\mathbf b'$. XOR with $g=x_1w_1+x_2w_2$: inputs $(1,0)$ and $(0,1)$ give
+$w_1=w_2=1$, then $(1,1)$ demands $0=2$. With ReLU, $W=\begin{pmatrix}1&amp;1\\1&amp;1\end{pmatrix}$, $\mathbf b=\begin{pmatrix}0\\-1\end{pmatrix}$,
+$\mathbf w=\begin{pmatrix}1\\-2\end{pmatrix}$ maps $(0,0),(1,0),(0,1),(1,1)$ to $0,1,1,0$.
+<p><b class='lbl'>Follow-up:</b> Then define $\delta^{[l]}=\partial L/\partial\mathbf s^{[l]}$ and derive the recursion (Chapter on backprop).
+</div></details>
+<details class='card qa k-a' open><summary class='ttl'><span>Q · <span class='badge b-a'>ASKED BEFORE</span> Advice from the November 2026 defense</span><span class='who'>Defense</span></summary><div class='bd'><p class='from'><b>From:</b> report of November 2026 (chair Kofler)</p>
+<p><b class='lbl'>Say:</b> Keep the presentation inside the time, because the committee was strict and the student had to skip
+slides. The committee asks about what it does not understand, since you are the expert on your topic. A
+typical question is what you would do differently if you started again.
+<p><b class='lbl'>Follow-up:</b> For this thesis: “I would plan a second mesh and a comparison with measurements from the start,
+and record only the kinematic part of the flux so that it can transfer.”
 </div></details>
 
 </main>

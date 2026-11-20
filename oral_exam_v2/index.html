@@ -108,16 +108,16 @@ body:not(.practice) .reveal { display: none; }
 </header>
 <div class="wrap">
 <nav><ul>
-<li><a href="#part-A">A. Thesis</a> <span class="n">(19)</span><ul><li><a href="#A-1">The talk in 15 minutes</a></li><li><a href="#A-2">Questions on the thesis</a></li></ul></li>
+<li><a href="#part-A">A. Thesis</a> <span class="n">(21)</span><ul><li><a href="#A-1">The talk in 15 minutes</a></li><li><a href="#A-2">Questions on the thesis</a></li></ul></li>
 <li><a href="#part-B">B. Machine Learning and Perception</a> <span class="n">(33)</span><ul><li><a href="#B-1">Empirical risk minimization and generalization</a></li><li><a href="#B-2">From one neuron to a deep network</a></li><li><a href="#B-3">Backpropagation and the delta error</a></li><li><a href="#B-4">Gradient descent and optimizers</a></li><li><a href="#B-5">Activation functions, regularization, initialization</a></li><li><a href="#B-6">Convolutional networks</a></li><li><a href="#B-7">Recurrent networks and LSTM</a></li><li><a href="#B-8">Attention and Transformers</a></li><li><a href="#B-9">Classical machine learning in the same slot</a></li></ul></li>
-<li><a href="#part-C">C. AI for Simulation (rCFD)</a> <span class="n">(33)</span><ul><li><a href="#C-1">Recurrence CFD as taught in the lecture</a></li><li><a href="#C-2">The figures of the thesis</a></li><li><a href="#C-3">CFD basics behind rCFD</a></li></ul></li>
+<li><a href="#part-C">C. AI for Simulation (rCFD)</a> <span class="n">(31)</span><ul><li><a href="#C-1">Recurrence CFD as taught in the lecture</a></li><li><a href="#C-2">The figures of the thesis</a></li><li><a href="#C-3">CFD basics behind rCFD</a></li></ul></li>
 </ul>
 <p class="intro" style="font-size:13px">Asked before: in the list of past defenses, with the examiner. Predicted: not in that list. PDF version: <a href="oral_exam_v2.pdf">oral_exam_v2.pdf</a>.</p>
 </nav>
 <main>
 <section id="part-A"><h2>A. Thesis</h2><p class="intro">Thesis: <em>Data-based Numerical Simulation of Buoyant Jet Flow</em>. Supervisor: Prof. Stefan
-Pirker. Every number here is taken from the thesis of 10 October 2026. Equation and figure numbers
-refer to that version; the derivations follow Appendix&nbsp;D of the thesis.</p>
+Pirker. Every number here is taken from the final thesis uploaded to PAS on 18 November 2026.
+Equation and figure numbers refer to that version; the derivations follow Appendix&nbsp;D of the thesis.</p>
 <h3 id="A-1">The talk in 15 minutes</h3>
 <p class="intro">Build the talk on three claims, not on the chapters. One slide is about one minute.</p>
 <table class="talk"><tr><td>Min</td><td>Slide</td><td>What you say</td></tr><tr><td>0&ndash;1</td><td>Title</td><td>Recurrence CFD records a flow once and replays it many times. I test it on a scalar
@@ -126,9 +126,11 @@ refer to that version; the derivations follow Appendix&nbsp;D of the thesis.</p>
   315&nbsp;s. $Re \approx 99$, laminar. Two lids: adiabatic and cooled.</td></tr><tr><td>4&ndash;6</td><td>Method</td><td>The preparation writes 600 frames. One replay step: recorded advection, face
   exchange, correction, conservation constraint. About 260 times cheaper.</td></tr><tr><td>6&ndash;8</td><td>Claim 1</td><td>No single mixing constant is best. The outlet sits just below the front, so a
   smeared front drains heat.</td></tr><tr><td>8&ndash;11</td><td>Claim 2</td><td>A bounded anti-diffusive correction, weighted to the vertical. Front 15.7&nbsp;mm
-  $\to$ 5.3 to 4.5&nbsp;mm, reference 5.0&nbsp;mm. Error of the mean temperature more than halved.</td></tr><tr><td>11&ndash;13</td><td>Claim 3</td><td>Under the cooled lid, on the fluid of the reference, the correction at
-  $s \approx 0.55$ ends 0.06&nbsp;K off on 9.62&nbsp;K of cooling.</td></tr><tr><td>13&ndash;14</td><td>What remains</td><td>While the tank fills, the layers separate too slowly. A flux read from the
-  recording reduces this error from 2.25 to 0.45&nbsp;K, but the tank then ends 0.86&nbsp;K too cold.</td></tr><tr><td>14&ndash;15</td><td>Take-home</td><td>A database belongs to a flow regime, not to a case. A numerical error at a
+  $\to$ 5.3 to 4.0&nbsp;mm, reference 5.0&nbsp;mm. Trace error at $\fsd=0.5$: 1.46 $\to$ 0.70&ndash;0.59&nbsp;K.</td></tr><tr><td>11&ndash;12</td><td>Claim 3</td><td>Under the cooled lid, on the fluid of the reference, the correction at
+  $s \approx 0.55$ ends 0.06&nbsp;K off on 9.62&nbsp;K of cooling. The adiabatic database removes only
+  63 per cent of the lid loss.</td></tr><tr><td>12&ndash;13</td><td>What remains</td><td>While the tank fills, the layers separate too slowly. A flux read from the
+  recording reduces this error from 2.25 to 0.45&nbsp;K, but the tank then ends 0.86&nbsp;K too cold.</td></tr><tr><td>13&ndash;14</td><td>Vessel</td><td>One lid-fed database for a lab vessel fed at the lid or the floor. Mean error
+  1.28 $\to$ 0.77&nbsp;K and 1.61 $\to$ 0.68&nbsp;K. The operators transfer, a single setting does not.</td></tr><tr><td>14&ndash;15</td><td>Take-home</td><td>A database belongs to a flow regime, not to a case. A numerical error at a
   front becomes an energy error near an outlet.</td></tr></table>
 <div class="tip"><strong>The thesis in one sentence.</strong> &ldquo;I tested recurrence CFD on temperature, a scalar that drives
 its own flow. A bounded anti-diffusive correction removes the smearing of the front. The one defect
@@ -164,7 +166,7 @@ nearest-neighbour search in a database of states, the method of analogues. My ma
 generalization: a database belongs to a flow regime. A boundary condition that changes the regime
 makes the database out of distribution.</p>
 <p class="summary"><span>Summary:</span> Database = training data. New regime = out of distribution.</p>
-<p class="src">Source: Thesis, Section 2.2 and Section 6.4.</p></div></details>
+<p class="src">Source: Thesis, Section 2.2 and Section 6.3.</p></div></details>
 <details class="qa predicted" open data-text="what is the recurrence matrix, and is your flow recurrent? your thesis: everything you used can be asked"><summary><span class="qid">A5</span> What is the recurrence matrix, and is your flow recurrent?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The matrix compares every pair of recorded states, and my flow is not recurrent.</p><div class="rest"><p><span class="lab">Explain.</span> A small distance means two states are similar, so the replay could jump between them. In
 my tank the matrix has two blocks, filling and settling, and no state comes back. So the replay
 plays the frames in order. It is still rCFD, but the saving comes only from not solving velocity
@@ -209,18 +211,20 @@ G &amp;= 1 + 4\lvert\nu\rvert \why{shortest mode $k\Delta x = \pi$, $\nu&lt;0$}
 \end{align*}\]</div>
 <p>$\lvert G\rvert &gt; 1$, so the shortest mode grows in every step.</p>
 <p class="summary"><span>Summary:</span> Negative diffusion grows wiggles. Keep the steepening, limit the rest.</p>
-<p class="src">Source: Thesis, Section 4.2.2, Eq.&nbsp;(4.13), Figure 4.1.</p></div></details>
+<p class="src">Source: Thesis, Section 4.2.2, Eq.&nbsp;(4.19), Figure 4.2.</p></div></details>
 <details class="qa predicted" open data-text="explain your limiter. your thesis: everything you used can be asked"><summary><span class="qid">A9</span> Explain your limiter.<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> Each face may move heat up the gradient only as far as both cells stay inside their local bounds.</p><div class="rest"><p><span class="lab">Explain.</span> For every cell I take the smallest and the largest value of the cell and its neighbours.
 Across a face, heat moves from the colder to the warmer cell. The amount is the smaller of the two
 headrooms, times a strength $s$. This is the limiter idea of flux-corrected transport, by Zalesak.</p>
 <div class="lab">Derivation</div>
 <div class="math">\[\begin{align*}
-Q_h^{+} &amp;= C_h\,(T_h^{\max} - T_h),\quad Q_c^{-} = C_c\,(T_c - T_c^{\min}) \why{headrooms, Eq.~(4.15)} \\
-\Delta q_f &amp;= s\,\min(Q_h^{+},Q_c^{-}) \why{limited exchange, Eq.~(4.16)} \\
-C_i\,\Delta T_i &amp;\le n_f\,s\,Q_i^{+} \why{at most $n_f$ faces bring heat} \\
-T_i + \Delta T_i &amp;\le T_i^{\max} \quad\text{if}\quad s \le 1/n_f = 1/6 \why{Eq.~(4.17)}
+Q_h^{+} &amp;= C_h\,(T_h^{\max} - T_h),\quad Q_c^{-} = C_c\,(T_c - T_c^{\min}) \why{headrooms, Eq.~(4.21)} \\
+\Delta q_f &amp;= s\,\min(Q_h^{+},Q_c^{-}) \why{limited exchange, Eq.~(4.22)} \\
+C_i\,\Delta T_i &amp;\le s\,Q_i^{+}\textstyle\sum_{f\ni i} w_f \why{weights $w_f\le1$ scale each face} \\
+T_i + \Delta T_i &amp;\le T_i^{\max} \quad\text{if}\quad s\textstyle\sum_f w_f \le 1 \why{Eq.~(4.23)} \\
+\textstyle\sum_f w_f &amp;= 6 \Rightarrow s\le\tfrac16,\qquad \textstyle\sum_f w^{\mathrm{dir}}_f = 2 \Rightarrow s\le\tfrac12 \why{unweighted vs vertical weight}
 \end{align*}\]</div>
-<p class="summary"><span>Summary:</span> Smaller headroom times $s$. Conservative, no new extremum, safe for $s \le 1/6$.</p>
+<p class="summary"><span>Summary:</span> Smaller headroom times $s$. Conservative, no new extremum. Safe for $s\le1/6$ unweighted and
+$s\le1/2$ with the vertical weight, which covers the working range 0.40&ndash;0.50.</p>
 <p class="src">Source: Thesis, Section 4.2.3; Appendix D.4.</p></div></details>
 <details class="qa predicted" open data-text="why the direction weight? your thesis: everything you used can be asked"><summary><span class="qid">A10</span> Why the direction weight?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The front is horizontal, so the correction should act across it and not along it.</p><div class="rest"><p><span class="lab">Explain.</span> Each face gets the weight $\cos^2$ of the angle between its link and the vertical. Faces
 across the front get one, faces along it get zero. Without the weight the correction roughens the
@@ -230,10 +234,10 @@ direction only.</p>
 <div class="math">\[\begin{align*}
 K_f &amp;= \hat{\mathbf{e}}^{\mathsf{T}}\mathbf{K}\,\hat{\mathbf{e}} \why{two-point face coefficient} \\
     &amp;= K\,(\hat{\mathbf{e}}\cdot\hat{\mathbf{n}})^2 \why{rank-one tensor $\mathbf{K} = K\hat{\mathbf{n}}\hat{\mathbf{n}}^{\mathsf{T}}$} \\
-    &amp;= K\,w^{\mathrm{dir}}_f \why{Eq.~(4.21)}
+    &amp;= K\,w^{\mathrm{dir}}_f \why{Eq.~(4.25)}
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Act across the front: $\cos^2$ weight = one-direction diffusion.</p>
-<p class="src">Source: Thesis, Section 4.2.4, Eqs.&nbsp;(4.19), (4.21).</p></div></details>
+<p class="src">Source: Thesis, Section 4.2.4, Eqs.&nbsp;(4.24)&ndash;(4.25); Section 8.5, Eq.&nbsp;(D.1).</p></div></details>
 <details class="qa predicted" open data-text="the recorded diffusivity did not help. why? your thesis: everything you used can be asked"><summary><span class="qid">A11</span> The recorded diffusivity did not help. Why?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The recorded values are larger than the explicit exchange can apply, so every face hits the cap.</p><div class="rest"><p><span class="lab">Explain.</span> The library exchanges at most half a cell volume per face and step. The recorded
 diffusivity asks for about nine times more. So every face exchanges the maximum, and the field acts
 exactly like the constant $\fsd = 0.5$. The replays are bit-identical, which proves it. A shorter
@@ -244,20 +248,24 @@ step or an implicit exchange would let the field act.</p>
 \mathrm{Di} &amp;= D\,\Delta t/c_s^{2} \le 0.5 \why{the cap as a diffusion number, Eq.~(2.16)}
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Recorded $D$ above the cap $\to$ acts like a constant.</p>
-<p class="src">Source: Thesis, Section 5.2.1, Figure 5.4.</p></div></details>
-<details class="qa predicted" open data-text="what happened under the cooled lid? your thesis: everything you used can be asked"><summary><span class="qid">A12</span> What happened under the cooled lid?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> On the fluid of the reference, the corrected replay ends 0.06&nbsp;K from the reference.</p><div class="rest"><p><span class="lab">Explain.</span> The reference fluid has the specific heat 1006.43&nbsp;J/(kg&thinsp;K). A replay given the specific
-heat of water cools four times less for the same wall power, and ends 4.34&nbsp;K too warm. On the right
-fluid the replay is close, and the correction puts the heat back in the right layer.</p>
+<p class="src">Source: Thesis, Sections 5.2.1 and 6.1.3.</p></div></details>
+<details class="qa predicted" open data-text="what happened under the cooled lid? your thesis: everything you used can be asked"><summary><span class="qid">A12</span> What happened under the cooled lid?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> On the fluid of the reference, the corrected replay ends 0.06&nbsp;K from the reference.</p><div class="rest"><p><span class="lab">Explain.</span> The reference fluid has the specific heat 1006.43&nbsp;J/(kg&thinsp;K), the solver default for air,
+and the wall term divides by it. So the replay must use the same value; with the specific heat of
+water it would cool about four times less (factor $1006.43/4182=0.2407$). With the database recorded
+under the cooled lid, the standard replay removes 98 per cent of the lid loss, and the correction
+puts the heat back in the right layer. The adiabatic database removes only 63 per cent: the cooled
+fluid that should sink is missing from its recorded motion.</p>
 <p><span class="lab">Numbers.</span> Cooling depth 9.62&nbsp;K. Without correction $-0.66$&nbsp;K. With correction at $s\approx0.55$:
-$+0.06$&nbsp;K, end profile 0.41&nbsp;K.</p>
+$+0.06$&nbsp;K, end profile 0.41&nbsp;K. Adiabatic database: 63 per cent of the lid loss.</p>
 <div class="lab">Derivation</div>
 <div class="math">\[\begin{align*}
-\Delta T_{\mathrm{cell}} &amp;= -\frac{q\,\Delta t}{\rho\,c_p\,V} \why{wall loss of one cell, Eq.~(4.25)} \\
-\frac{\Delta T_{\mathrm{rep}}}{\Delta T_{\mathrm{case}}} &amp;= \frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} = \frac{1006.43}{4182} = \frac{1}{4.155} \why{same power, two specific heats} \\
-h_{\mathrm{eff}} &amp;= G\,h\,\frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} \why{Eq.~(4.26)}
+\Delta T_{\mathrm{cell}} &amp;= -\frac{q\,\Delta t}{\rho\,c_p\,V} \why{wall loss of one cell, Eq.~(4.29)} \\
+\frac{\Delta T_{\mathrm{rep}}}{\Delta T_{\mathrm{case}}} &amp;= \frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} = \frac{1006.43}{4182} = 0.2407 \why{same power, two specific heats} \\
+h_{\mathrm{eff}} &amp;= G\,h\,\frac{c_{\mathrm{case}}}{c_{\mathrm{rep}}} \why{Eq.~(D.2)}
 \end{align*}\]</div>
-<p class="summary"><span>Summary:</span> Same fluid on both sides first. Then the correction does the rest.</p>
-<p class="src">Source: Thesis, Sections 6.1&ndash;6.2; Appendix D.5.</p></div></details>
+<p class="summary"><span>Summary:</span> Same fluid on both sides first. Then the correction does the rest. A database recorded
+without cooling cannot cool enough.</p>
+<p class="src">Source: Thesis, Section 4.3.1, Sections 6.1&ndash;6.3, Table 6.2; Appendix D.</p></div></details>
 <details class="qa predicted" open data-text="what could not be repaired, and why? your thesis: everything you used can be asked"><summary><span class="qid">A13</span> What could not be repaired, and why?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> While the tank fills, the layers separate too slowly, and no local rule can fix that.</p><div class="rest"><p><span class="lab">Explain.</span> A local correction only moves heat between neighbours, so it can change the shape of the
 front but not carry heat from one layer to another. This is missing transport. A vertical flux read
 from the recording supplies that transport. It reduces the error, but the tank then ends too cold.</p>
@@ -269,12 +277,12 @@ F &amp;= \rho c_p v\,(T - \bar{T}_{\mathrm{b}}) \why{the recorded flux, Eq.~(2.1
 \langle F\rangle_{\mathrm{b}} &amp;= \rho c_p \langle v' T'\rangle_{\mathrm{b}} \why{band mean: the eddy heat flux}
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Local repair fixes shape. Missing transport needs recorded transport.</p>
-<p class="src">Source: Thesis, Sections 6.5&ndash;6.6; Appendix D.2.</p></div></details>
+<p class="src">Source: Thesis, Section 6.5, Eq.&nbsp;(2.18); Appendix D.2.</p></div></details>
 <details class="qa asked" open data-text="how do you know your results are correct? thesis part, ulrich (``statistical methods employed, why other methods were not chosen&#x27;&#x27;)"><summary><span class="qid">A14</span> How do you know your results are correct?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Ulrich (&ldquo;statistical methods employed, why other methods were not chosen&rdquo;)</p><p class="core"><span class="lab">Core.</span> Every replay is deterministic, and every run changes one setting against a control.</p><div class="rest"><p><span class="lab">Explain.</span> A rerun gives the same trace, bit for bit. Replay and reference are compared at the same
 instants and over the same end window. The energy budget of each case is closed term by term.</p>
 <p><span class="lab">Numbers.</span> End window 580 to 599&nbsp;s on both sides.</p>
 <p class="summary"><span>Summary:</span> Deterministic, one change per run, same clock, closed budget.</p>
-<p class="src">Source: Thesis, Section 3.9 and Appendix B.5.</p></div></details>
+<p class="src">Source: Thesis, Section 2.4, Section 3.9 and Appendix B.3.</p></div></details>
 <details class="qa predicted" open data-text="why these error measures? bias and rmse? your thesis: everything you used can be asked"><summary><span class="qid">A15</span> Why these error measures? Bias and RMSE?<span class="badge predicted">PREDICTED</span></summary><p class="origin">your thesis: everything you used can be asked</p><p class="core"><span class="lab">Core.</span> The mean temperature says how much heat there is; the profile and the front width say where it is.</p><div class="rest"><p><span class="lab">Explain.</span> A replay can be right on one and wrong on the other, so I report both. On a trace, the
 bias gives the side and the RMSE gives the size. Their identity separates an offset from a wrong
 shape.</p>
@@ -303,12 +311,35 @@ change the velocity.</p>
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Constant density, except where gravity sees it. The replay cuts this term.</p>
 <p class="src">Source: Thesis, Section 2.1, Eqs.&nbsp;(2.1)&ndash;(2.3).</p></div></details>
-<details class="qa asked" open data-text="what is future work? thesis part, küng committee (``what would you do differently?&#x27;&#x27;), mara (``how could i extend my work?&#x27;&#x27;)"><summary><span class="qid">A18</span> What is future work?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Küng committee (&ldquo;What would you do differently?&rdquo;), Mara (&ldquo;How could I extend my work?&rdquo;)</p><p class="core"><span class="lab">Core.</span> Let the recorded diffusivity act, split the conservation constraint, and switch databases by state.</p><div class="rest"><p><span class="lab">Explain.</span> An implicit exchange or a shorter step would let the recorded diffusivity work. A balance
-per compartment would stop the constraint from putting heat back at the front. Several recordings,
-chosen by the replayed temperature, could cover more than one regime.</p>
-<p class="summary"><span>Summary:</span> Implicit exchange, compartments, several databases.</p>
-<p class="src">Source: Thesis, Section 9.3.</p></div></details>
-<details class="qa asked" open data-text="which papers influenced you most? thesis part, mara (``which was the paper your thesis was most influenced by?&#x27;&#x27;)"><summary><span class="qid">A19</span> Which papers influenced you most?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Mara (&ldquo;Which was the paper your thesis was most influenced by?&rdquo;)</p><p class="core"><span class="lab">Core.</span> Lichtenegger and Pirker (2016) and Pirker et al. (2018) for rCFD, and Zalesak (1979) for the limiter.</p><div class="rest"><p><span class="lab">Explain.</span> The first introduced recurrence CFD and the recurrence matrix. The second describes the
+<details class="qa asked" open data-text="what is future work? thesis part, küng committee (``what would you do differently?&#x27;&#x27;), mara (``how could i extend my work?&#x27;&#x27;)"><summary><span class="qid">A18</span> What is future work?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Küng committee (&ldquo;What would you do differently?&rdquo;), Mara (&ldquo;How could I extend my work?&rdquo;)</p><p class="core"><span class="lab">Core.</span> Let the recorded diffusivity act, split the conservation constraint, record only the
+kinematic flux, switch databases by state, and learn the correction strength.</p><div class="rest"><p><span class="lab">Explain.</span> An implicit exchange or a shorter step would let the recorded diffusivity work. A balance
+per compartment, as the method prescribes, would remove part of the excess cooling. Recording only
+$\rho c_p v$ would let the replay supply its own temperature anomaly, so the flux could transfer.
+Several recordings, chosen by the replayed temperature, could cover more than one regime. A small
+network could predict the local correction strength from the replayed field, acting inside the
+limiter so that conservation and the bounds still hold. Finally: a second mesh and measurements.</p>
+<p class="summary"><span>Summary:</span> Implicit exchange, compartments, kinematic flux, several databases, a small network
+inside the limiter, a second mesh and experiments.</p>
+<p class="src">Source: Thesis, Section 9.2.</p></div></details>
+<details class="qa predicted" open data-text="how much does the correction improve the adiabatic replay? research question q2, section 9.1"><summary><span class="qid">A19</span> How much does the correction improve the adiabatic replay?<span class="badge predicted">PREDICTED</span></summary><p class="origin">research question Q2, Section 9.1</p><p class="core"><span class="lab">Core.</span> Weighted to the vertical, it brings the front close to the reference and more than halves the
+trace error, without leaving the range of the data.</p><div class="rest"><p><span class="lab">Explain.</span> The direction matters more than the strength. Without the weight the correction reaches
+the reference thickness only with grid-scale ripples.</p>
+<p><span class="lab">Numbers.</span> Front 15.7&nbsp;mm $\to$ 5.3 to 4.0&nbsp;mm for $s=0.40$&ndash;$0.50$, reference 5.0&nbsp;mm. Trace error at
+$\fsd=0.5$: 1.46&nbsp;K $\to$ 0.70, 0.64, 0.59&nbsp;K for $s=0.40, 0.45, 0.50$.</p>
+<p class="summary"><span>Summary:</span> Direction first. 15.7 $\to$ 5.3&ndash;4.0&nbsp;mm, 1.46 $\to$ 0.59&ndash;0.70&nbsp;K.</p>
+<p class="src">Source: Thesis, Section 9.1 (Q2), Table C.1.</p></div></details>
+<details class="qa predicted" open data-text="does the correction transfer to another flow? (q5, the through-flow vessel) research question q5, chapter 7 and section 9.1"><summary><span class="qid">A20</span> Does the correction transfer to another flow? (Q5, the through-flow vessel)<span class="badge predicted">PREDICTED</span></summary><p class="origin">research question Q5, Chapter 7 and Section 9.1</p><p class="core"><span class="lab">Core.</span> The operators transfer as a set, but not with a single setting, and they cannot create motion
+that is missing from the database.</p><div class="rest"><p><span class="lab">Explain.</span> The vessel of a laboratory rig is fed through four ports at the lid or at the floor, has an
+outlet at half height and a turbulence model in its reference. I replayed both cases with one
+database recorded for the lid feed. Against the reference of each case the extended replay lowers the
+mean error over the seven sensor heights. The lid feed needed a weak vertical correction and
+down-gradient mixing under the lid, the floor feed a convective adjustment. Neither replay can create
+the plume of the floor feed. Nudged to the rig thermocouples, the replays cost 9 to 11 minutes.</p>
+<p><span class="lab">Numbers.</span> Lid feed 1.28 $\to$ 0.77&nbsp;K. Floor feed 1.61 $\to$ 0.68&nbsp;K. Nudged floor feed: 0.33&nbsp;K extended
+vs 0.72&nbsp;K standard. Speed-ups about 1,250 and 790.</p>
+<p class="summary"><span>Summary:</span> Operators transfer, settings do not. A database belongs to a flow regime.</p>
+<p class="src">Source: Thesis, Chapter 7, Section 8.3, Section 8.4, Section 9.1 (Q5).</p></div></details>
+<details class="qa asked" open data-text="which papers influenced you most? thesis part, mara (``which was the paper your thesis was most influenced by?&#x27;&#x27;)"><summary><span class="qid">A21</span> Which papers influenced you most?<span class="badge asked">ASKED BEFORE</span></summary><p class="origin">thesis part, Mara (&ldquo;Which was the paper your thesis was most influenced by?&rdquo;)</p><p class="core"><span class="lab">Core.</span> Lichtenegger and Pirker (2016) and Pirker et al. (2018) for rCFD, and Zalesak (1979) for the limiter.</p><div class="rest"><p><span class="lab">Explain.</span> The first introduced recurrence CFD and the recurrence matrix. The second describes the
 face exchange and the conservation constraint. Zalesak gives the local bounds of flux-corrected
 transport that my limiter uses.</p>
 <p class="summary"><span>Summary:</span> rCFD: Lichtenegger, Pirker. Limiter: Zalesak.</p>
@@ -686,7 +717,7 @@ That is my result: under the cooled lid the flow keeps renewing itself with cold
 that the adiabatic recording never saw. The answer of the lecture is multi-state rCFD: one database
 per process state.</p>
 <p class="summary"><span>Summary:</span> A database belongs to a flow regime, not to a case.</p>
-<p class="src">Source: Pirker, rCFD lecture, slide 59; thesis, Section 6.4, Figure 6.6.</p></div></details>
+<p class="src">Source: Pirker, rCFD lecture, slide 59; thesis, Section 6.3, Figures 2.2 and 6.3.</p></div></details>
 <details class="qa predicted" open data-text="rcfd and digital twins. how would you use your work in a plant? no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C6</span> rCFD and digital twins. How would you use your work in a plant?<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> rCFD can run alongside the process, if live data keep aligning it.</p><div class="rest"><p><span class="lab">Explain.</span> A tank model with one mean value is instant but ignores the inside of the plant. Full CFD
 shows the inside but takes days. rCFD sits in between. Run blindly forward, it collects error, so
 live data should correct it. My thesis shows what such a twin must watch: a boundary condition can
@@ -701,86 +732,82 @@ function of the state, or train a neural operator on the database.</p>
 <p class="summary"><span>Summary:</span> Ground truth $\to$ data $\to$ cheap reuse. Generalization = which regime the database covers.</p>
 <p class="src">Source: Pirker, rCFD lecture, slide 69; thesis, Section 2.2.</p></div></details>
 <h3 id="C-2">The figures of the thesis</h3>
-<p class="intro">For every figure, have three sentences ready: what is plotted, what we see, and why.</p>
-<details class="qa predicted" open data-text="figure 1.1 -- passive and non-passive transport. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C8</span> Figure 1.1 &ndash; passive and non-passive transport.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> A dye only rides the flow, but temperature makes the flow, and the replay cuts this feedback.</p><div class="rest"><p><span class="lab">Explain.</span> (a) A dye in the stored velocity of the adiabatic tank is only stretched. (b) In the cooled
-tank, cold plumes from the lid create the motion. (c) The replay moves temperature with recorded
-maps and never solves the velocity.</p>
+<p class="intro">For every figure, have three sentences ready: what is plotted, what we see, and why. Figure numbers
+follow the final thesis (PAS, 18 November 2026).</p>
+<details class="qa predicted" open data-text="figure 1.1 -- passive and non-passive transport. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C8</span> Figure 1.1 &ndash; passive and non-passive transport.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> A dye only rides the flow, but temperature makes the flow, and the replay cuts this feedback.</p><div class="rest"><p><span class="lab">Explain.</span> (a) The recorded flow carries the temperature. (b) Under a cooled lid, cold plumes from the
+lid govern the motion and mix the warm layer. (c) A replay with the flow of (a) cannot form the
+plumes, and the heat loss stays in a film under the lid. (d) compares the horizontal means.</p>
 <p class="summary"><span>Summary:</span> The whole thesis question in one figure.</p></div></details>
-<details class="qa predicted" open data-text="figure 2.2 -- recurrence of the database. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C9</span> Figure 2.2 &ndash; recurrence of the database.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The flow has two phases, filling and settling, and no state comes back.</p><div class="rest"><p><span class="lab">Explain.</span> The distance matrix has two blocks split at frame 315. The rows rise to a plateau and none
-returns towards zero. The prominence stays below what the method needs, so the replay plays the
-frames in order.</p>
-<p><span class="lab">Numbers.</span> Median prominence 0.028. Nearest-neighbour distance 0.013, only because neighbouring frames are similar.</p>
-<p class="summary"><span>Summary:</span> Two blocks, no return, frames in order.</p></div></details>
-<details class="qa predicted" open data-text="figure 3.3 -- vertical heat transport and plume scale. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C10</span> Figure 3.3 &ndash; vertical heat transport and plume scale.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Under the cooled lid, the flow carries heat about 600 times more than conduction.</p><div class="rest"><p><span class="lab">Explain.</span> The plane-mean vertical heat flux is split into the part carried by the flow and the part
-carried by conduction. The temperature departures under the lid have the size of whole plumes. So
-cooling is a transport process, and a diffusive step cannot copy it.</p>
-<p class="summary"><span>Summary:</span> Cooling is transport, not diffusion.</p></div></details>
-<details class="qa predicted" open data-text="figures 3.4 and 3.5 -- the two regimes. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C11</span> Figures 3.4 and 3.5 &ndash; the two regimes.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> One boundary condition switches the flow from one regime to another.</p><div class="rest"><p><span class="lab">Explain.</span> With the adiabatic lid the jet rises, spreads under the lid, and the warm layer then rests.
-With the cooled lid the layer above the front overturns in a row of cells driven by cold plumes.
-Same geometry, same inflow, two different flows.</p>
+<details class="qa predicted" open data-text="figure 2.2 -- recurrence of the two recordings. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C9</span> Figure 2.2 &ndash; recurrence of the two recordings.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The flow has two phases, filling and settling, and no state comes back.</p><div class="rest"><p><span class="lab">Explain.</span> (a) The distance matrix has two blocks split at frame 315, when the warm inflow stops.
+(b) After the inflow the cooled-lid flow keeps changing, the adiabatic one hardly changes. (c) The
+prominence stays below what the method asks for, so the replay plays the frames in order.</p>
+<p><span class="lab">Numbers.</span> Median prominence 0.028 and 0.027; only 4.0 and 3.7 per cent of the vectors reach 0.05.</p>
+<p class="summary"><span>Summary:</span> Two blocks, no return, frames in order. Two lids, two regimes.</p></div></details>
+<details class="qa predicted" open data-text="figure 3.2 -- the two reference flows. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C10</span> Figure 3.2 &ndash; the two reference flows.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> One boundary condition switches the flow from one regime to another.</p><div class="rest"><p><span class="lab">Explain.</span> Temperature and in-plane streamlines on the mid-plane at four stored states. With the
+adiabatic lid the warm layer circulates only slowly after the inflow and the thermocline stays at
+the height of the channels. With the cooled lid the layer above the thermocline overturns in a row
+of cells driven by cold plumes from the lid. Under the cooled lid the flow carries heat about 600
+times more than conduction.</p>
 <p class="summary"><span>Summary:</span> Same tank, same inflow, two flows.</p></div></details>
-<details class="qa predicted" open data-text="figure 5.1 -- the standard replay over the face-exchange sweep. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C12</span> Figure 5.1 &ndash; the standard replay over the face-exchange sweep.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> More mixing heats the tank faster during the inflow and drains it faster afterwards.</p><div class="rest"><p><span class="lab">Explain.</span> The mean temperature and the height of the heat are shown for seven strengths. The height
-is best at intermediate strengths, the mean temperature with little mixing. So no single strength is
-best for both.</p>
+<details class="qa predicted" open data-text="figure 4.2 -- anti-diffusion on a model front. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C11</span> Figure 4.2 &ndash; anti-diffusion on a model front.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Unlimited anti-diffusion explodes, the limited correction sharpens the front inside the data range.</p><div class="rest"><p><span class="lab">Explain.</span> (a) With $\nu=-0.1$ a disturbance of 1&nbsp;mK grows by 1.4 per step and leaves the data range
+by more than 1&nbsp;K after 21 applications. (b) The limited correction at $s=0.25$ steepens the front
+without leaving the range. (c) The thickness falls from 8.8 to 4.4 cells after 30 applications and to
+0.9 after 60, with energy conserved to $10^{-11}$.</p>
+<p class="summary"><span>Summary:</span> Ill-posed without a limiter, safe with it.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.1 -- the standard replay over the face-exchange sweep. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C12</span> Figure 5.1 &ndash; the standard replay over the face-exchange sweep.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Stronger mixing makes the replay too warm during the inflow and too cold after it.</p><div class="rest"><p><span class="lab">Explain.</span> Mean temperature and rise of the centre of gravity for all strengths. The height is best
+near $\fsd=0.5$, the mean temperature with little mixing. So no single strength is best for both.</p>
+<p><span class="lab">Numbers.</span> At $\fsd=3$ the tank ends 5.08&nbsp;K below the reference.</p>
 <p class="summary"><span>Summary:</span> No single best $\fsd$.</p></div></details>
-<details class="qa predicted" open data-text="figure 5.2 -- the adiabatic tank through the run. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C13</span> Figure 5.2 &ndash; the adiabatic tank through the run.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The recorded maps keep the front thin, the face exchange smears it, and the correction makes it thin again.</p><div class="rest"><p><span class="lab">Explain.</span> The mid-plane temperature is shown at four times, with the front width in each panel. The
-replay with maps only keeps the front as thin as the reference. So the smearing comes from the
-exchange, not from the maps.</p>
-<p class="summary"><span>Summary:</span> Maps: thin. Exchange: smeared. Correction: thin again.</p></div></details>
-<details class="qa predicted" open data-text="figure 5.3 -- space--time diagram. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C14</span> Figure 5.3 &ndash; space&ndash;time diagram.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> It shows the warm layer growing downwards and where the standard replay is too warm or too cold.</p><div class="rest"><p><span class="lab">Explain.</span> The horizontal mean temperature is plotted against height and time. The difference panel
-shows the error of the standard replay, and the thickness panel shows that its front stays too
-thick. The corrected replay follows the reference.</p>
-<p class="summary"><span>Summary:</span> Height against time: the layer grows, the error is visible.</p></div></details>
-<details class="qa predicted" open data-text="figure 5.6 -- every correction run in one map. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C15</span> Figure 5.6 &ndash; every correction run in one map.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Only the vertically weighted form brings both errors down while the front reaches the reference width.</p><div class="rest"><p><span class="lab">Explain.</span> Each marker is one replay: trace error and end-profile error against the front width. The
-other forms reach a thin front only with a large error. The working range of the vertical form is
-$s = 0.40$ to 0.50.</p>
-<p><span class="lab">Numbers.</span> Reference front 5.0&nbsp;mm.</p>
-<p class="summary"><span>Summary:</span> Direction matters more than strength.</p></div></details>
-<details class="qa predicted" open data-text="figure 5.7 -- buoyancy frequency across the front. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C16</span> Figure 5.7 &ndash; buoyancy frequency across the front.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> A sharper front is a stronger barrier to vertical motion.</p><div class="rest"><p><span class="lab">Explain.</span> The buoyancy frequency measures how strongly the stratification resists vertical motion.
-The standard replay holds a barrier about half as strong as the reference. The corrected replay
-reaches the reference value after the inflow.</p>
+<details class="qa predicted" open data-text="figure 5.2 -- why the outlet matters. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C13</span> Figure 5.2 &ndash; why the outlet matters.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The outlet sits just below the front, so a smeared front turns into a heat leak.</p><div class="rest"><p><span class="lab">Explain.</span> Horizontal means of the reference and the standard replay at 150&nbsp;s and 450&nbsp;s, with the
+outlet as a grey band. During the inflow the replay releases colder fluid than the reference and
+keeps heat. After the inflow the diffused front reaches the outlet and the replay releases warmer
+fluid.</p>
 <div class="lab">Derivation</div>
 <div class="math">\[\begin{align*}
-N^2 &amp;= g\,\beta\,\frac{\partial T}{\partial y} \why{buoyancy frequency, Eq.~(3.3)}
-\end{align*}\]</div>
-<p class="summary"><span>Summary:</span> Steeper gradient, larger $N$, stronger barrier.</p></div></details>
-<details class="qa predicted" open data-text="figure 5.8 -- end profiles through the front. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C17</span> Figure 5.8 &ndash; end profiles through the front.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Read the width always together with the profile.</p><div class="rest"><p><span class="lab">Explain.</span> Without correction the front is wide and too high. The unweighted correction makes it thin
-but puts it in the wrong place. The vertical weight follows the reference. A saw-toothed front can
-have the right width and the wrong shape.</p>
-<p class="summary"><span>Summary:</span> Right width is not enough: check the shape.</p></div></details>
-<details class="qa predicted" open data-text="figure 5.10 -- outlet temperature from the energy balance. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C18</span> Figure 5.10 &ndash; outlet temperature from the energy balance.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The outlet sits just below the front, so a smeared front turns into a heat leak.</p><div class="rest"><p><span class="lab">Explain.</span> While the inflow is warm the standard replay keeps heat in the tank, and afterwards it
-drains it. The vertical correction ends much closer. So a numerical error at the front becomes an
-error in the energy budget.</p>
-<p><span class="lab">Numbers.</span> Standard: $+2.7$&nbsp;K kept at $t = 315$&nbsp;s, ends at $-1.9$&nbsp;K. Vertical correction ends at
-$-0.5$&nbsp;K.</p>
-<div class="lab">Derivation</div>
-<div class="math">\[\begin{align*}
-M\frac{\mathrm{d}\bar T}{\mathrm{d}t} &amp;= \dot m\,(T_{\mathrm{in}} - T_{\mathrm{out}}) \why{energy in minus out, Eq.~(4.10)} \\
-T_{\mathrm{out}} &amp;= T_{\mathrm{in}} - \tau\,\frac{\mathrm{d}\bar T}{\mathrm{d}t},\quad \tau = M/\dot m \why{solve for the outlet, Eq.~(4.11)}
+M\frac{\mathrm{d}\bar T}{\mathrm{d}t} &amp;= \dot m\,(T_{\mathrm{in}} - T_{\mathrm{out}}) \why{energy in minus out} \\
+T_{\mathrm{out}} &amp;= T_{\mathrm{in}} - \tau\,\frac{\mathrm{d}\bar T}{\mathrm{d}t},\quad \tau = M/\dot m \why{solve for the outlet}
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Smeared front + outlet below it = heat leak.</p></div></details>
-<details class="qa predicted" open data-text="figure 5.11 -- state space. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C19</span> Figure 5.11 &ndash; state space.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The correction keeps the replay close to the states that the recording spans.</p><div class="rest"><p><span class="lab">Explain.</span> The two leading POD modes of the reference field are shown, and the distance of each run
-from the space of the first ten modes. The standard replay leaves this space and does not return.
-The corrected replay returns after the inflow.</p>
-<p class="summary"><span>Summary:</span> Corrected replay stays on the recorded state space.</p></div></details>
-<details class="qa predicted" open data-text="figure 6.2 -- wall-cooled end profiles. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C20</span> Figure 6.2 &ndash; wall-cooled end profiles.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The standard replay holds nearly the right heat, but in the wrong place.</p><div class="rest"><p><span class="lab">Explain.</span> The bulk is too warm and the top layer too cold. The correction moves the heat back. This
-is why I report the mean temperature and the profile together.</p>
-<p><span class="lab">Numbers.</span> Standard replay: profile 2.79&nbsp;K. Corrected at $s = 0.475$: 0.59&nbsp;K.</p>
-<p class="summary"><span>Summary:</span> Same heat, wrong place.</p></div></details>
-<details class="qa predicted" open data-text="figure 6.3 -- wall-cooled traces. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C21</span> Figure 6.3 &ndash; wall-cooled traces.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The local correction follows the heat content but lags in layering while the tank fills.</p><div class="rest"><p><span class="lab">Explain.</span> The red band shows how far the local correction lags in heterogeneity during the warm
-inflow. Only the recorded flux also follows the heterogeneity. A lag in layering is missing
-transport, not missing sharpness.</p>
-<p class="summary"><span>Summary:</span> Layering lag = missing transport.</p></div></details>
-<details class="qa predicted" open data-text="figures 6.4 and 6.5 -- end state and plumes. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C22</span> Figures 6.4 and 6.5 &ndash; end state and plumes.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The departure is smallest at $s = 0.55$, and only the corrected replay has plumes that reach the front.</p><div class="rest"><p><span class="lab">Explain.</span> Along the strength ladder the cold top and the warm bulk fade together. At $s = 0.8$ the
-top turns warm. In 3D, the plumes of the standard replay end halfway down, and with the correction
-they reach the front again. The plumes were in the recorded maps all along.</p>
-<p><span class="lab">Numbers.</span> Smallest mean departure 0.22&nbsp;K at $s = 0.55$.</p>
-<p class="summary"><span>Summary:</span> Right layering lets the recorded plumes show.</p></div></details>
-<details class="qa predicted" open data-text="figure 6.6 -- recurrence of the two recordings. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C23</span> Figure 6.6 &ndash; recurrence of the two recordings.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> After the inflow the cooled flow keeps renewing itself, and the adiabatic flow hardly changes.</p><div class="rest"><p><span class="lab">Explain.</span> At short lags the cooled flow changes about ten times faster. So the cooled case is a
-different regime, and a database recorded without cooling cannot contain its motion.</p>
+<details class="qa predicted" open data-text="figure 5.3 -- the adiabatic tank through the run. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C14</span> Figure 5.3 &ndash; the adiabatic tank through the run.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The recorded maps keep the front thin, the face exchange smears it, and the correction makes it thin again.</p><div class="rest"><p><span class="lab">Explain.</span> Rows: reference, recorded advection only, standard replay, extended replay at $s=0.45$,
+with the 10&ndash;90 per cent thickness in each panel. The maps alone keep the front thin, so the
+smearing comes from the exchange, not from the maps.</p>
+<p class="summary"><span>Summary:</span> Maps: thin. Exchange: smeared. Correction: thin again.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.4 -- where the heat is wrong. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C15</span> Figure 5.4 &ndash; where the heat is wrong.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The correction removes most of the heat-content error, the unweighted form does not.</p><div class="rest"><p><span class="lab">Explain.</span> Deviation from the reference at 599&nbsp;s without correction, with the vertical weight at
+$s=0.5$ and 0.7, and unweighted at $s=0.9$. The exchanges across vertical faces act along the
+thermocline and amplify ripples.</p>
+<p><span class="lab">Numbers.</span> Final deviation $-0.35$&nbsp;K with the correction against $-1.69$&nbsp;K without.</p>
+<p class="summary"><span>Summary:</span> Vertical weight: small deviation. Unweighted: ripples.</p></div></details>
+<details class="qa predicted" open data-text="figure 5.5 -- every correction run in one map. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C16</span> Figure 5.5 &ndash; every correction run in one map.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Only the vertically weighted form brings both errors down while the front reaches the reference width.</p><div class="rest"><p><span class="lab">Explain.</span> Trace error and end-profile error against the thermocline thickness, one marker per run,
+with the Pareto front of the two errors. The working range of the vertical form is $s=0.40$ to 0.50.</p>
+<p><span class="lab">Numbers.</span> Reference thickness 5.0&nbsp;mm; vertical form 5.3 to 4.0&nbsp;mm.</p>
+<p class="summary"><span>Summary:</span> Direction matters more than strength.</p></div></details>
+<details class="qa predicted" open data-text="figure 6.1 -- wall-cooled end state over the strength ladder. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C17</span> Figure 6.1 &ndash; wall-cooled end state over the strength ladder.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The departure is smallest at $s=0.55$.</p><div class="rest"><p><span class="lab">Explain.</span> Departure from the reference in the upper part at $s=0$, 0.55 and 0.8, and the horizontal
+mean for all strengths. The cold top and the warm bulk of the standard replay fade together as $s$
+grows, until at 0.8 the top turns warm.</p>
+<p><span class="lab">Numbers.</span> Smallest mean departure 0.22&nbsp;K at $s=0.55$.</p>
+<p class="summary"><span>Summary:</span> Right layering at $s\approx0.55$.</p></div></details>
+<details class="qa predicted" open data-text="figure 6.3 -- heat removed through the lid on two recordings. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C18</span> Figure 6.3 &ndash; heat removed through the lid on two recordings.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> On the adiabatic recording the lid falls behind early and removes only 63 per cent of the reference loss.</p><div class="rest"><p><span class="lab">Explain.</span> Power of the wall term and heat removed since the start, against the reference's 1575&nbsp;J. On
+the adiabatic database a cold film stays under the lid and traps the warm layer below, because the
+recorded motion does not carry the cooled fluid away.</p>
 <p class="summary"><span>Summary:</span> Different regime $\to$ different database.</p></div></details>
+<details class="qa predicted" open data-text="figure 6.4 -- wall-cooled traces. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C19</span> Figure 6.4 &ndash; wall-cooled traces.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The local correction follows the heat content but lags in layering while the tank fills.</p><div class="rest"><p><span class="lab">Explain.</span> Mean temperature and heterogeneity with their departures. The gap between the corrected
+replay and the reference in heterogeneity during the warm inflow is missing transport. The recorded
+flux, shown as a test, closes it.</p>
+<p><span class="lab">Numbers.</span> Heterogeneity error 2.25&nbsp;K $\to$ 0.45&nbsp;K with the recorded flux at $s=0.475$.</p>
+<p class="summary"><span>Summary:</span> Layering lag = missing transport.</p></div></details>
+<details class="qa predicted" open data-text="figures 7.2 and 7.3 -- the through-flow vessel. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C20</span> Figures 7.2 and 7.3 &ndash; the through-flow vessel.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> With one lid-fed database, the extended replay is closer to the reference for both feeds.</p><div class="rest"><p><span class="lab">Explain.</span> Temperature at the seven thermocouple heights, heterogeneity and outlet temperature. In
+the floor-fed case the standard replay loses almost all heterogeneity after the pulse, while the
+extended replay keeps about half of it. Neither can create the floor plume, because the database is
+lid-fed.</p>
+<p><span class="lab">Numbers.</span> Mean error lid feed 1.28 $\to$ 0.77&nbsp;K, floor feed 1.61 $\to$ 0.68&nbsp;K. Mean $H$ 600&ndash;714&nbsp;s: 0.05&nbsp;K
+standard, 0.61&nbsp;K extended, 1.14&nbsp;K reference.</p>
+<p class="summary"><span>Summary:</span> Operators transfer, settings do not, motion cannot be invented.</p></div></details>
+<details class="qa predicted" open data-text="figure 7.6 -- why the vessel replays err. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C21</span> Figure 7.6 &ndash; why the vessel replays err.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The face exchange at $\fsd=160$ mixes far more than the turbulence of the references.</p><div class="rest"><p><span class="lab">Explain.</span> Volume share of cells below a given diffusivity, the vertical exchange as a multiple of the
+feed, and the gradient ratio replay over reference. The standard replay hides the missing motion
+behind a diffusivity 12 to 17 times larger than the largest eddy diffusivity of the references.</p>
+<p class="summary"><span>Summary:</span> Too much mixing hides missing motion.</p></div></details>
 <h3 id="C-3">CFD basics behind rCFD</h3>
-<details class="qa predicted" open data-text="reynolds number and other dimensionless numbers. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C24</span> Reynolds number and other dimensionless numbers.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The Reynolds number compares inertia with viscous forces.</p><div class="rest"><p><span class="lab">Explain.</span> Pipe flow is laminar below about 2300 and turbulent above about 4000. Other numbers: the
+<details class="qa predicted" open data-text="reynolds number and other dimensionless numbers. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C22</span> Reynolds number and other dimensionless numbers.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> The Reynolds number compares inertia with viscous forces.</p><div class="rest"><p><span class="lab">Explain.</span> Pipe flow is laminar below about 2300 and turbulent above about 4000. Other numbers: the
 Péclet number compares convection with diffusion, the Prandtl number momentum diffusion with heat
 diffusion, the Froude number inertia with gravity, and the Richardson number buoyancy with inertia.</p>
 <p><span class="lab">Numbers.</span> My case: $Re \approx 99$, laminar. $Ri = 1.84$.</p>
@@ -790,7 +817,7 @@ Re &amp;= \frac{UL}{\nu},\quad Pe = \frac{UL}{\Gamma},\quad Pr = \frac{\nu}{\alp
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Re: inertia/viscosity. Pe: convection/diffusion. Ri: buoyancy/inertia.</p>
 <p class="src">Source: Pirker, introduction slides; thesis, Section 3.3.</p></div></details>
-<details class="qa predicted" open data-text="governing equations and the material derivative. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C25</span> Governing equations and the material derivative.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Mass, momentum and energy are conserved, and the material derivative links the moving parcel with the fixed control volume.</p><div class="rest"><p><span class="lab">Explain.</span> The Lagrangian view follows a fluid parcel. The Eulerian view looks at a fixed point. The
+<details class="qa predicted" open data-text="governing equations and the material derivative. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C23</span> Governing equations and the material derivative.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Mass, momentum and energy are conserved, and the material derivative links the moving parcel with the fixed control volume.</p><div class="rest"><p><span class="lab">Explain.</span> The Lagrangian view follows a fluid parcel. The Eulerian view looks at a fixed point. The
 material derivative is the rate of change seen by the moving parcel.</p>
 <div class="lab">Derivation</div>
 <div class="math">\[\begin{align*}
@@ -801,7 +828,7 @@ material derivative is the rate of change seen by the moving parcel.</p>
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Change in time + convection = pressure + viscous + body force.</p>
 <p class="src">Source: Pirker, governing-equation slides.</p></div></details>
-<details class="qa predicted" open data-text="the finite-volume method. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C26</span> The finite-volume method.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Integrate the equation over each cell, and the divergence theorem turns everything into fluxes through faces.</p><div class="rest"><p><span class="lab">Explain.</span> What leaves one cell enters its neighbour, so the method is conservative. Each cell value
+<details class="qa predicted" open data-text="the finite-volume method. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C24</span> The finite-volume method.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Integrate the equation over each cell, and the divergence theorem turns everything into fluxes through faces.</p><div class="rest"><p><span class="lab">Explain.</span> What leaves one cell enters its neighbour, so the method is conservative. Each cell value
 is linked to its neighbours by one linear equation. If all coefficients are positive, the new value
 is a weighted mean, and no new extremum can appear. The same rule protects the face exchange in
 rCFD.</p>
@@ -813,7 +840,7 @@ a_P\,c_P &amp;= \sum_{NB} a_{NB}\,c_{NB} + b \why{fluxes per face: the computati
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Integrate, fluxes through faces, conservative, positive coefficients.</p>
 <p class="src">Source: Pirker, finite-volume slides.</p></div></details>
-<details class="qa predicted" open data-text="discretization schemes and numerical diffusion. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C27</span> Discretization schemes and numerical diffusion.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> First-order upwind is stable but adds false diffusion; central differencing is more accurate but can oscillate.</p><div class="rest"><p><span class="lab">Explain.</span> Upwind takes the value from upstream. Its truncation error acts like an extra diffusivity
+<details class="qa predicted" open data-text="discretization schemes and numerical diffusion. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C25</span> Discretization schemes and numerical diffusion.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> First-order upwind is stable but adds false diffusion; central differencing is more accurate but can oscillate.</p><div class="rest"><p><span class="lab">Explain.</span> Upwind takes the value from upstream. Its truncation error acts like an extra diffusivity
 that smears sharp gradients. Central differencing oscillates when the cell Péclet number is above
 2. Finer or flow-aligned grids and higher-order schemes reduce numerical diffusion. My thesis is a
 numerical-diffusion story: the face exchange smears the front, and the correction undoes it.</p>
@@ -826,7 +853,7 @@ c_{i-1} &amp;= c_i - \Delta x\,\partial_x c + \tfrac12\Delta x^2\,\partial_{xx}c
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Upwind: stable, diffusive, $\Gamma_{\mathrm{num}} = u\Delta x/2$. Central: accurate, oscillates if $Pe &gt; 2$.</p>
 <p class="src">Source: Pirker, finite-volume slides II.</p></div></details>
-<details class="qa predicted" open data-text="explicit versus implicit time stepping; courant and diffusion numbers. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C28</span> Explicit versus implicit time stepping; Courant and diffusion numbers.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Explicit steps are cheap but limited by stability; implicit steps solve a system but are unconditionally stable.</p><div class="rest"><p><span class="lab">Explain.</span> Explicit convection needs a Courant number below one: information must not travel more
+<details class="qa predicted" open data-text="explicit versus implicit time stepping; courant and diffusion numbers. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C26</span> Explicit versus implicit time stepping; Courant and diffusion numbers.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Explicit steps are cheap but limited by stability; implicit steps solve a system but are unconditionally stable.</p><div class="rest"><p><span class="lab">Explain.</span> Explicit convection needs a Courant number below one: information must not travel more
 than one cell per step. Explicit diffusion needs a diffusion number below one half. This is exactly
 the cap that stopped the recorded diffusivity in my replay.</p>
 <div class="lab">Derivation</div>
@@ -838,7 +865,7 @@ G &amp;= 1 - 4d\,\sin^2(k\Delta x/2) \why{insert a Fourier mode} \\
 <p><span class="lab">Numbers.</span> $Co = u\Delta t/\Delta x &lt; 1$. $d &lt; 0.5$.</p>
 <p class="summary"><span>Summary:</span> $Co &lt; 1$, $d &lt; 0.5$. My cap is the explicit diffusion limit.</p>
 <p class="src">Source: Pirker, finite-volume slides; thesis, Section 5.2.1.</p></div></details>
-<details class="qa predicted" open data-text="the simple algorithm. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C29</span> The SIMPLE algorithm.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Guess the pressure, solve the velocity, correct the pressure from continuity, and repeat.</p><div class="rest"><p><span class="lab">Explain.</span> SIMPLE stands for Semi-Implicit Method for Pressure-Linked Equations (Patankar). The
+<details class="qa predicted" open data-text="the simple algorithm. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C27</span> The SIMPLE algorithm.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Guess the pressure, solve the velocity, correct the pressure from continuity, and repeat.</p><div class="rest"><p><span class="lab">Explain.</span> SIMPLE stands for Semi-Implicit Method for Pressure-Linked Equations (Patankar). The
 velocity correction depends on the pressure correction. Putting it into continuity gives an
 equation for the pressure correction. Then both fields are corrected, with under-relaxation, until
 the residuals are small.</p>
@@ -851,7 +878,7 @@ the residuals are small.</p>
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Guess $p$, solve $u$, correct from continuity, repeat.</p>
 <p class="src">Source: Pirker, finite-volume slides.</p></div></details>
-<details class="qa predicted" open data-text="turbulence: phenomena, reynolds decomposition, models. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C30</span> Turbulence: phenomena, Reynolds decomposition, models.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Turbulence is chaotic and mixes strongly; RANS models all eddies, LES models only the small ones, DNS models none.</p><div class="rest"><p><span class="lab">Explain.</span> Energy enters at the large eddies and cascades down to the Kolmogorov scale, where
+<details class="qa predicted" open data-text="turbulence: phenomena, reynolds decomposition, models. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C28</span> Turbulence: phenomena, Reynolds decomposition, models.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Turbulence is chaotic and mixes strongly; RANS models all eddies, LES models only the small ones, DNS models none.</p><div class="rest"><p><span class="lab">Explain.</span> Energy enters at the large eddies and cascades down to the Kolmogorov scale, where
 viscosity dissipates it. RANS splits the velocity into a mean and a fluctuation, and the Reynolds
 stresses need a model, usually an eddy viscosity. My case needs none of this, because it is
 laminar.</p>
@@ -865,7 +892,7 @@ u &amp;= \bar u + u' \why{Reynolds decomposition} \\
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Cascade to $\eta$. RANS all, LES small, DNS none.</p>
 <p class="src">Source: Pirker, turbulence slides.</p></div></details>
-<details class="qa predicted" open data-text="wall boundary layers, y^+ and wall functions. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C31</span> Wall boundary layers, $y^+$ and wall functions.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Near a wall the velocity drops to zero, and $y^+$ says how far the first cell sits from the wall in viscous units.</p><div class="rest"><p><span class="lab">Explain.</span> The viscous sublayer lies below $y^+ \approx 5$ and the log layer above about 30. Wall
+<details class="qa predicted" open data-text="wall boundary layers, y^+ and wall functions. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C29</span> Wall boundary layers, $y^+$ and wall functions.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Near a wall the velocity drops to zero, and $y^+$ says how far the first cell sits from the wall in viscous units.</p><div class="rest"><p><span class="lab">Explain.</span> The viscous sublayer lies below $y^+ \approx 5$ and the log layer above about 30. Wall
 functions place the first cell in the log layer and model the rest, which is cheap. A wall-resolved
 simulation needs $y^+ \approx 1$ at the first cell.</p>
 <div class="lab">Derivation</div>
@@ -874,7 +901,7 @@ u_\tau &amp;= \sqrt{\tau_w/\rho},\quad y^+ = \frac{u_\tau\,y}{\nu} \why{friction
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> $y^+ &lt; 5$ viscous, $&gt; 30$ log layer. Wall functions: first cell in the log layer.</p>
 <p class="src">Source: Pirker, turbulence slides III.</p></div></details>
-<details class="qa predicted" open data-text="species and heat transport; the boussinesq approximation. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C32</span> Species and heat transport; the Boussinesq approximation.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Temperature and species follow the same transport equation, and Boussinesq keeps the density constant except where gravity acts.</p><div class="rest"><p><span class="lab">Explain.</span> If the density depends on temperature, flow and temperature are coupled. For small density
+<details class="qa predicted" open data-text="species and heat transport; the boussinesq approximation. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C30</span> Species and heat transport; the Boussinesq approximation.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Temperature and species follow the same transport equation, and Boussinesq keeps the density constant except where gravity acts.</p><div class="rest"><p><span class="lab">Explain.</span> If the density depends on temperature, flow and temperature are coupled. For small density
 changes we keep the density constant everywhere except in the gravity term. In my case the change
 is 1.5 per cent.</p>
 <div class="lab">Derivation</div>
@@ -884,7 +911,7 @@ is 1.5 per cent.</p>
 \end{align*}\]</div>
 <p class="summary"><span>Summary:</span> Constant density, except where gravity sees it.</p>
 <p class="src">Source: Pirker, species and heat slides; thesis, Section 2.1.</p></div></details>
-<details class="qa predicted" open data-text="multiphase flows: euler--euler versus euler--lagrange. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C33</span> Multiphase flows: Euler&ndash;Euler versus Euler&ndash;Lagrange.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Euler&ndash;Euler treats each phase as a continuum; Euler&ndash;Lagrange tracks every particle.</p><div class="rest"><p><span class="lab">Explain.</span> Euler&ndash;Euler uses volume fractions and suits dense systems at lower cost. Euler&ndash;Lagrange
+<details class="qa predicted" open data-text="multiphase flows: euler--euler versus euler--lagrange. no past questions from prof.~pirker yet; predicted from his lecture and the thesis figures"><summary><span class="qid">C31</span> Multiphase flows: Euler&ndash;Euler versus Euler&ndash;Lagrange.<span class="badge predicted">PREDICTED</span></summary><p class="origin">no past questions from Prof.&nbsp;Pirker yet; predicted from his lecture and the thesis figures</p><p class="core"><span class="lab">Core.</span> Euler&ndash;Euler treats each phase as a continuum; Euler&ndash;Lagrange tracks every particle.</p><div class="rest"><p><span class="lab">Explain.</span> Euler&ndash;Euler uses volume fractions and suits dense systems at lower cost. Euler&ndash;Lagrange
 follows particles in the fluid, and with particle contacts it becomes CFD&ndash;DEM: accurate but
 expensive. rCFD was first used for bubble columns and fluidized beds.</p>
 <p class="summary"><span>Summary:</span> Continuum phases versus tracked particles.</p>
